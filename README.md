@@ -1,7 +1,6 @@
-# step1-create-repo
+Fantasy Roller Derby
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.16.0.
+Originally generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.16.0 (yes it sucks but it's enough to get started...just.)
 
 ## Build & development
 
