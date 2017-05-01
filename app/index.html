@@ -24,8 +24,8 @@
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
 
-          <a class="navbar-brand" ng-hide="indexCtrl.nameToShow" href="#!/" data-toggle="dropdown">Fantasy Roller Derby <b class="caret"></b></a>
-          <a class="navbar-brand" ng-show="indexCtrl.nameToShow" href="#!/" data-toggle="dropdown">FRD: {{ indexCtrl.nameToShow }} <b class="caret"></b></a>
+          <a class="navbar-brand" ng-hide="indexCtrl.nameToShow" href="" data-toggle="dropdown">Fantasy Roller Derby <b class="caret"></b></a>
+          <a class="navbar-brand" ng-show="indexCtrl.nameToShow" href="" data-toggle="dropdown">FRD: {{ indexCtrl.nameToShow }} <b class="caret"></b></a>
           <ul class="dropdown-menu navbar-default">
             <li><a href="">Tournament 1</a></li>
             <li><a href="">Tournament 2</a></li>
@@ -86,6 +86,10 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+
+    <!-- Firebase & Angularfire -->
+    <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="app.js"></script>

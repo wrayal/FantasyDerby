@@ -8,6 +8,15 @@
  *
  * Main module of the application.
  */
+var fbConfig = {
+  apiKey: "AIzaSyBaIzeJybF9CVyyiwdSYU7zm8vmXa9pnb0",
+  authDomain: "fantasy-roller-derby.firebaseapp.com",
+  databaseURL: "https://fantasy-roller-derby.firebaseio.com/",
+  storageBucket: "fantasy-roller-derby.appspot.com",
+  //messagingSenderId: "<SENDER_ID>",
+};
+firebase.initializeApp(fbConfig);
+
 angular
   .module('FantasyDerbyApp', [
     'ngAnimate',
@@ -15,7 +24,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'firebase'
   ])
   .config(function ($routeProvider) {
     $routeProvider
