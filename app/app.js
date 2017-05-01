@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('step1CreateRepoApp', [
+  .module('FantasyDerbyApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -20,14 +20,24 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'home/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
       .when('/about', {
-        templateUrl: 'views/about.html',
+        templateUrl: 'home/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
+      })
+      .when('/frontPage', {
+        templateUrl: 'competitions/frontPage.html',
+        controller: 'FrontPageCtrl',
+        controllerAs: 'frontPageCtrl',
+        resolve: {
+          competitionData: function(Competitions) {
+            return Competitions;
+          }
+        }
       })
       .otherwise({
         redirectTo: '/'
