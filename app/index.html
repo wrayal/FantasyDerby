@@ -37,9 +37,17 @@
             <li ng-class="{active: indexCtrl.activeEntry=='frontPage'}"><a ng-href="#!/frontPage">Front page</a></li>
           </ul>
 
-          <ul class="nav navbar-nav" style="float:right">
-            <li class="active"><a href="#!/">Home</a></li>
-          </ul>
+          <li style="float:right" class="dropdown derbyNavbar">
+            <a ng-hide="authData" class="navbar-brand" href="" ng-click="indexCtrl.login()">Dive in!</a>
+            <a ng-show="authData && !rtprofile" class="navbar-brand" href="" ng-click="indexCtrl.logout()">Logout</a>
+            <a ng-show="rtprofile" class="navbar-brand" href="" data-toggle="dropdown">{{rtprofile.displayName}} <b class="caret"></b></a>
+            <ul class="dropdown-menu navbar-default">
+              <li><a href="#!/profile">Edit Profile</a></li>
+              <li><a href="" ng-click="indexCtrl.logout()">Logout</a></li>
+            </ul>
+          </li>
+         
+
 
         </div>
       </div>
@@ -98,6 +106,9 @@
         <script src="competitions/competitions.service.js"></script>
         <script src="competitions/frontPage.controller.js"></script>
         <script src="indexCtrl.controller.js"></script>
+        <script src="Auth/Auth.service.js"></script>
+        <script src="Users/Users.service.js"></script>
+        <script src="Users/profile.controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>

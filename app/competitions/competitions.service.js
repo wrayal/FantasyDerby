@@ -10,7 +10,7 @@ angular.module('FantasyDerbyApp')
 
 		var CompetitionData={
 			"subdomain": subdomain,
-			"humanName": subdomain.toUpperCase()
+			"humanName": subdomain?subdomain.toUpperCase():null
 		};
 
 

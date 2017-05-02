@@ -82,3 +82,7 @@ body {
     border-bottom: 0;
   }
 }
+
+.navbar > div > li {
+  list-style-type:none;
+}

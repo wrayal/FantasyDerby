@@ -39,6 +39,23 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/profile', {
+        templateUrl: 'Users/profile.html',
+        controller: 'ProfileCtrl',
+        controllerAs: 'profileCtrl',
+        resolve: {
+          auth: function($rootScope,$location) {
+            return $rootScope.auth.$requireSignIn().catch(function(){
+              $location.path("/") //If we aren't signed in, head home
+            })
+          },
+          profile: function($rootScope,Users) {
+            return $rootScope.auth.$requireSignIn().then(function(authData){ //If we are indeed signed in, grab the auth data
+              return Users.getProfile(authData.uid).$loaded()
+            })
+          }
+        }
+      })
       .when('/frontPage', {
         templateUrl: 'competitions/frontPage.html',
         controller: 'FrontPageCtrl',
@@ -52,4 +69,25 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .run(function($rootScope,$firebaseAuth,Users){
+    
+    $rootScope.auth = $firebaseAuth();
+    $rootScope.authData=null;
+
+    $rootScope.rtprofile=null;
+
+    $rootScope.auth.$onAuthStateChanged(function(authData){
+      console.log("Auth data:",authData)
+      $rootScope.authData=authData;
+      if (authData) {
+        Users.getProfile(authData.uid).$loaded().then(function(profileData){
+          $rootScope.rtprofile=profileData;
+        })
+      } else {
+        $rootScope.rtprofile=null;
+      }
+    })
+    console.log("AUTH:",$rootScope.auth)
+
   });
