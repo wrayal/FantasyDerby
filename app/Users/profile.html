@@ -1,0 +1,15 @@
+<form ng-submit="profileCtrl.updateProfile()">
+		<p ng-hide="profileCtrl.profile.displayName">
+			You'll need a username before you can join in!
+		</p>
+		<p>
+			What do you want your username to be?
+		</p>
+
+		<div class="input-group">
+			<input required type="text" class="form-control" placeholder="Display Name" ng-model="profileCtrl.profile.displayName">
+		</div>
+		<input type="submit" class="btn btn-default" value="Set Display Name"><p />
+		<span ng-show="profileCtrl.error" style="color:red">{{profileCtrl.error}}</span>
+		<span ng-show="profileCtrl.success" style="color:green">{{profileCtrl.success}}</span>
+	</form>
