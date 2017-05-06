@@ -8,6 +8,7 @@ angular.module('FantasyDerbyApp')
   		indexCtrl.nameToShow=Competitions.humanName;
   	}
     indexCtrl.fullSet=Competitions.completeSet;
+    indexCtrl.competitionData=Competitions.competitionData;
 
     //console.log("full set:",Competitions.completeSet)
 

@@ -44,7 +44,7 @@ angular
         controller: 'ProfileCtrl',
         controllerAs: 'profileCtrl',
         resolve: {
-          auth: function($rootScope,$location) {
+          auth: function($rootScope,$location,Competitions) {
             return $rootScope.auth.$requireSignIn().catch(function(){
               $location.path("/") //If we aren't signed in, head home
             })

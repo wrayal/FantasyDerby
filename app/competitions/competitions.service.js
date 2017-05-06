@@ -11,10 +11,20 @@ angular.module('FantasyDerbyApp')
     	else
         	subdomain=host.split('.')[0]
 
-		var CompetitionData={
-			humanName:$firebaseObject(comShortRef.child(subdomain)), //Human readable name for this competition
-			completeSet:$firebaseObject(comShortRef) //complete set of links
-		};
+        var CompetitonData;
+        if (subdomain) {
+        	comFullRef=comFullRef=firebase.database().ref().child("competitionFull").child(subdomain);
+        	CompetitionData={
+				humanName:$firebaseObject(comShortRef.child(subdomain)), //Human readable name for this competition
+				completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
+				competitionData:$firebaseObject(comFullRef)
+			};
+        } else {
+        	CompetitionData={
+        		humanName:"", //no human name here
+        		completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
+        	}
+        }
 
 
 		return CompetitionData;
