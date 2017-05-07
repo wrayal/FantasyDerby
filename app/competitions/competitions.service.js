@@ -17,11 +17,13 @@ angular.module('FantasyDerbyApp')
         	CompetitionData={
 				humanName:$firebaseObject(comShortRef.child(subdomain)), //Human readable name for this competition
 				completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
+                subdom:subdomain,
 				competitionData:$firebaseObject(comFullRef)
 			};
         } else {
         	CompetitionData={
         		humanName:"", //no human name here
+                subdom:subdomain,
         		completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
         	}
         }
