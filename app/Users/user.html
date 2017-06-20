@@ -1,0 +1,9 @@
+<div ng-show="userCtrl.isVisible==true">
+	<a href="" ui-sref="competitions.player({pid:userCtrl.linkedSkaterProfile})">User's Skater Profile</a>
+	<pre ng-show="userCtrl.isVisible==true">
+		{{userCtrl.userData | json}}
+	</pre>
+</div>
+<div ng-hide="userCtrl.isVisible==true">
+	This user has selected to hide their profile, or doesn't exist.
+</div>

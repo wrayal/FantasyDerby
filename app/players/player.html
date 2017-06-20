@@ -1,0 +1,20 @@
+PLAYERS YO<br>
+<img ng-src="{{playerCtrl.headshotURL}}" style="width:100px"></img><br>
+Is this the owner? {{playerCtrl.isOwner}}<br>
+<pre>
+{{playerCtrl.playerData | json}}
+</pre>
+
+
+<a href="" ui-sref="competitions.user({uid:playerCtrl.playerData.owner})">Skater's user profile</a>
+
+<form ng-submit="playerCtrl.uploadPhoto()" ng-show="playerCtrl.isOwner">
+      <input data-file type="file" accept="txt" ng-model="playerCtrl.newFile" class="form-control">
+      <button type="submit" class="btn btn-primary">Upload File</button>
+      <span ng-show="playerCtrl.uploadError" style="color:red">
+      	{{playerCtrl.uploadError}}
+      </span>
+      <span ng-show="playerCtrl.uploadSuccess" style="color:green">
+      	{{playerCtrl.uploadSuccess}}
+      </span>
+</form>

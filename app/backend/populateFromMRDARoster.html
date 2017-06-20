@@ -1,0 +1,19 @@
+<h1 style="color:blue">Populating from MRDA Rosters</h1>
+Input roster data here (from team name down to last skater) then click button below<br>
+<textarea cols="60" rows="10" ng-model="mrdaPopCtrl.rosterData"></textarea><br>
+<input type=button ng-click="mrdaPopCtrl.processCharter()" value="Process Data"><p />
+
+<div ng-show="mrdaPopCtrl.leagueName">
+	<b>League name:</b> {{mrdaPopCtrl.leagueName}}<br>
+	<b>Team name:</b> {{mrdaPopCtrl.teamName}}<p />
+	<table>
+		<tr>
+			<td><b>Player name</b></td>
+			<td><b>Number</b></td>
+		</tr>
+		<tr ng-repeat="player in mrdaPopCtrl.playerData">
+			<td>{{player.name}}</td><td>#{{player.number}}</td>
+		</tr>
+	</table>
+	<input type=button value="Create database entries based on this data?" ng-click="mrdaPopCtrl.createDBEntries()">
+</div>
