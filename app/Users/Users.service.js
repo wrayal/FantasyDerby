@@ -5,8 +5,13 @@ angular.module('FantasyDerbyApp')
 		
 		var Users={
 			getProfile: function(uid) {
-				$firebaseObject(usersRef).$loaded().then(function(loadData){console.log("load data",loadData)})
 				return $firebaseObject(usersRef.child(uid));
+			},
+			checkVisibility: function(uid) {
+				return $firebaseObject(usersRef.child(uid).child("isVisible"));
+			},
+			getLinkedPlayer: function(uid) {
+				return $firebaseObject(usersRef.child(uid).child("linkedPlayer"));
 			}
 		};
 

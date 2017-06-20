@@ -17,32 +17,101 @@ var fbConfig = {
 };
 firebase.initializeApp(fbConfig);
 
+
 angular
   .module('FantasyDerbyApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ngRoute',
+    'ui.router',
     'ngSanitize',
     'ngTouch',
     'firebase'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $stateProvider
+      .state('home', {
+        url: '/',
         templateUrl: 'home/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+        controller: 'MainCtrl as main'
       })
-      .when('/about', {
+      .state('about', {
+        url: '/about',
         templateUrl: 'home/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+        controller: 'AboutCtrl as about'
       })
-      .when('/profile', {
+      .state('competitions', {
+        url: '/comp/{cid}',
+        template: '<ui-view/>',
+        controller: 'CompetitionCtrl as competitionCtrl',
+        abstract: true,
+        resolve: {
+          competitionID: function($stateParams) {
+            return $stateParams.cid
+          },
+          competitionKeyData: function($stateParams,Competitions) {
+            return Competitions.getKeyData($stateParams.cid);
+          }
+        }
+      })
+      .state('competitions.player',{
+        url: '/player/{pid}',
+        templateUrl: 'players/player.html',
+        controller: 'PlayerCtrl as playerCtrl',
+        resolve: {
+          //This checks whether the current user 'owns' this player
+          isOwner: function(Auth,$stateParams,Players) {
+            return Players.getPlayerOwner($stateParams.pid).$loaded().then(function(playerOwner){
+                return Auth.auth.$requireSignIn().then(function(authData){
+                  return playerOwner.$value==authData.uid //Compare database entry for player owner to this user's uid
+                })
+            })
+          },
+          playerData: function(Players,$stateParams) {
+            return Players.getPlayerData($stateParams.pid)
+          }
+        }
+      })
+      .state('competitions.user',{
+        url: '/user/{uid}',
+        templateUrl: 'Users/user.html',
+        controller: 'UserCtrl as userCtrl',
+        resolve: {
+          isVisible: function($stateParams,Users) {
+            return Users.checkVisibility($stateParams.uid).$loaded().then(function(visData){
+              return visData.$value
+            });
+          },
+          data: function($stateParams,Users) {
+            return Users.getProfile($stateParams.uid);
+          },
+          linkedSkaterProfile: function($stateParams,Users,Players) {
+            return Users.getLinkedPlayer($stateParams.uid).$loaded().then(function(playerData){
+              return Players.getPlayerOwner(playerData.$value).$loaded().then(function(ownerData){
+                if (ownerData.$value==$stateParams.uid) {
+                  return playerData.$value
+                } else {
+                  return 0
+                }
+              })
+            })
+          }
+        }
+      })
+      .state('competitions.frontPage', {
+        url: '/frontPage',
+        templateUrl: 'competitions/frontPage.html',
+        controller: 'FrontPageCtrl as frontPageCtrl',
+        resolve: {
+          competitionData: function(Competitions,Auth) {
+            return Competitions;
+          }
+        }
+      })
+      .state('profile', {
+        url: '/profile',
         templateUrl: 'Users/profile.html',
-        controller: 'ProfileCtrl',
-        controllerAs: 'profileCtrl',
+        controller: 'ProfileCtrl as profileCtrl',
         resolve: {
           auth: function($rootScope,$location,Competitions) {
             return $rootScope.auth.$requireSignIn().catch(function(){
@@ -56,19 +125,18 @@ angular
           }
         }
       })
-      .when('/frontPage', {
-        templateUrl: 'competitions/frontPage.html',
-        controller: 'FrontPageCtrl',
-        controllerAs: 'frontPageCtrl',
-        resolve: {
-          competitionData: function(Competitions) {
-            return Competitions;
-          }
-        }
+      .state('mrdaPopulate', {
+        url: '/mrdaPopulate',
+        templateUrl: 'backend/populateFromMRDARoster.html',
+        controller: 'MRDAPopCtrl as mrdaPopCtrl'
       })
-      .otherwise({
-        redirectTo: '/'
-      });
+      .state('wftdaPopulate', {
+        url: '/wftdaPopulate',
+        templateUrl: 'backend/populateFromWFTDARoster.html',
+        controller: 'WFTDAPopCtrl as wftdaPopCtrl'
+      })
+
+      $urlRouterProvider.otherwise('/');
   })
   .run(function($rootScope,$firebaseAuth,Users){
     

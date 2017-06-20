@@ -13,7 +13,7 @@ sed -i -e 's/bower_components\/angular-resource\/angular-resource.js/https:\/\/c
 sed -i -e 's/bower_components\/angular-route\/angular-route.js/https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/angular.js\/1.6.4\/angular-route.js/g' index.html
 sed -i -e 's/bower_components\/angular-sanitize\/angular-sanitize.js/https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/angular.js\/1.6.4\/angular-sanitize.js/g' index.html
 sed -i -e 's/bower_components\/angular-touch\/angular-touch.js/https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/angular.js\/1.6.4\/angular-touch.js/g' index.html
-sed -i -e 's/bower_components\/bootstrap\/dist\/css\/bootstrap.css/https:\/\/maxcdn.bootstrapcdn.com\/bootstrap\/3.3.7\/css\/bootstrap.min.css/g' index.html
+sed -i -e 's/bower_components\/bootstrap\/dist\/css\/bootstrap.css/https:\/\/maxcdn.bootstrapcdn.com\/bootstrap\/3.3.7\/css\/bootstrap.css/g' index.html
 cd ..
 echo "And deploying..."
 firebase deploy

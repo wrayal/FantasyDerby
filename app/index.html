@@ -34,9 +34,10 @@
           </ul>
 
           <ul class="nav navbar-nav">
-            <li ng-class="{active: indexCtrl.activeEntry=='home'}"><a href="#!/">Home</a></li>
+            <li ng-class="{active: indexCtrl.activeEntry=='frontPage'}"><a href="" ui-sref="competitions.frontPage">Front page</a></li>
+            <!--<li ng-class="{active: indexCtrl.activeEntry=='home'}"><a href="#!/">Home</a></li>-->
             <li ng-class="{active: indexCtrl.activeEntry=='about'}"><a ng-href="#!/about">About</a></li>
-            <li ng-class="{active: indexCtrl.activeEntry=='frontPage'}"><a ng-href="#!/frontPage">Front page</a></li>
+            
           </ul>
 
           <li style="float:right" class="dropdown derbyNavbar">
@@ -56,9 +57,11 @@
 
     </div>
 
+
+
     <!-- MAIN BODY -->
     <div class="container">
-    <div ng-view=""></div>
+      <ui-view></ui-view>
     </div>
 
     <!-- FOOTER -->
@@ -98,20 +101,33 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0/angular-ui-router.js"></script>
+
+
     <!-- Firebase & Angularfire -->
     <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
     <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
+
+
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="app.js"></script>
+        <script src="file.directive.js"></script>
         <script src="home/main.controller.js"></script>
         <script src="home/about.controller.js"></script>
         <script src="competitions/competitions.service.js"></script>
+        <script src="competitions/competitions.controller.js"></script>
         <script src="competitions/frontPage.controller.js"></script>
         <script src="indexCtrl.controller.js"></script>
         <script src="Auth/Auth.service.js"></script>
         <script src="Users/Users.service.js"></script>
         <script src="Users/profile.controller.js"></script>
+        <script src="Users/user.controller.js"></script>
+        <script src="players/player.controller.js"></script>
+        <script src="players/players.service.js"></script>
+        <script src="backend/populateFromMRDA.controller.js"></script>
+        <script src="backend/populateFromWFTDA.controller.js"></script>
+        <script src="backend/populateTeamData.service.js"></script>
         <!-- endbuild -->
 </body>
 </html>
