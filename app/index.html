@@ -34,11 +34,23 @@
           </ul>
 
           <ul class="nav navbar-nav">
-            <li ng-class="{active: indexCtrl.activeEntry=='frontPage'}"><a href="" ui-sref="competitions.frontPage">Front page</a></li>
-            <!--<li ng-class="{active: indexCtrl.activeEntry=='home'}"><a href="#!/">Home</a></li>-->
+
+            <li ng-class="{active: indexCtrl.activeEntry=='frontPage'}" ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.frontPage">Competition info</a></li>
+            
             <li ng-class="{active: indexCtrl.activeEntry=='about'}"><a ng-href="#!/about">About</a></li>
             
+            <li class="dropdown derbyNavbar">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                <span>Backend</span><b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu derbyNavbar">
+                <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
+                <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
+              </ul>
+            </li>
+
           </ul>
+
 
           <li style="float:right" class="dropdown derbyNavbar">
             <a ng-hide="authData" class="navbar-brand" href="" ng-click="indexCtrl.login()">Dive in!</a>
@@ -67,10 +79,8 @@
     <!-- FOOTER -->
     <div class="footer">
       <div class="container">
-        <!-- <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p> -->
         <div style="float:right">
           All characters and events depicted on this website - even those based on real people - are entirely fictional. Due to its content it should not be viewed by anyone.
-          <pre>{{indexCtrl.competitionData | json}}</pre>
         </div>
       </div>
     </div>

@@ -7,14 +7,14 @@ angular.module('FantasyDerbyApp')
         //comFullRef=comFullRef=firebase.database().ref().child("competitionFull").child(subdomain);
         console.log("CID:",$stateParams)
 		Competitions={
-                humanName:"", //no human name here
+                menuName: function(whichCompetition) {
+                	return $firebaseObject(comShortRef.child(whichCompetition))
+                }, //no human name here
 
                 completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
 
-                switchCompetition: function(whichCompetition) {
-					$state.go('competitions.frontPage',{cid:whichCompetition});
-
-					//Some unnecessarily convoluted code to make sure we update to the new style sheet
+                updateCSS: function(whichCompetition) {
+                	//Some unnecessarily convoluted code to make sure we update to the new style sheet
 					//TODO: make sure this is called on page opening, not just on competition transition
 					cssLinks=document.getElementsByTagName("link");
 				    for (i=0; i<cssLinks.length; i++) {
@@ -47,6 +47,11 @@ angular.module('FantasyDerbyApp')
 				      console.log("Switching style to",path)
 				      document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 				    }
+                },
+
+                switchCompetition: function(whichCompetition) {
+					if (whichCompetition) $state.go('competitions.frontPage',{cid:whichCompetition})
+					else $state.go('home');
                 },
 
                 getKeyData: function(whichCompetition) {
