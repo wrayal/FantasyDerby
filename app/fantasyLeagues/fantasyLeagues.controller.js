@@ -1,36 +1,13 @@
 angular.module('FantasyDerbyApp')
-  .controller('IndexCtrl', function($scope, $rootScope,$state, $location,Competitions,Auth,Users,$transitions) {
-  	indexCtrl=this;
+  .controller('FantasyLeagueCtrl', function (FantasyLeagues,leagueData,$transitions) {
+    fantasyLeagueCtrl=this;
+    fantasyLeagueCtrl.leagueData=leagueData; //Let's try to keep this predominantly for reading....
 
-  	//Sets up a name to display in the menu bar
-  	indexCtrl.nameToShow=null;
-  	/*if (Competitions.humanName) {
-  		indexCtrl.nameToShow=Competitions.humanName;
-  	}*/
-    indexCtrl.fullSet=Competitions.completeSet;
-    indexCtrl.competitionData=Competitions.competitionData;
-    indexCtrl.subdomain=Competitions.subdom;
-
-
-
-    //console.log("full set:",Competitions.completeSet)
-
-    indexCtrl.login=Auth.login;
-    indexCtrl.logout=Auth.logout;
-
-    //Helper function to go to the right competition
-    //Could conceivably be a service function but is only used here
-    indexCtrl.goToCompo=function(whichCompo) {
-      Competitions.switchCompetition(whichCompo)
-    }
-
-    indexCtrl.inCompetition=false;
-    indexCtrl.inLeague=false;
-
-  	//Set which entry is active in the menu
-  	indexCtrl.activeEntry="home";
+    //Marking the appropriate sub-menu entry active
+  	fantasyLeagueCtrl.activeEntry="home";
   	$transitions.onSuccess({}, function(trans) {
 
+  		/*
       //Grab the name passed by the fired event
       console.log("TRANS",trans.to().name)
       toName=trans.to().name;
@@ -62,7 +39,7 @@ angular.module('FantasyDerbyApp')
         indexCtrl.nameToShow=null;
         
       }
-
+	*/
     });
-
+  	
   });

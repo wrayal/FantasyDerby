@@ -1,0 +1,29 @@
+<ul class="flNavbar">
+	<li><a>{{fantasyLeagueCtrl.leagueData.name}}</a></li>
+
+	<li><a href="" ui-sref='competitions.fantasyLeagues({cid:competitionCtrl.cid,lid:fantasyLeagueCtrl.lid})'>Summary</a></li>
+
+	<li class="dropdown" ng-show="competitionCtrl.keyData.type=='multi'">
+		<a href="" class="dropdown-toggle" data-toggle="dropdown" style="float:left">
+			<span>
+				<span ng-hide="fantasyLeaguesCtrl.draftNeeded" style="opacity:0">&#9679;</span>
+				<span ng-show="fantasyLeaguesCtrl.draftNeeded" style="color:green;opacity:1">&#9679;</span>
+				{{fantasyLeaguesCtrl.league.fantasyTeams[fantasyLeaguesCtrl.profile.$id].name}} squads
+			</span><b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li data-ng-repeat="(key,squad) in fantasyLeaguesCtrl.league.tournaments">
+				<a 
+				ui-sref='fantasyLeagues.mySquadView({squadID:key})'
+				>
+					<span ng-hide="fantasyLeaguesCtrl.whichDraftsNeeded[key]" style="opacity:0">&#9679;</span>
+					<span ng-show="fantasyLeaguesCtrl.whichDraftsNeeded[key]" style="color:green;opacity:1">&#9679;</span>
+					{{ fantasyLeaguesCtrl.getTournamentName(key) }}
+				</a>
+			</li>
+			
+		</ul>
+	</li>
+
+	<li style="float:right" ng-show="fantasyLeaguesCtrl.isCommissioner"><a ui-sref='fantasyLeagues.admin'>Admin</a></li>
+</ul>

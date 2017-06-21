@@ -12,6 +12,9 @@ angular.module('FantasyDerbyApp')
 			},
 			getLinkedPlayer: function(uid) {
 				return $firebaseObject(usersRef.child(uid).child("linkedPlayer"));
+			},
+			getUsername: function(uid) {
+				return $firebaseObject(usersRef.child(uid).child("displayName"))
 			}
 		};
 

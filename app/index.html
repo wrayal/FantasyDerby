@@ -20,66 +20,19 @@
     <![endif]-->
 
     <!-- HEADER -->
-    <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-
-          <a class="navbar-brand" ng-hide="indexCtrl.nameToShow" href="" data-toggle="dropdown">Fantasy Roller Derby <b class="caret"></b></a>
-          <a class="navbar-brand" ng-show="indexCtrl.nameToShow" href="" data-toggle="dropdown">FRD: {{ indexCtrl.nameToShow.$value }} <b class="caret"></b></a>
-          <ul class="dropdown-menu navbar-default">
-            <li><a href="" ng-click="indexCtrl.goToCompo('')">Home</a></li>
-            <li ng-repeat="(key,value) in indexCtrl.fullSet">
-              <a href="" ng-click="indexCtrl.goToCompo(key)">{{value}}</a>
-            </li>
-          </ul>
-
-          <ul class="nav navbar-nav">
-
-            <li ng-class="{active: indexCtrl.activeEntry=='frontPage'}" ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.frontPage">Competition info</a></li>
-            
-            <li ng-class="{active: indexCtrl.activeEntry=='about'}"><a ng-href="#!/about">About</a></li>
-            
-            <li class="dropdown derbyNavbar">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                <span>Backend</span><b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu derbyNavbar">
-                <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
-                <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
-              </ul>
-            </li>
-
-          </ul>
-
-
-          <li style="float:right" class="dropdown derbyNavbar">
-            <a ng-hide="authData" class="navbar-brand" href="" ng-click="indexCtrl.login()">Dive in!</a>
-            <a ng-show="authData && !rtprofile" class="navbar-brand" href="" ng-click="indexCtrl.logout()">Logout</a>
-            <a ng-show="rtprofile" class="navbar-brand" href="" data-toggle="dropdown">{{rtprofile.displayName}} <b class="caret"></b></a>
-            <ul class="dropdown-menu navbar-default">
-              <li><a href="#!/profile">Edit Profile</a></li>
-              <li><a href="" ng-click="indexCtrl.logout()">Logout</a></li>
-            </ul>
-          </li>
-         
-
-
-        </div>
-      </div>
-
-    </div>
+    <div data-ng-include="'indexMenu.html'" class="header"></div>
 
 
 
     <!-- MAIN BODY -->
-    <div class="container">
+    <div class="container mainViewContainer">
       <ui-view></ui-view>
     </div>
 
     <!-- FOOTER -->
     <div class="footer">
       <div class="container">
-        <div style="float:right">
+        <div style="width:100%;text-align:center">
           All characters and events depicted on this website - even those based on real people - are entirely fictional. Due to its content it should not be viewed by anyone.
         </div>
       </div>
@@ -138,6 +91,9 @@
         <script src="backend/populateFromMRDA.controller.js"></script>
         <script src="backend/populateFromWFTDA.controller.js"></script>
         <script src="backend/populateTeamData.service.js"></script>
+        <script src="fantasyLeagues/fantasyLeagues.service.js"></script>
+        <script src="fantasyLeagues/fantasyLeagues.controller.js"></script>
+        <script src="fantasyLeagues/joinLeague.controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>

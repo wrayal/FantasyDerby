@@ -6,40 +6,44 @@
 }
 body {
   padding: 0;
+  background: #aa0000;
 }
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
 .footer {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 /* Custom page header */
 .header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
+  /*border-bottom: 0px solid @basecolortrim;
+  margin-bottom: 0px; /*Formerly 10px*/
 }
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
   margin-top: 0;
   margin-bottom: 0;
   line-height: 40px;
-  padding-bottom: 19px;
+  padding-bottom: 0px;
+  /*Formerly 19px*/
 }
 /* Custom page footer */
 .footer {
-  padding-top: 19px;
-  color: #ff0000;
+  padding-top: 0px;
+  /*Formerly 19px*/
+  color: #ffffff;
   /*Formerly #777*/
-  border-top: 1px solid #e5e5e5;
+  border-top: 0px solid #e5e5e5;
+  background: #aa0000;
 }
 .container-narrow > hr {
-  margin: 30px 0;
+  margin: 0px 0;
 }
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 0px solid #e5e5e5;
 }
 .jumbotron .btn {
   font-size: 21px;
@@ -56,6 +60,7 @@ body {
 @media screen and (min-width: 768px) {
   .container {
     width: 100%;
+    height: 100%;
     /*max-width: 30px;*/
   }
   /* Remove the padding we set earlier */
@@ -67,7 +72,8 @@ body {
   }
   /* Space out the masthead */
   .header {
-    margin-bottom: 30px;
+    margin-bottom: 0px;
+    /*Formerly 30px*/
   }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
@@ -76,4 +82,136 @@ body {
 }
 .navbar > div > li {
   list-style-type: none;
+}
+.navbar {
+  margin-bottom: 0px;
+  background: #aa0000;
+  font-color: white;
+  border: none;
+  border-radius: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-brand {
+  color: #fff;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li > a:hover {
+  color: #aaa;
+}
+.menuactive {
+  background-color: #ffaaaa;
+}
+.navbar-default .navbar-nav > .open > a:focus {
+  background-color: #ff8888;
+}
+.fantasyLeagueMain {
+  height: 100%;
+  background-color: #f7eeee;
+}
+.leaguePage {
+  display: inline-block;
+  width: 66%;
+  vertical-align: top;
+  height: 100%;
+  background: #a29999;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: none;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.leagueChat {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  width: calc(33% - 0px);
+  overflow-y: scroll;
+  overflow-x: none;
+  background-color: none;
+}
+.container {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+html,
+body {
+  height: 100%;
+}
+.mainViewContainer {
+  height: calc(100% - 100px);
+  overflow-y: scroll;
+  background-color: #fff;
+}
+ul.flNavbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #660000;
+  color: white;
+}
+ul.flNavar:before,
+ul.flNavbar:after {
+  content: "";
+  display: table;
+}
+ul.flNavbar:after {
+  clear: both;
+}
+.flNavbar > li {
+  display: inline;
+  float: left;
+}
+.flNavbar > li > a {
+  display: block;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.flNavbar > li > a:hover {
+  background-color: #111;
+}
+.flNavbar > a {
+  display: block;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.flNavbar > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #aaaaaa;
+  color: white;
+}
+.flNavbar > ul > a {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 14px 16px;
+  background-color: #aaaaaa;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+}
+.flNavbar > ul > a:hover {
+  background-color: #111;
+}
+.standardTable {
+  border: 2px solid #999;
+}
+.genHeader {
+  font-weight: bold;
+}
+.standardTable > th,
+td {
+  border: 2px solid #999;
+  padding: 2px;
 }

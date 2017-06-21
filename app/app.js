@@ -37,6 +37,7 @@ angular
       })
       .state('about', {
         url: '/about',
+        //templateUrl: function($stateParams){console.log("PARAMS",$stateParams);return 'home/about.html'},
         templateUrl: 'home/about.html',
         controller: 'AboutCtrl as about'
       })
@@ -134,6 +135,26 @@ angular
         url: '/wftdaPopulate',
         templateUrl: 'backend/populateFromWFTDARoster.html',
         controller: 'WFTDAPopCtrl as wftdaPopCtrl'
+      })
+      .state('competitions.joinLeague',{
+        url: '/joinLeague',
+        templateUrl: 'fantasyLeagues/joinLeague.html',
+        controller: 'JoinLeagueCtrl as joinLeagueCtrl'
+      })
+      .state('competitions.fantasyLeagues',{
+        url: '/fantasyLeagues/{lid}',
+        abstract: true,
+        templateUrl: 'fantasyLeagues/index.html',
+        controller: 'FantasyLeagueCtrl as fantasyLeagueCtrl',
+        resolve: {
+          leagueData: function(FantasyLeagues,$stateParams) {
+            return FantasyLeagues.getCurrentLeagueData($stateParams.cid,$stateParams.lid).$loaded()
+          }
+        }
+      })
+      .state('competitions.fantasyLeagues.summary',{
+        url: '',
+        templateUrl: 'fantasyLeagues/leagueViews/summary.html'
       })
 
       $urlRouterProvider.otherwise('/');
