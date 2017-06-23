@@ -143,12 +143,12 @@ angular
       })
       .state('competitions.joinLeague',{
         url: '/joinLeague',
-        templateUrl: 'fantasyLeagues/joinLeague.html',
+        templateUrl: 'fantasyLeagues/joinLeague/joinLeague.html',
         controller: 'JoinLeagueCtrl as joinLeagueCtrl'
       })
       .state('competitions.createLeague',{
         url: '/createLeague',
-        templateUrl: 'fantasyLeagues/createLeague.html',
+        templateUrl: 'fantasyLeagues/createLeague/createLeague.html',
         controller: 'CreateLeagueCtrl as createLeagueCtrl'
       })
       .state('competitions.fantasyLeagues',{
