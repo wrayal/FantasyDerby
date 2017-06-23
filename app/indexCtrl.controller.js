@@ -1,31 +1,55 @@
 angular.module('FantasyDerbyApp')
-  .controller('IndexCtrl', function($scope, $rootScope,$state, $location,Competitions,Auth,Users,$transitions) {
+  .controller('IndexCtrl', function($scope, $rootScope,$state, $location,Competitions,Auth,Users,$transitions,FantasyLeagues) {
   	indexCtrl=this;
 
   	//Sets up a name to display in the menu bar
   	indexCtrl.nameToShow=null;
-  	/*if (Competitions.humanName) {
-  		indexCtrl.nameToShow=Competitions.humanName;
-  	}*/
+
+    //Ok, we ned to have data available
     indexCtrl.fullSet=Competitions.completeSet;
     indexCtrl.competitionData=Competitions.competitionData;
     indexCtrl.subdomain=Competitions.subdom;
 
+    //Some firebase objects listing members of leagues
+    indexCtrl.leagueMemberships={};
+    indexCtrl.updateMemberships=function() {
+      indexCtrl.leagueMemberships={};
+      if (indexCtrl.inCompetition && indexCtrl.competitionId) {
+        console.log("Updating membership lists")
+        competitionListing=indexCtrl.profile.leagueMembership[indexCtrl.competitionId];
+        if (competitionListing) {
+          checkLeagues=competitionListing.asPlayer
+          if (checkLeagues) {
+            angular.forEach(checkLeagues,function(value,key){
+              indexCtrl.leagueMemberships[key]=FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key);
+            })
+          }
+        }
+        
+      }
+    }
 
+    //This makes the user's profile available
+    indexCtrl.profile=null;
+    Auth.auth.$requireSignIn().then(function(authData){
+      indexCtrl.profile=Users.getProfile(authData.uid);
+      indexCtrl.profile.$watch(function(){indexCtrl.updateMemberships()})
+    })
 
-    //console.log("full set:",Competitions.completeSet)
-
+    //This provides convenient login/logout functiona access
     indexCtrl.login=Auth.login;
     indexCtrl.logout=Auth.logout;
 
     //Helper function to go to the right competition
-    //Could conceivably be a service function but is only used here
     indexCtrl.goToCompo=function(whichCompo) {
       Competitions.switchCompetition(whichCompo)
     }
 
+    //Some helpful little details for formatting and such
     indexCtrl.inCompetition=false;
+    indexCtrl.competitionId=null;
     indexCtrl.inLeague=false;
+    
 
   	//Set which entry is active in the menu
   	indexCtrl.activeEntry="home";
@@ -52,7 +76,9 @@ angular.module('FantasyDerbyApp')
 
       if (toName.split(".")[0]=="competitions") {
         indexCtrl.inCompetition=true;
+        indexCtrl.competitionId=$state.params.cid;
         indexCtrl.nameToShow=Competitions.menuName($state.params.cid);
+        indexCtrl.updateMemberships();
         Competitions.updateCSS($state.params.cid);
         //Realistically this is calling it way too often :(
         //we should only be calling on transition between competitions

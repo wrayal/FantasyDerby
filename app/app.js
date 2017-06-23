@@ -52,6 +52,11 @@ angular
           },
           competitionKeyData: function($stateParams,Competitions) {
             return Competitions.getKeyData($stateParams.cid);
+          },
+          profile: function(Users,Auth) {
+            return Auth.auth.$requireSignIn().then(function(authData){
+              return Users.getProfile(authData.uid).$loaded()
+            })
           }
         }
       })
@@ -140,6 +145,11 @@ angular
         url: '/joinLeague',
         templateUrl: 'fantasyLeagues/joinLeague.html',
         controller: 'JoinLeagueCtrl as joinLeagueCtrl'
+      })
+      .state('competitions.createLeague',{
+        url: '/createLeague',
+        templateUrl: 'fantasyLeagues/createLeague.html',
+        controller: 'CreateLeagueCtrl as createLeagueCtrl'
       })
       .state('competitions.fantasyLeagues',{
         url: '/fantasyLeagues/{lid}',

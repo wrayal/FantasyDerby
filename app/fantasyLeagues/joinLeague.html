@@ -1,14 +1,15 @@
 <div class="fantasyLeagueMain" style="padding:10px">
-	<pre>{{joinLeagueCtrl.allData | json}}</pre>
+	<h1>Joining a league</h1>
 
-
-	<label>Any: <input ng-model="search.$"></label> <br>
+	<label>Filter by league name:<br><input ng-model="search.name"></label> <br>
+	<label>Filter by Commissioner name:<br><input ng-model="search.commissionerName"></label> <br>
 	<table class="standardTable">
 		<tr>
 			<td class="genHeader">League name</td>
 			<td class="genHeader">Commissioner</td>
 			<td class="genHeader">Accepting new members?</td>
 			<td class="genHeader">Requires approval?</td>
+			<td class="genHeader">Join</td>
 		</tr>
 		<!--<tr ng-repeat="(key,leagueData) in joinLeagueCtrl.allData" ng-if="leagueData.visibility=='visible'">  -->
 		<tr ng-repeat="(key,leagueData) in joinLeagueCtrl.allDataArray | filter: {visible:true}:strict | filter:search">
@@ -27,7 +28,8 @@
 				<span ng-hide="leagueData.isOpen">No</span>
 			</td>
 			<td>
-				{{leagueData.visible}}
+				<input type="button" value="Join" ng-show="leagueData.status=='forming' && leagueData.isOpen">
+				<input type="button" value="Request to join" ng-show="leagueData.status=='forming' && !leagueData.isOpen">
 			</td>
 		</tr>
 	</table>

@@ -1,0 +1,24 @@
+<div class="fantasyLeagueMain" style="padding:10px">
+	<h1>Create a league</h1>
+	Here you can create a league.
+
+	<h3>League name</h3>
+	<input type="text" size="50" ng-model="createLeagueCtrl.newLeague.uniData.name">
+
+	<h3>League options</h3>
+	These can all be changed later.<br>
+	<input type="checkbox" data-ng-model="createLeagueCtrl.newLeague.uniData.visible">
+		Do you want your league to be visible to the public?<br>
+	<input type="checkbox" data-ng-model="createLeagueCtrl.newLeague.uniData.isOpen">
+		Do you want to allow people to join without your validation?<br>
+
+	<h3>Tournament options</h3>
+	Which tournaments do you want to draft for?<br>
+	<input type="checkbox"> TOURNIES HERE<p />
+
+	<input type="button" value="Create League" ng-click="createLeagueCtrl.createLeague()"><br>
+	<span style="color:red">{{createLeagueCtrl.errorMessage}}</span>
+
+	<pre>{{createLeagueCtrl.newLeague | json}}</pre>
+
+</div>

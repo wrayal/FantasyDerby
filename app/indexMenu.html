@@ -19,8 +19,21 @@
                 <span>Fantasy Leagues</span><b class="caret"></b>
               </a>
               <ul class="dropdown-menu derbyNavbar">
-                <li><a href="" ui-sref="competitions.fantasyLeagues.summary({lid:13})">Testing league</a></li>
+                <!-- THE LEAGUES WHERE WE ARE COMMISSIONER -->
+                <li ng-repeat="(key,value) in indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asCommissioner">
+                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:value})">{{value}}</a>
+                </li>
+
+                <!-- THE LEAGUES WHERE WE ARE MEMBERS -->
+                <li ng-repeat="(key,value) in indexCtrl.leagueMemberships" ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]">
+                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})">
+                    {{indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asPlayer[key]}}
+                  </a>
+                </li>
+                
+                <!-- AND THE EXTRA BITS AND PIECES -->
                 <li><a href="" ui-sref="competitions.joinLeague">Join a league</a></li>
+                <li><a href="" ui-sref="competitions.createLeague">Create a league</a></li>
               </ul>
             </li>
 
