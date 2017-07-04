@@ -1,23 +1,21 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img style="width:200px" src="images/FRDLogo.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<div class="page-wrapper">
+  <div class="leagueCommonContent">
+    <div class="page-header">
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
+    <h1>Welcome to Fantasy Roller Derby <img src="images/FRDLogo.png" style="width:80px;float:right"></img></h1>
+    <span style="font-size:xx-small;color:#999">{{mainCtrl.narwhalMessage.$value}}</span>
+    <span style="font-size:xx-small;color:#999;float:right">Real. Strong. Athletic. Narwhal.</span>
+    &nbsp;
+  </div>
+  <font color="red">Rule 1</font>: Don't be an asshole. If you find a way to break the game, don't do it. Don't.<br>
+  <font color="red">Rule 2</font>: This is <b><i><font color="red">ALPHA</font></b></i>. If it doesn't work as you expected, or indeed at all, well, you get what you paid for.<p />
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
+  Also please note that this is currently <i>NOT</i> phone-friendly - sorry!
 
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+  <h3>Pleasantries out the way, let's have fun!</h3><p />
+
+  FRD is a roller derby incarnation of the classic <a href="https://en.wikipedia.org/wiki/Fantasy_football_(American)">fantasy football game.</a> You can get started immediately by clicking "Dive in!" in the top right - you log in using a Facebook account. Then just have a rummage around. Invite your friends!<p />
+
+  <span ng-show="homeCtrl.updateDetails.timeStamp">Scores last updated: {{homeCtrl.updateDetails.timeStamp | date:'short'}} <span ng-show="homeCtrl.updateDetails.message">({{homeCtrl.updateDetails.message}})</span></span>
+
 </div>

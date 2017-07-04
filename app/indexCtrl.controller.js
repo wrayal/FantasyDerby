@@ -14,27 +14,36 @@ angular.module('FantasyDerbyApp')
     indexCtrl.leagueMemberships={};
     indexCtrl.updateMemberships=function() {
       indexCtrl.leagueMemberships={};
-      if (indexCtrl.inCompetition && indexCtrl.competitionId) {
+      if (indexCtrl.inCompetition && indexCtrl.competitionId && indexCtrl.profile) {
         console.log("Updating membership lists")
-        competitionListing=indexCtrl.profile.leagueMembership[indexCtrl.competitionId];
-        if (competitionListing) {
-          checkLeagues=competitionListing.asPlayer
-          if (checkLeagues) {
-            angular.forEach(checkLeagues,function(value,key){
-              indexCtrl.leagueMemberships[key]=FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key);
-            })
+        if (indexCtrl.profile.leagueMembership) {
+          competitionListing=indexCtrl.profile.leagueMembership[indexCtrl.competitionId];
+          if (competitionListing) {
+            checkLeagues=competitionListing.asPlayer
+            if (checkLeagues) {
+              angular.forEach(checkLeagues,function(value,key){
+                console.log("Setting ",key,FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key))
+                indexCtrl.leagueMemberships[key]=FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key);
+              })
+           }
           }
         }
-        
       }
     }
 
     //This makes the user's profile available
     indexCtrl.profile=null;
-    Auth.auth.$requireSignIn().then(function(authData){
-      indexCtrl.profile=Users.getProfile(authData.uid);
-      indexCtrl.profile.$watch(function(){indexCtrl.updateMemberships()})
+    firebase.auth().onAuthStateChanged(function(){
+      Auth.auth.$requireSignIn().then(function(authData){
+        console.log("Sorting shiz",authData)
+        indexCtrl.profile=Users.getProfile(authData.uid);
+        console.log("SETTING THE WATCH")
+        indexCtrl.profile.$watch(function(){console.log("IN THE WATCH!");indexCtrl.updateMemberships()})
+
+        Users.setOnline(authData.uid);
+      }).catch(function(){});
     })
+    
 
     //This provides convenient login/logout functiona access
     indexCtrl.login=Auth.login;
@@ -66,6 +75,8 @@ angular.module('FantasyDerbyApp')
 		  	indexCtrl.activeEntry="frontPage";
 		  } else if (toName=="about") {
 		  	indexCtrl.activeEntry="about";
+      } else if (toName.split(".")[1]=="fantasyLeagues" || toName.split(".")[1]=="joinLeague" || toName.split(".")[1]=="createLeague") {
+        indexCtrl.activeEntry="fLeague"
       } else {
         indexCtrl.activeEntry="";
       }

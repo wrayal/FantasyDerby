@@ -1,0 +1,11 @@
+<div class="leagueCommonContent">
+	<input type="button" value="Add message" ng-click="narwhalCtrl.addMessage()">
+	<input type="button" value="Save messages" ng-click="narwhalCtrl.save()">
+	<div ng-repeat="(key,value) in narwhalCtrl.messages"
+		style="width:80%;margin-right:auto;margin-left:auto;background-color:#ccc;margin-top:10px;padding:10px">
+		<textarea style="width:90%" ng-model="narwhalCtrl.messages[key]">
+		</textarea>
+		<a href="" ng-click="narwhalCtrl.delete(key)"><img src="images/delete.png" style="width:20px;float:right"></img></a>
+	</div>
+
+</div>

@@ -1,0 +1,8 @@
+<div class="leagueCommonContent">
+	<h1>{{teamListCtrl.teamName}}</h1>
+
+	<span ng-repeat="(key,team) in teamListCtrl.teamList">
+	<a href="" ui-sref="competitions.teamView({teamId:key})">{{team.leagueName}}<span ng-show="team.teamName!=team.leagueName"> - {{team.teamName}}</span></a><br>
+	</span>
+
+</div>

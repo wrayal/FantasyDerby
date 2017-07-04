@@ -8,7 +8,7 @@ angular.module('FantasyDerbyApp')
         console.log("CID:",$stateParams)
 		Competitions={
                 menuName: function(whichCompetition) {
-                	return $firebaseObject(comShortRef.child(whichCompetition))
+                	return $firebaseObject(comShortRef.child(whichCompetition).child("shortName"))
                 }, //no human name here
 
                 completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
@@ -56,6 +56,10 @@ angular.module('FantasyDerbyApp')
 
                 getKeyData: function(whichCompetition) {
                 	return $firebaseObject(comFullRef.child(whichCompetition).child("uniData"));
+                },
+
+                fullCompData: function(whichCompetition) {
+                	return $firebaseObject(comFullRef.child(whichCompetition))
                 }
             }
 

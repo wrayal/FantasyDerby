@@ -1,8 +1,14 @@
-<div class="fantasyLeagueMain" style="padding:10px">
+<div class="fantasyLeagueMain" style="padding:10px;width:100%">
 	<h1>Joining a league</h1>
 
-	<label>Filter by league name:<br><input ng-model="search.name"></label> <br>
-	<label>Filter by Commissioner name:<br><input ng-model="search.commissionerName"></label> <br>
+	<b>Desired team name:</b><br>
+	<input type="text" ng-model="joinLeagueCtrl.desiredTeamName"><br>
+	<span ng-show="joinLeagueCtrl.nameError" style="color:red">{{joinLeagueCtrl.nameError}}</span><p />
+
+	<div style="width:100%;float:left;margin-bottom:10px;margin-top:20px">
+		<div style="float:left">Filter by league name:<br><input ng-model="search.name"> </div>
+		<div style="float:left">Filter by Commissioner name:<br><input ng-model="search.commissionerName"> </div>
+	</div>
 	<table class="standardTable">
 		<tr>
 			<td class="genHeader">League name</td>
@@ -24,13 +30,55 @@
 				<span ng-hide="leagueData.status=='forming'">No</span>
 			</td>
 			<td>
-				<span ng-show="leagueData.isOpen">Yes</span>
-				<span ng-hide="leagueData.isOpen">No</span>
+				<span ng-show="leagueData.isOpen">No</span>
+				<span ng-hide="leagueData.isOpen">Yes</span>
 			</td>
 			<td>
-				<input type="button" value="Join" ng-show="leagueData.status=='forming' && leagueData.isOpen">
-				<input type="button" value="Request to join" ng-show="leagueData.status=='forming' && !leagueData.isOpen">
+				<input type="button" value="Join" ng-show="joinLeagueCtrl.joinStatus(leagueData)=='canJoin'" ng-click="joinLeagueCtrl.join(leagueData.key,true,leagueData.name)">
+
+				<input type="button" value="Request to join" ng-show="joinLeagueCtrl.joinStatus(leagueData)=='canRequest'" ng-click="joinLeagueCtrl.join(leagueData.key,false,leagueData.name)">
+
+				<span ng-show="joinLeagueCtrl.joinStatus(leagueData)=='commissioner'">You are the commissioner of this league</span>
+
+				<span ng-show="joinLeagueCtrl.joinStatus(leagueData)=='member'">You are already a member of this league</span>
+
+				<span ng-show="joinLeagueCtrl.joinStatus(leagueData)=='rejected'">Membership request denied</span>
+
+				<span ng-show="joinLeagueCtrl.joinStatus(leagueData)=='requested'">You have requested to join this league.</span>
+
+				<!--<input type="button" value="Join" ng-show="
+					!indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id] && !competitionCtrl.profile.leagueMembership[competitionCtrl.cid].asCommissioner[leagueData.key] && leagueData.status=='forming' && 
+					leagueData.isOpen
+				" ng-click="joinLeagueCtrl.join(leagueData.key,true,leagueData.name)">-->
+
+				<!--<input type="button" value="Request to join" ng-show="
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]!=false && 
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]!=true && 
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]!='rejected' && 
+					!competitionCtrl.profile.leagueMembership[competitionCtrl.cid].asCommissioner[leagueData.key] && leagueData.status=='forming' && 
+					!leagueData.isOpen
+				" ng-click="joinLeagueCtrl.join(leagueData.key,false,leagueData.name)">-->
+
+				<!--<span ng-show="!!competitionCtrl.profile.leagueMembership[competitionCtrl.cid].asCommissioner[leagueData.key]">You are the commissioner of this league</span>-->
+
+				<!--<span ng-show="
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id] && 
+					!competitionCtrl.profile.leagueMembership[competitionCtrl.cid].asCommissioner[leagueData.key] &&
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]==true
+				">You are already a member of this league</span>-->
+
+				<!--<span ng-show="
+					indexCtrl.leagueMemberships[leagueData.key] && indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]!=true &&
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]==false
+				">You have requested to join this league</span>-->
+
+				<!--<span ng-show="
+					indexCtrl.leagueMemberships[leagueData.key] && indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]!=true &&
+					indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id]=='rejected'
+				">You have requested to join this league.</span>-->
 			</td>
 		</tr>
 	</table>
+
+
 </div>

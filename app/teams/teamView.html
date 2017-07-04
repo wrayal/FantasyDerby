@@ -1,0 +1,8 @@
+<div class="leagueCommonContent">
+	<h1>{{teamViewCtrl.teamData.leagueName}}</h1>
+	<h2 ng-show="teamViewCtrl.teamData.teamName!=teamViewCtrl.teamData.leagueName">{{teamViewCtrl.teamData.teamName}}</h2>
+	<span ng-repeat="player in teamViewCtrl.teamData.teamPlayers">
+		<a href="" ui-sref="competitions.player({pid:player.id})">{{player.name}} #{{player.number}}</a><br>
+	</span>
+	<pre>{{teamViewCtrl.teamData | json}}</pre>
+</div>

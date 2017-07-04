@@ -53,6 +53,14 @@ angular.module('FantasyDerbyApp')
 
           	console.log("GOT",rootRef.update(updates))
 
+               //And now we incorporate it into the relevant affiliation list
+               var affilObj={
+                    leagueName: recLeagueName,
+                    teamName: recTeamName 
+               }
+               console.log("OBJ IS",affilObj)
+               firebase.database().ref().child("teamAffiliations").child(recAffiliation).child(teamKey).set(affilObj)
+
           }//end populateFromData()
 
         }//end Population

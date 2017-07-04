@@ -1,0 +1,16 @@
+<div class="fantasyLeagueMain" style="padding:10px">
+	<h1>Joining a league</h1><p />
+	You have been invited to join the league <b>"{{joinDirectCtrl.leagueData.name}}"</b> created by <b>{{joinDirectCtrl.commish.$value}}</b>.<p />
+
+	<span ng-show="joinDirectCtrl.joinStatus()=='member'">You are a member of this league, or have requested to be.</span>
+
+	<div ng-show="joinDirectCtrl.joinStatus()=='canJoin' || joinDirectCtrl.joinStatus()=='canRequest'">
+		Desired team name:
+		<input type="text" ng-model="joinDirectCtrl.teamName"><br>
+		<span ng-show="joinDirectCtrl.nameError" style="color:red">{{joinDirectCtrl.nameError}}</span>
+	</div>
+	
+	<input type="button" value="Join" ng-show="joinDirectCtrl.joinStatus()=='canJoin'" ng-click="joinDirectCtrl.join(true)">
+
+	<input type="button" value="Request to join" ng-show="joinDirectCtrl.joinStatus()=='canRequest'" ng-click="joinDirectCtrl.join(false)">
+</div>

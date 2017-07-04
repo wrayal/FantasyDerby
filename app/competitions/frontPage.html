@@ -1,5 +1,8 @@
-<h1>{{competitionCtrl.keyData.fullName}}</h1>
+<div class="leagueCommonContent">
+	<h1>{{competitionCtrl.keyData.fullName}}</h1>
 
-{{competitionCtrl.keyData.description}}
+	{{competitionCtrl.keyData.description}}
 
-<pre>{{ competitionCtrl.keyData | json }}</pre>
+	<pre>{{ competitionCtrl.keyData | json }}</pre>
+	<pre>{{ competitionCtrl.tournamentData | json }}</pre>
+</div>

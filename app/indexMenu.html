@@ -5,35 +5,55 @@
           <a class="navbar-brand" ng-show="indexCtrl.nameToShow" href="" data-toggle="dropdown">FRD: {{ indexCtrl.nameToShow.$value }} <b class="caret"></b></a>
           <ul class="dropdown-menu navbar-default">
             <li><a href="" ng-click="indexCtrl.goToCompo('')">Home</a></li>
-            <li ng-repeat="(key,value) in indexCtrl.fullSet">
-              <a href="" ng-click="indexCtrl.goToCompo(key)">{{value}}</a>
+            <li ng-repeat="(key,value) in indexCtrl.fullSet" ng-if="value.visible">
+              <a href="" ng-click="indexCtrl.goToCompo(key)">{{value.shortName}}</a>
             </li>
           </ul>
 
           <ul class="nav navbar-nav">
 
+            <!--
+            <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" style="float:left">
+                <span>
+                  Competition Info
+                </span><b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="">One</a>
+                </li>
+                <li>
+                  <a href="">Two</a>
+                </li>
+      
+              </ul>
+            </li>
+            -->
+
+
             <li ng-class="{menuactive: indexCtrl.activeEntry=='frontPage'}" ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.frontPage">Competition info</a></li>
 
-            <li class="dropdown derbyNavbar" ng-show="indexCtrl.inCompetition">
+            <li class="dropdown derbyNavbar" ng-show="indexCtrl.inCompetition" ng-class="{menuactive: indexCtrl.activeEntry=='fLeague'}">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
                 <span>Fantasy Leagues</span><b class="caret"></b>
               </a>
               <ul class="dropdown-menu derbyNavbar">
                 <!-- THE LEAGUES WHERE WE ARE COMMISSIONER -->
                 <li ng-repeat="(key,value) in indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asCommissioner">
-                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:value})">{{value}}</a>
+                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:blue">{{value}}</a>
                 </li>
 
                 <!-- THE LEAGUES WHERE WE ARE MEMBERS -->
-                <li ng-repeat="(key,value) in indexCtrl.leagueMemberships" ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]">
-                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})">
+                <li ng-repeat="(key,value) in indexCtrl.leagueMemberships" ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]==true">
+                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:green">
                     {{indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asPlayer[key]}}
                   </a>
                 </li>
                 
                 <!-- AND THE EXTRA BITS AND PIECES -->
-                <li><a href="" ui-sref="competitions.joinLeague">Join a league</a></li>
-                <li><a href="" ui-sref="competitions.createLeague">Create a league</a></li>
+                <li><a href="" ui-sref="competitions.joinLeague" style="color:red">Join a league</a></li>
+                <li><a href="" ui-sref="competitions.createLeague" style="color:red">Create a league</a></li>
               </ul>
             </li>
 
@@ -46,6 +66,8 @@
               <ul class="dropdown-menu derbyNavbar">
                 <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
                 <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
+                <li><a href="" ui-sref="narwhalParse">Edit Narwhal messages</a></li>
+                <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
               </ul>
             </li>
 

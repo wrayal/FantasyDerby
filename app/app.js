@@ -33,11 +33,10 @@ angular
       .state('home', {
         url: '/',
         templateUrl: 'home/main.html',
-        controller: 'MainCtrl as main'
+        controller: 'MainCtrl as mainCtrl'
       })
       .state('about', {
         url: '/about',
-        //templateUrl: function($stateParams){console.log("PARAMS",$stateParams);return 'home/about.html'},
         templateUrl: 'home/about.html',
         controller: 'AboutCtrl as about'
       })
@@ -51,12 +50,15 @@ angular
             return $stateParams.cid
           },
           competitionKeyData: function($stateParams,Competitions) {
-            return Competitions.getKeyData($stateParams.cid);
+            return Competitions.getKeyData($stateParams.cid).$loaded();
           },
           profile: function(Users,Auth) {
             return Auth.auth.$requireSignIn().then(function(authData){
               return Users.getProfile(authData.uid).$loaded()
             })
+          },
+          tournamentData: function(Tournaments,$stateParams) {
+            return Tournaments.getAllTournaments($stateParams.cid).$loaded();
           }
         }
       })
@@ -141,15 +143,60 @@ angular
         templateUrl: 'backend/populateFromWFTDARoster.html',
         controller: 'WFTDAPopCtrl as wftdaPopCtrl'
       })
+      .state('narwhalParse', {
+        url: '/narwhalParse',
+        templateUrl: 'backend/narwhalParsing/narwhal.html',
+        controller: 'NarwhalCtrl as narwhalCtrl'
+      })
+      .state('competitions.setCompInfo', {
+        url: '/compInfo',
+        templateUrl: 'backend/setCompetitionInfo.html',
+        controller: 'SetCompCtrl as setCompCtrl',
+        resolve: {
+          compData: function($stateParams,Competitions) {
+            return Competitions.fullCompData($stateParams.cid).$loaded();
+          },
+          shortCompList: function(Competitions) {
+            return Competitions.completeSet
+          },
+          teamList: function(Teams,$stateParams) {
+            return Teams.getAffiliatedTeams($stateParams.cid);
+          }
+        }
+      })
       .state('competitions.joinLeague',{
         url: '/joinLeague',
         templateUrl: 'fantasyLeagues/joinLeague/joinLeague.html',
         controller: 'JoinLeagueCtrl as joinLeagueCtrl'
       })
+      .state('competitions.joinDirect',{
+        url: '/joinLeague/{lid}',
+        templateUrl: 'fantasyLeagues/joinLeague/joinDirect.html',
+        controller: 'JoinDirectCtrl as joinDirectCtrl',
+        resolve: {
+          leagueId: function($stateParams) {
+            return $stateParams.lid;
+          },
+          leagueData: function(FantasyLeagues,$stateParams) {
+            return FantasyLeagues.getLeagueCommonData($stateParams.lid,$stateParams.cid).$loaded();
+          },
+          profile: function($rootScope,Users) {
+            return $rootScope.auth.$requireSignIn().then(function(authData){ //If we are indeed signed in, grab the auth data
+              return Users.getProfile(authData.uid).$loaded()
+            })
+          }
+        }
+      })
       .state('competitions.createLeague',{
         url: '/createLeague',
         templateUrl: 'fantasyLeagues/createLeague/createLeague.html',
-        controller: 'CreateLeagueCtrl as createLeagueCtrl'
+        controller: 'CreateLeagueCtrl as createLeagueCtrl',
+        resolve: {
+          tournamentInfo: function(Tournaments,$stateParams) {
+            return Tournaments.getAllTournaments($stateParams.cid).$loaded();//Let's get all the tournament info ready for league creation
+            //This is a little overkill as it includes team lists but...ugh...denormalisation ftl.
+          }
+        }
       })
       .state('competitions.fantasyLeagues',{
         url: '/fantasyLeagues/{lid}',
@@ -165,6 +212,61 @@ angular
       .state('competitions.fantasyLeagues.summary',{
         url: '',
         templateUrl: 'fantasyLeagues/leagueViews/summary.html'
+      })
+      .state('competitions.fantasyLeagues.squads', {
+        url: '/squads/{sid}',
+        templateUrl: 'fantasyLeagues/leagueViews/squads.html',
+        controller: 'SquadCtrl as squadCtrl',
+        resolve: {
+          squadData: function($stateParams,$firebaseObject,Auth) {
+            return Auth.auth.$requireSignIn().then(function(authData){
+              var leagueRef=firebase.database().ref().child("competitionFull").child($stateParams.cid).child("fantasyLeagues").child($stateParams.lid);
+              return $firebaseObject(
+                leagueRef.child("fantasyTeams").child(authData.uid).child($stateParams.sid)
+              );
+            })
+          },
+          selectionData: function($stateParams,$firebaseArray,Auth) {
+            return Auth.auth.$requireSignIn().then(function(authData){
+              var leagueRef=firebase.database().ref().child("competitionFull").child($stateParams.cid).child("fantasyLeagues").child($stateParams.lid);
+              return $firebaseArray(
+                leagueRef.child("fantasySelections").child(authData.uid).child($stateParams.sid)
+              );
+            })
+          }
+        }
+      })
+      .state('competitions.teamList',{
+        url: '/teamList/{listId}',
+        templateUrl: 'teams/teamList.html',
+        controller: 'TeamListCtrl as teamListCtrl',
+        resolve: {
+          teamData: function($stateParams,Teams) {
+            var name="";
+            var list=[];
+
+            if ($stateParams.listId=="allComp") {
+              name="All affiliated teams"
+              list=Teams.getAffiliatedTeams($stateParams.cid);
+            }
+
+            var teamDataObj={
+              teamName: name,
+              teamList: list
+            }
+            return teamDataObj;
+          }
+        }
+      })
+      .state('competitions.teamView',{
+        url: '/teamView/{teamId}',
+        templateUrl: 'teams/teamView.html',
+        controller: 'TeamViewCtrl as teamViewCtrl',
+        resolve: {
+          teamData: function($stateParams,Teams){
+            return Teams.getTeamData($stateParams.teamId).$loaded();
+          }
+        }
       })
 
       $urlRouterProvider.otherwise('/');

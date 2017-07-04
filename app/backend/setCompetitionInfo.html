@@ -1,0 +1,146 @@
+<div class="leagueCommonContent">
+	<h1>Competition control centre</h1>
+	From here we can write and reset all the useful info about the competition.<p />
+
+	Switch to another competition: 
+	<select ng-model="setCompCtrl.switchLeague">
+		<option ng-repeat="(key,entry) in setCompCtrl.shortCompList" value="{{key}}">{{entry.shortName}}</option>
+	</select>
+	<input type="button" value="Switch" ng-click="setCompCtrl.switch()">
+
+	<h3>Full competition name</h3>
+	<input type="text" ng-model="setCompCtrl.working.fullName" size=50> <br />
+		<input type="button" value="Save full name"
+			ng-disabled="setCompCtrl.working.fullName==setCompCtrl.compData.uniData.fullName"
+			ng-click="setCompCtrl.saveFullName()"
+		>
+		<input type="button" value="Reset full name"
+			ng-disabled="setCompCtrl.working.fullName==setCompCtrl.compData.uniData.fullName"
+			ng-click="setCompCtrl.resetFullName()"
+		>
+
+	<h3>Competition description</h3>
+	<textarea ng-model="setCompCtrl.working.description" rows=10 cols=50></textarea><br>
+		<input type="button" value="Save description"
+			ng-disabled="setCompCtrl.working.description==setCompCtrl.compData.uniData.description"
+			ng-click="setCompCtrl.saveDescription()"
+		>
+		<input type="button" value="Reset description"
+			ng-disabled="setCompCtrl.working.description==setCompCtrl.compData.uniData.description"
+			ng-click="setCompCtrl.resetDescription()"
+		>
+
+	<h3>Competition type</h3>
+	<label>
+		<input type="radio"
+			ng-model="setCompCtrl.working.type" value="single">
+		Single
+	</label><br />
+	<label>
+		<input type="radio"
+			ng-model="setCompCtrl.working.type" value="multi">
+		Multi
+	</label><br />
+	<label>
+		<input type="radio"
+			ng-model="setCompCtrl.working.type" value="league">
+		League
+	</label><br />
+	<input type="button" value="Save type"
+			ng-disabled="setCompCtrl.working.type==setCompCtrl.compData.uniData.type"
+			ng-click="setCompCtrl.saveType()"
+		>
+	<input type="button" value="Reset type"
+			ng-disabled="setCompCtrl.working.type==setCompCtrl.compData.uniData.type"
+			ng-click="setCompCtrl.resetType()"
+		>
+
+	<h3>Visibility</h3>
+	Should this competition be visible to the general public?
+	<input type="checkbox" ng-model="setCompCtrl.working.visible"><br />
+		<input type="button" value="Save visibility"
+			ng-disabled="setCompCtrl.working.visible==setCompCtrl.compData.uniData.visible"
+			ng-click="setCompCtrl.saveVisible()"
+		>
+		<input type="button" value="Reset visibility"
+			ng-disabled="setCompCtrl.working.visible==setCompCtrl.compData.uniData.visible"
+			ng-click="setCompCtrl.resetVisible()"
+		>
+
+	<h3>Tournaments</h3>
+
+	<span ng-show="setCompCtrl.compData.uniData.type!='multi'">There should be exactly <b>ONE</b> tournament</span>
+
+	<input type="button" value="Add new tournament" ng-click="setCompCtrl.addTournament()"><p />
+
+	<!-- THIS IS THE LOOP OVER ALL TOURNAMENTS-->
+	<div ng-repeat="(key,tournament) in setCompCtrl.compData.tournaments"
+		style="width:100%;background:#bbb;padding:10px;margin-bottom:10px"
+	>
+
+		<b>Name:</b>
+			<input type="text"
+				ng-model="setCompCtrl.working[key].tournieName"
+				ng-init="setCompCtrl.working[key].tournieName=tournament.name"
+			>
+			<input type="button" 
+				value="Save tournie name" 
+				ng-click="setCompCtrl.saveTournamentName(key,setCompCtrl.working[key].tournieName)"
+				ng-disabled="setCompCtrl.working[key].tournieName==setCompCtrl.compData.tournaments[key].name"
+			>
+			<input type="button" 
+				value="Reset tournie name" 
+				ng-click="setCompCtrl.resetTournamentName(key)"
+				ng-disabled="setCompCtrl.working[key].tournieName==setCompCtrl.compData.tournaments[key].name"
+			>
+		<br>
+		
+		<input type="button" ng-click="setCompCtrl.deleteTournament(key)" value="Delete this tournament" style="float:right"><br>
+
+		<b>Tournament state:</b><br>
+		<label>
+			<input type="radio"
+				ng-model="setCompCtrl.working[key].tournamentState" value="waitingForData" ng-init="setCompCtrl.working[key].tournamentState=setCompCtrl.compData.tournaments[key].state">
+			Waiting for data
+		</label><br />
+		<label>
+			<input type="radio"
+				ng-model="setCompCtrl.working[key].tournamentState" value="readyToSelect">
+			Ready to select
+		</label><br />
+		<input type="button" value="Save state"
+			ng-disabled="setCompCtrl.working[key].tournamentState==setCompCtrl.compData.tournaments[key].state"
+			ng-click="setCompCtrl.saveTournamentState(key,setCompCtrl.working[key].tournamentState)"
+		>
+		<input type="button" value="Reset state"
+			ng-disabled="setCompCtrl.working[key].tournamentState==setCompCtrl.compData.tournaments[key].state"
+			ng-click="setCompCtrl.working[key].tournamentState=setCompCtrl.compData.tournaments[key].state"
+		><br>
+
+
+		
+		<b>Start date:</b> {{tournament.startDateMilli}} ({{tournament.startDateMilli | date:short}}) &nbsp;
+			OR: 
+				Year: <input type=text ng-model="setCompCtrl.working[key].newYear" ng-init="setCompCtrl.working[key].newYear=2017" size=6>
+				Month: <input type=text ng-model="setCompCtrl.working[key].newMonth" ng-init="setCompCtrl.working[key].newMonth=1" size=4>
+				Day: <input type=text ng-model="setCompCtrl.working[key].newDay" ng-init="setCompCtrl.working[key].newDay=1" size=4>
+				<input type="button" value="Set date" ng-click="setCompCtrl.setStartDate(key,setCompCtrl.working[key].newYear,setCompCtrl.working[key].newMonth,setCompCtrl.working[key].newDay)">
+		<br>
+		<b>Img src:</b> {{tournament.imgSrc}}<br>
+		<b>Teams:</b><br>
+		<span ng-repeat="(teamkey,team) in tournament.teamList">
+			{{teamkey}} -> {{team.leagueName}}
+			<input type="button" value="Delete team" ng-click="setCompCtrl.deleteTeamFromTournament(key,teamkey)">
+			<br>
+		</span><p />
+		<select ng-model="setCompCtrl.working[key].newTeam">
+			<option ng-repeat="(key,entry) in setCompCtrl.teamList" value="{{key}}">{{entry.leagueName}} - {{entry.teamName}}</option>
+		</select><input type="button" value="Add team" ng-click="setCompCtrl.addTeam(key,setCompCtrl.working[key].newTeam)"><p />
+		{{key}} -> {{tournament}}
+	</div>
+
+
+	<p />
+	<h3>Raw competition data</h3>
+	<pre>{{setCompCtrl.compData | json}}</pre>
+</div>

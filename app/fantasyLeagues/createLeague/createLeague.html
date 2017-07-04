@@ -3,7 +3,12 @@
 	Here you can create a league.
 
 	<h3>League name</h3>
+	Select a name for your league:<br>
 	<input type="text" size="50" ng-model="createLeagueCtrl.newLeague.uniData.name">
+
+	<h3>Team name</h3>
+	Select a name for your team in the league:<br>
+	<input type="text" size="50" ng-model="createLeagueCtrl.newLeague.fantasyTeams[competitionCtrl.profile.$id].name">
 
 	<h3>League options</h3>
 	These can all be changed later.<br>
@@ -14,11 +19,12 @@
 
 	<h3>Tournament options</h3>
 	Which tournaments do you want to draft for?<br>
-	<input type="checkbox"> TOURNIES HERE<p />
+	<span ng-repeat="(key,tournament) in createLeagueCtrl.newLeague.tournaments">
+		<input type="checkbox" ng-model="createLeagueCtrl.newLeague.tournaments[key]"> {{createLeagueCtrl.tournamentInfo[key].name}}<br>
+	</span><p />
 
 	<input type="button" value="Create League" ng-click="createLeagueCtrl.createLeague()"><br>
 	<span style="color:red">{{createLeagueCtrl.errorMessage}}</span>
 
-	<pre>{{createLeagueCtrl.newLeague | json}}</pre>
 
 </div>

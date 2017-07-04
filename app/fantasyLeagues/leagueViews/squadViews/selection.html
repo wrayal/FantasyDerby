@@ -1,0 +1,112 @@
+<div class="leftHalfPane">
+	<b>Preferred draft order selection</b><br>
+	<b>Select a team:</b><br>
+
+	<!--Code for selecting a team and linking to Rinxter/FTS-->
+	<select ng-model="squadCtrl.currentSelectionPrime" ng-change="squadCtrl.switchTeamSelect()">
+		<option ng-repeat="(key,entry) in competitionCtrl.tournamentData[squadCtrl.tourId].teamList" value="{{key}}">
+			{{entry.leagueName}}
+		</option>
+		<option value="other">Select other...</option>
+	</select>
+	<br>
+
+	<!--Code for teams not listed as being in this tournament by default-->
+	<select ng-model="squadCtrl.currectSelectionExtra" 
+			ng-show="squadCtrl.currentSelectionPrime=='other'" 
+			ng-change="squadCtrl.switchTeamSelect()">
+		<option ng-repeat="(extraKey,extraEntry) in squadCtrl.extraTeams" value="{{extraKey}}">
+			{{extraEntry.leagueName}}
+		</option>
+	</select>
+	<br>
+	{{squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}
+	<!--And links for either as appropriate-->
+	<a href="{{'http://flattrackstats.com/search/'+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
+		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+	>
+		<img src="images/fts-logo.png" style="height:15px"></img>
+	</a>
+	<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
+		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+	>
+		<img src="images/RinxterLett.png" style="height:15px"></img>
+	</a><p />
+
+	<!--And the table of players-->
+	<table class="dndTable">
+		<tr ng-repeat="(key,player) in squadCtrl.teams[squadCtrl.currentSelectionTeam].teamPlayers">
+			<td x-lvl-draggable="true"
+				whatSource="teamData"
+				whatKey="{{key}}"
+			>
+				{{player.name}} - #{{player.number}}
+			</td>
+			<td>
+				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="rightHalfPane">
+	<b>Current selection</b><br>
+
+	<!--This is the functionality to allow copying from existing fantasy leagues-->
+	<div ng-show="!squadCtrl.currentSelection.length">
+		Copy from existing league:
+		<select ng-model="squadCtrl.sourceLeague">
+			<option ng-repeat="(leagueKey,leagueVal) in competitionCtrl.myLeagues" ng-if="leagueKey!=fantasyLeagueCtrl.lid" value="{{leagueKey}}">
+				{{leagueVal}}
+			</option>
+		</select>
+		<input type="button" value="copy" ng-click="squadCtrl.copyFromExisting()">
+	</div>
+
+	<!--And this is the dropping interface and its controls:-->
+	<input type="button" value="&#10226;" ng-click="squadCtrl.undo()" ng-disabled="!squadCtrl.pastSelections.length">&nbsp;
+	<input type="button" value="Save selection" ng-click="squadCtrl.saveSelection()">
+	<table>
+		<tr ng-repeat="(key,value) in squadCtrl.currentSelection"
+			x-lvl-draggable='true'
+			x-lvl-drop-target="true"
+			x-on-drop="squadCtrl.dropped(dragEl, dropEl)"
+			whatSource="selectionData"
+			whatKey="{{key}}"
+		>
+			<td>
+				{{key+1}}
+			</td>
+			<td>
+				{{value.name}} #{{value.number}}
+			</td>
+			<td>
+				<select ng-model="squadCtrl.currentSelection[key].position" class="dndrop">
+					<option value="jammer">
+						Jammer
+					</option>
+					<option value="doubleThreat">
+						Double Threat
+					</option>
+					<option value="blocker">
+						Blocker
+					</option>
+				</select>
+			</td>
+			<td>
+				<a href="" ng-click="squadCtrl.deleteSelectionEntry(key)"><img src="images/delete.png" style="width:20px"></img></a>
+			</td>
+		</tr>
+		<tr x-lvl-draggable='true'
+			x-lvl-drop-target="true"
+			x-on-drop="squadCtrl.dropped(dragEl, dropEl)"
+			whatSource="selectionData"
+			whatKey="-1"
+			ng-hide="squadCtrl.currentSelection.length"
+		>
+			<td >
+				Drag and drop players here...
+			</td>
+		</tr>
+	</table>
+</div>

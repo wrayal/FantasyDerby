@@ -1,12 +1,53 @@
 <div class="fantasyLeagueMain">
+
 	<div class="leaguePage">
-		<div data-ng-include="'fantasyLeagues/header.html'" class="derbyNavbar"></div>
+		<div data-ng-include="'fantasyLeagues/leagueViews/flMenu.html'" class="derbyNavbar"></div>
 		<div class="leagueContent" ui-view>
 		</div>
 	</div>
 
 
 	<div class="leagueChat">
-		CHAT GOES HERE
+
+		<div class="message-wrap" id="messagePane" scrolly="fantasyLeagueCtrl.checkScroll()">
+			<div ng-repeat="message in fantasyLeagueCtrl.messages">
+				<span ng-show="message.type=='userMessage'">
+					<b>{{ fantasyLeagueCtrl.leagueMembers[message.userId].username.$value }}:</b>
+						{{message.message}}  
+					<span class="timestamp">{{message.timestamp | date:'short'}}</span>
+					<br>
+				</span>
+			</div>
+		</div>
+
+		<form class="message-form" ng-submit="fantasyLeagueCtrl.sendMessage()">
+			<input type=text class="form-control" ng-model="fantasyLeagueCtrl.message" placeholder="Type a message and hit enter...">
+		</form>
+
+		<div class="member-presence">
+			<b>Members</b>
+			<div id="div3" style="border:3px solid #aaa;position:relative;width:100%">
+				<span data-ng-repeat="(key,member) in fantasyLeagueCtrl.leagueMembers" ng-if="fantasyLeagueCtrl.leagueMembers[key].member==true" style="color:#999">
+					<span
+						ng-class="{
+							userOnlineBullet: fantasyLeagueCtrl.leagueMembers[key].presence.$value,
+							userOfflineBullet: !fantasyLeagueCtrl.leagueMembers[key].presence.$value
+							}"
+						>
+						&nbsp;&#9679;
+					</span>
+					<span
+						ng-class="{
+							userOnlineText: fantasyLeagueCtrl.leagueMembers[key].presence.$value,
+							userOfflineText: !fantasyLeagueCtrl.leagueMembers[key].presence.$value
+						}"
+						>
+						{{fantasyLeagueCtrl.leagueMembers[key].username.$value}} 
+					</span>
+					<br>
+				</span>
+			</div>
+		</div>
+
 	</div>
 </div>

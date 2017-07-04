@@ -1,0 +1,28 @@
+<ul class="flNavbar">
+	<li><a>{{fantasyLeagueCtrl.leagueData.uniData.name}}</a></li>
+
+	<li><a href="" ui-sref='competitions.fantasyLeagues.summary({cid:competitionCtrl.cid,lid:fantasyLeagueCtrl.lid})'>Summary</a></li>
+
+	<li class="dropdown" ng-show="competitionCtrl.keyData.type=='multi'">
+		<a href="" class="dropdown-toggle" data-toggle="dropdown" style="float:left">
+			<span>
+				<span ng-hide="fantasyLeaguesCtrl.draftNeeded" style="opacity:0">&#9679;</span>
+				<span ng-show="fantasyLeaguesCtrl.draftNeeded" style="color:green;opacity:1">&#9679;</span>
+				{{fantasyLeagueCtrl.leagueData.fantasyTeams[competitionCtrl.profile.$id].name}} squads
+			</span><b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li data-ng-repeat="(key,squad) in fantasyLeagueCtrl.leagueData.tournaments">
+				<a 
+				ui-sref='competitions.fantasyLeagues.squads({sid:key})'
+				>
+					<span ng-hide="fantasyLeagueCtrl.whichDraftsNeeded[key]" style="opacity:0">&#9679;</span>
+					<span ng-show="fantasyLeagueCtrl.whichDraftsNeeded[key]" style="color:green;opacity:1">&#9679;</span>
+					{{ competitionCtrl.tournamentData[key].name }}
+				</a>
+			</li>
+			
+		</ul>
+	</li>
+
+</ul>

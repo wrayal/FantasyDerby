@@ -13,6 +13,7 @@ angular.module('FantasyDerbyApp')
 			display: auth.photoURL
 		}
 		profileCtrl.profile.data=dataObj;
+		profielCtrl.profile.isVisible=false;
 		profileCtrl.profile.$save();
 		//profileCtrl.profile.dataObj=$rootScope.authData;
 		//profileCtrl.profile.$save();
