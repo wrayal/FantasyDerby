@@ -12,7 +12,7 @@
 			</span><b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
-			<li data-ng-repeat="(key,squad) in fantasyLeagueCtrl.leagueData.tournaments">
+			<li data-ng-repeat="(key,squad) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="squad">
 				<a 
 				ui-sref='competitions.fantasyLeagues.squads({sid:key})'
 				>
@@ -24,5 +24,7 @@
 			
 		</ul>
 	</li>
+
+	<li style="float:right" ng-show="competitionCtrl.profile.$id==fantasyLeagueCtrl.leagueData.uniData.Commissioner"><a href="" ui-sref='competitions.fantasyLeagues.admin'>Admin</a></li>
 
 </ul>

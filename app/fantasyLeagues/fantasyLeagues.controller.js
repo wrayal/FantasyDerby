@@ -11,6 +11,8 @@ angular.module('FantasyDerbyApp')
     fantasyLeagueCtrl.joinURL=fantasyLeagueCtrl.joinURL.split("fantasyLeagues");
     fantasyLeagueCtrl.joinURL=fantasyLeagueCtrl.joinURL[0]+"joinLeague"+fantasyLeagueCtrl.joinURL[1];
 
+    fantasyLeagueCtrl.amCommissioner=leagueData.uniData.Commissioner==competitionCtrl.uid;
+
     //this is the function for deleting the league
     fantasyLeagueCtrl.removeLeague = function() {
       cid=competitionCtrl.cid;
@@ -113,11 +115,11 @@ angular.module('FantasyDerbyApp')
 
     //This is to move the fantasy league on from the formation phase to the drafting phase.
     fantasyLeagueCtrl.formingToDrafting=function() {
-      Squads.setLeagueToDrafting(competitionCtrl.cid,fantasyLeagueCtrl.lid);
+      Squads.setLeagueToDrafting(competitionCtrl.uid,competitionCtrl.cid,fantasyLeagueCtrl.lid,fantasyLeagueCtrl.leagueData.tournaments);
     }
     //This is to revert from drafting back to formation
     fantasyLeagueCtrl.draftingToForming=function() {
-      Squads.revertToFormation(competitionCtrl.cid,fantasyLeagueCtrl.lid);
+      Squads.revertToFormation(competitionCtrl.cid,fantasyLeagueCtrl.lid,fantasyLeagueCtrl.leagueData.tournaments);
     }
   	
   });

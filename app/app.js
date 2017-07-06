@@ -213,6 +213,10 @@ angular
         url: '',
         templateUrl: 'fantasyLeagues/leagueViews/summary.html'
       })
+      .state('competitions.fantasyLeagues.admin',{
+        url: '/admin',
+        templateUrl: 'fantasyLeagues/leagueViews/adminView.html'
+      })
       .state('competitions.fantasyLeagues.squads', {
         url: '/squads/{sid}',
         templateUrl: 'fantasyLeagues/leagueViews/squads.html',
@@ -232,6 +236,18 @@ angular
               return $firebaseArray(
                 leagueRef.child("fantasySelections").child(authData.uid).child($stateParams.sid)
               );
+            })
+          },
+          fantasyTeams: function($stateParams,$firebaseObject,Auth) {
+            return Auth.auth.$requireSignIn().then(function(authData){
+              var leagueRef=firebase.database().ref().child("competitionFull").child($stateParams.cid).child("fantasyLeagues").child($stateParams.lid);
+              return $firebaseObject(leagueRef.child("fantasyTeams"));
+            })
+          },
+          draftOrder: function($stateParams,$firebaseObject,Auth) {
+            return Auth.auth.$requireSignIn().then(function(authData){
+              var leagueRef=firebase.database().ref().child("competitionFull").child($stateParams.cid).child("fantasyLeagues").child($stateParams.lid);
+              return $firebaseObject(leagueRef.child("draftOrders").child($stateParams.sid));
             })
           }
         }

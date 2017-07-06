@@ -1,0 +1,22 @@
+<table>
+	<tr>
+		<td>User</td>
+		<td>Jammer</td>
+		<td>Double Threat</td>
+		<td>Blocker</td>
+		<td>Blocker</td>
+		<td>Blocker</td>
+	</tr>
+	<tr ng-repeat="(playerKey,teams) in squadCtrl.fantasyTeams">
+		<td>
+			{{fantasyLeagueCtrl.leagueMembers[playerKey].username.$value}}
+		</td>
+		<td ng-repeat="entry in squadCtrl.positions">
+			<div ng-show="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">
+				<a href="" ui-sref="competitions.player({pid:entry})">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.name}}</a><br>
+				<a href="" ui-sref="competitions.teamView({teamId:squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].team})" style="font-size:x-small">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.teamName}}</a>
+			</div>
+			<span ng-hide="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">TBD</span>
+		</td>
+	</tr>
+</table>

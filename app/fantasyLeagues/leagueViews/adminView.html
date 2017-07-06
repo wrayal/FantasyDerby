@@ -1,0 +1,48 @@
+<div class="leagueCommonContent">
+
+	<!--	ADMIN STUFF!! 		-->
+	<div ng-show="competitionCtrl.profile.$id==fantasyLeagueCtrl.leagueData.uniData.Commissioner">
+		<h3>Admin (commissioner-only)</h3>
+		Current league status:<br>
+		<span ng-show="fantasyLeagueCtrl.leagueData.uniData.status=='forming'">
+			&nbsp;<font style="color:green"><b>forming</b></font> -> drafting -> complete<p />
+			<input type="button" value="Move on to drafting phase" ng-click="fantasyLeagueCtrl.formingToDrafting()"><br>Note that no new users will be able to join after this transition is made.
+		</span>
+		<span ng-show="fantasyLeagueCtrl.leagueData.uniData.status=='drafting'">
+			&nbsp;<font style="color:red">forming</font> -> <font style="color:green"><b>drafting</b></font> -> complete<p />
+			<input type="button" value="Revert to forming phase" ng-click="fantasyLeagueCtrl.draftingToForming()"><br>Revert back to the formation stage. Note that all drafting data will be lost.
+		</span>
+		<h4>League invitation</h4>
+		Give the following link to anyone you wish to invite to this league.<br>
+		<span ng-show="!fantasyLeagueCtrl.leagueData.uniData.visible">Please note that as this league is set to <b>not</b> be visible on the joining screen, this is the <b>only</b> mechanism by which people may join.<b></span><p />
+		<input type="text" ng-model="fantasyLeagueCtrl.joinURL" size=70 readyonly>
+
+		<h4>Member approvals</h4>
+		<!--"false" -> waiting for approval -->
+		<!--"true" -> already a member -->
+		<!--"denied" -> not allowed to be a member -->
+		<table class="standardTable">
+			<tr ng-repeat="(key,value) in fantasyLeagueCtrl.leagueData.members">
+				<td>
+					{{fantasyLeagueCtrl.leagueMembers[key].username.$value}}
+				</td>
+				<td>
+					<span ng-show="value==true" style="color:green">Member</span>
+					<span ng-show="value==false"><input type="button" value="Accept membership application" ng-click="fantasyLeagueCtrl.setMembership(key,true)"> <input type="button" value="Reject" ng-click="fantasyLeagueCtrl.setMembership(key,'rejected')"></span>
+					<span ng-show="value=='rejected'" style="color:red">Rejected</span>
+				</td>
+				<td>
+					<input type="button"
+						value="Remove member"
+						ng-click="fantasyLeagueCtrl.removeMember(key)"
+						ng-show="fantasyLeagueCtrl.showAllowRemoval(key)"
+						>
+				</td>
+			</tr>
+		</table>
+
+		<h4>League removal</h4>
+		Click this button to entirely remove this league. Note that this is <b>irreversible</b>!<br>
+		<input type=button value="Delete League" ng-click="fantasyLeagueCtrl.removeLeague()">
+	</div>
+</div>

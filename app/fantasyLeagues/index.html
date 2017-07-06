@@ -11,8 +11,16 @@
 
 		<div class="message-wrap" id="messagePane" scrolly="fantasyLeagueCtrl.checkScroll()">
 			<div ng-repeat="message in fantasyLeagueCtrl.messages">
+				<!--Normal message-->
 				<span ng-show="message.type=='userMessage'">
 					<b>{{ fantasyLeagueCtrl.leagueMembers[message.userId].username.$value }}:</b>
+						{{message.message}}  
+					<span class="timestamp">{{message.timestamp | date:'short'}}</span>
+					<br>
+				</span>
+				<!--Drafting message-->
+				<span ng-show="message.type=='draftMessage'">
+					<b>{{ fantasyLeagueCtrl.leagueMembers[message.uid].username.$value }} drafted {{message.playerName}} as a {{message.position}}</b>
 						{{message.message}}  
 					<span class="timestamp">{{message.timestamp | date:'short'}}</span>
 					<br>

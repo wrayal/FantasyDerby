@@ -18,7 +18,7 @@ angular.module('FantasyDerbyApp')
                 var selectionRef=leagueRef.child("fantasySelections").child(uid).child(tid);
                 return $firebaseObject(selectionRef);
 			},
-			setLeagueToDrafting: function(cid,lid) {
+			setLeagueToDrafting: function(uid,cid,lid,tournamentList) {
 				//First we grab the data we need and load it
 				var competitionRef=firebase.database().ref().child("competitionFull").child(cid);
 				var leagueRef=competitionRef.child("fantasyLeagues").child(lid);
@@ -31,9 +31,56 @@ angular.module('FantasyDerbyApp')
 
 					// 1) Set league to drafting
 					leagueRef.child("uniData").child("status").set("drafting")
+
+					// 2) Create fantasy squads
+					var memberRef=leagueRef.child("members");
+					//Grab the member data
+					membArr=[];
+					memberRef.once('value').then(function(members){
+						memberList=members.val();
+						//Loop over each member
+						angular.forEach(memberList,function(value,key){
+							//And if they have been accepted as members...
+							if (value) {
+								membArr.push(key);
+								//...Let's create a squad for them
+								squadObj={
+									jammer:"",
+									doubleThreat:"",
+									blocker1:"",
+									blocker2:"",
+									blocker3:""
+								}
+								//And put it into the database
+								angular.forEach(tournamentList,function(tournamentValue,tournamentKey) {
+									leagueRef.child("fantasyTeams").child(key).child(tournamentKey).set(squadObj)
+								})
+							}
+						})
+
+						//3) Create drafting orders
+						numTournaments=0;
+						angular.forEach(tournamentList,function(tournament){
+							numTournaments++;
+						})
+						skipNum=Math.ceil(numTournaments/membArr.length)
+						if (skipNum==membArr.length) skipNum=membArr.length-1;
+						if (skipNum==0) skipNum=1;
+						console.log("SKIPPIN':",skipNum)
+						angular.forEach(tournamentList,function(tournamentValue,tournamentKey){
+							tempMem=membArr.shift();
+							membArr=membArr.concat([tempMem]);
+							leagueRef.child("draftOrders").child(tournamentKey).set(
+								membArr.slice().concat(membArr.slice().reverse()).concat(membArr.slice()).concat(membArr.slice().reverse()).concat(membArr.slice())
+								);
+						})
+
+					})
+					console.log("membRef",memberRef)
+
 				})
 			},
-			revertToFormation: function(cid,lid) {
+			revertToFormation: function(cid,lid,tournamentList) {
 				//First we grab the data we need and load it
 				var competitionRef=firebase.database().ref().child("competitionFull").child(cid);
 				var leagueRef=competitionRef.child("fantasyLeagues").child(lid);
@@ -46,6 +93,25 @@ angular.module('FantasyDerbyApp')
 
 					// 1) Set league to drafting
 					leagueRef.child("uniData").child("status").set("forming")
+
+					// 2) Delete drafted squads
+					var memberRef=leagueRef.child("members");
+					//Grab the member data
+					memberRef.once('value').then(function(members){
+						memberList=members.val();
+						//Loop over each member
+						angular.forEach(memberList,function(value,key){
+							//And if they have been accepted as members...
+							if (value) {
+								angular.forEach(tournamentList,function(tournamentValue,tournamentKey) {
+									leagueRef.child("fantasyTeams").child(key).child(tournamentKey).set({})
+								})
+							}
+						})
+					})
+
+					// 3) Delete drafting orders
+					leagueRef.child("draftOrders").set({})
 				})
 			}
 		}

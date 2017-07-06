@@ -33,6 +33,11 @@ body {
   padding-bottom: 0px; /*Formerly 19px*/
 }
 
+h1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 /* Custom page footer */
 .footer {
   padding-top: 0px; /*Formerly 19px*/
@@ -165,7 +170,7 @@ html, body{
 }
 
 .leagueContent {
-  padding-top:0px;
+  padding-top:5px;
   height: ~"calc(100% - 48px)";
 }
 
@@ -300,9 +305,9 @@ span.timestamp {
 
 
 .upperSquadPane {
-  height: ~"calc(50% - 10px)";
+  height: ~"calc(50% - 5px)";
   background-color:#bbbbbb;
-  margin-top: 5px;
+  margin-top: 0px;
   margin-left:5px;
   margin-right:5px;
   margin-bottom:5px;
@@ -319,9 +324,10 @@ span.timestamp {
   margin-bottom:5px;
   margin-top:0px;
   padding:5px;
+  padding-bottom:5px;
   background-color:#bbbbbb;
   position: relative;
-  overflow-y:scroll;
+  overflow-y:hidden;
 }
 
 .fullSquadPane {
@@ -360,7 +366,7 @@ span.timestamp {
   font-weight:bold;
 }
 
-.dndTable > th,td{
+table.dndTable > tbody > tr > td{
   /*border: 2px solid multiply(#600,@basecolormain);
   background: multiply(#900,@basecolormain);
   color: white;*/

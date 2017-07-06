@@ -46,6 +46,8 @@
 
 				<span ng-show="joinLeagueCtrl.joinStatus(leagueData)=='requested'">You have requested to join this league.</span>
 
+				<span ng-show="joinLeagueCtrl.joinStatus(leagueData)=='drafting'">This league is no longer on the formation phase.</span>
+
 				<!--<input type="button" value="Join" ng-show="
 					!indexCtrl.leagueMemberships[leagueData.key][competitionCtrl.profile.$id] && !competitionCtrl.profile.leagueMembership[competitionCtrl.cid].asCommissioner[leagueData.key] && leagueData.status=='forming' && 
 					leagueData.isOpen
