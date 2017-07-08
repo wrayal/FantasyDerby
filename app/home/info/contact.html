@@ -1,0 +1,26 @@
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <h1>Contact</h1>
+  </div>
+  Want to contact the site administrator? Please type below and hit send!<p />
+  <input type="button" value="Send message" ng-click="contactCtrl.sendMessage()"><br>
+  <textarea cols=60 rows=6 ng-model="contactCtrl.message">
+  </textarea><br>
+  <div ng-repeat="(key,value) in contactCtrl.messageList | orderObjectBy:'timestamp':true" 
+      ng-if="value.message"
+  		ng-style="{
+  			'width':'75%',
+  			'background':value.sender=='user'?'#cccccc':'#aaaaee',
+  			'float':value.sender=='user'?'right':'left',
+  			'border-radius':'5px',
+  			'padding':'10px',
+  			'margin':'5px'
+  			}"
+  	>
+  	{{value.message}}<br>
+  	<font style="font-size:x-small">{{value.timestamp | date:'short'}}</font>
+  </div>
+
+
+</div>

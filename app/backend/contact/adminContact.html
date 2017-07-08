@@ -1,0 +1,43 @@
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <h3>Admin Contact Response</h3>
+  </div>
+  
+  <b>Unread:</b> <select ng-model="adminContactCtrl.unreadUser" ng-change="adminContactCtrl.loadUnread()">
+    <option ng-repeat="userId in adminContactCtrl.unreadList" value="{{userId}}">
+        {{adminContactCtrl.userData[userId].displayName}}
+    </option>
+  </select><br>
+
+  <b>Read:</b> <select ng-model="adminContactCtrl.readUser" ng-change="adminContactCtrl.loadRead()">
+    <option ng-repeat="userId in adminContactCtrl.readList" value="{{userId}}">
+        {{adminContactCtrl.userData[userId].displayName}}
+    </option>
+  </select>
+
+  <div ng-show="adminContactCtrl.userMessagesToShow">
+    <h3>{{adminContactCtrl.userData[adminContactCtrl.userMessagesToShow].displayName}}</h3>
+
+    <input type="button" value="Send message" ng-click="adminContactCtrl.sendMessage()">
+    <input type="button" value="Mark as read" ng-click="adminContactCtrl.markRead()" ng-show="adminContactCtrl.fullMessageList[adminContactCtrl.userMessagesToShow].unread.admin">
+    <br>
+    <textarea cols=60 rows=6 ng-model="adminContactCtrl.message">
+    </textarea><br>
+
+    <div ng-repeat="(key,value) in adminContactCtrl.fullMessageList[adminContactCtrl.userMessagesToShow] | orderObjectBy:'timestamp':true" 
+        ng-if="value.message"
+        ng-style="{
+          'width':'75%',
+          'background':value.sender!='user'?'#cccccc':'#aaaaee',
+          'float':value.sender!='user'?'right':'left',
+          'border-radius':'5px',
+          'padding':'10px',
+          'margin':'5px'
+          }"
+      >
+      {{value.message}}<br>
+      <font style="font-size:x-small">{{value.timestamp | date:'short'}}</font>
+    </div>
+  </div>
+</div>

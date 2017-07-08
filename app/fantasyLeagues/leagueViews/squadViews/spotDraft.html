@@ -94,7 +94,12 @@ It is your turn to draft, but all players in your pre-selection are either alrea
 				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
 			</td>
 			<td ng-show="squadCtrl.spotDraftPosition!=''">
-			<input type="button" ng-show="!squadCtrl.draftedPlayers[player.id]" value="Draft" ng-click="squadCtrl.spotDraft(player.id,player.name)"> 
+			<input type="button"
+				ng-show="!squadCtrl.draftedPlayers[player.id]"
+				value="Draft"
+				ng-really-message="Are you sure you want to draft {{player.name}} as a {{squadCtrl.convObj[squadCtrl.spotDraftPosition]}}?"
+				ng-really-click="squadCtrl.spotDraft(player.id,player.name,player.number)"
+			> 
 			</td>
 
 		</tr>

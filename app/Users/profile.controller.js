@@ -1,5 +1,5 @@
 angular.module('FantasyDerbyApp')
-  .controller('ProfileCtrl', function (profile,auth,$rootScope) {
+  .controller('ProfileCtrl', function (profile,auth) {
     var profileCtrl=this;
 
     //If they already had a profile this will be loaded and nice when the page comes up
@@ -15,8 +15,6 @@ angular.module('FantasyDerbyApp')
 		profileCtrl.profile.data=dataObj;
 		profielCtrl.profile.isVisible=false;
 		profileCtrl.profile.$save();
-		//profileCtrl.profile.dataObj=$rootScope.authData;
-		//profileCtrl.profile.$save();
 	}
 
   	profileCtrl.updateProfile=function() {

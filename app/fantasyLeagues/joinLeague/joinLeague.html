@@ -1,9 +1,11 @@
 <div class="fantasyLeagueMain" style="padding:10px;width:100%">
 	<h1>Joining a league</h1>
 
-	<b>Desired team name:</b><br>
+	Here you can join a league.
+
+	<b>Please enter a team name:</b><br>
 	<input type="text" ng-model="joinLeagueCtrl.desiredTeamName"><br>
-	<span ng-show="joinLeagueCtrl.nameError" style="color:red">{{joinLeagueCtrl.nameError}}</span><p />
+	<span ng-show="joinLeagueCtrl.nameError" style="color:red"><b>{{joinLeagueCtrl.nameError}}</b></span><p />
 
 	<div style="width:100%;float:left;margin-bottom:10px;margin-top:20px">
 		<div style="float:left">Filter by league name:<br><input ng-model="search.name"> </div>

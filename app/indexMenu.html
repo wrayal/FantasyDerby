@@ -1,90 +1,148 @@
-<div class="navbar navbar-default" role="navigation">
-        <div class="container">
+<ul class="mainNavbar">
 
-          <a class="navbar-brand" ng-hide="indexCtrl.nameToShow" href="" data-toggle="dropdown">Fantasy Roller Derby <b class="caret"></b></a>
-          <a class="navbar-brand" ng-show="indexCtrl.nameToShow" href="" data-toggle="dropdown">FRD: {{ indexCtrl.nameToShow.$value }} <b class="caret"></b></a>
-          <ul class="dropdown-menu navbar-default">
-            <li><a href="" ng-click="indexCtrl.goToCompo('')">Home</a></li>
-            <li ng-repeat="(key,value) in indexCtrl.fullSet" ng-if="value.visible">
-              <a href="" ng-click="indexCtrl.goToCompo(key)">{{value.shortName}}</a>
-            </li>
-          </ul>
+  <!-- The main masthead -->
+  <li class="dropdown titleNav">
+    <a href="" ng-hide="indexCtrl.profile">Fantasy Roller Derby</a>
+    <a href="" ng-show="indexCtrl.profile" class="dropdown-toggle" data-toggle="dropdown">
+      <span ng-show="indexCtrl.nameToShow">
+        FRD: {{indexCtrl.nameToShow.$value}}
+      </span>
+      <span ng-hide="indexCtrl.nameToShow">
+        Fantasy Roller Derby
+      </span> <b class="caret"></b>
+    </a>
 
-          <ul class="nav navbar-nav">
+    <ul class="dropdown-menu">
+      <li>
+        <a href="" ng-click="indexCtrl.goToCompo('')">
+          Home
+        </a>
+      </li>
+      <li ng-repeat="(key,value) in indexCtrl.fullSet" ng-if="value.visible">
+        <a href="" ng-click="indexCtrl.goToCompo(key)">
+          {{value.shortName}}
+        </a>
+      </li>
+    </ul>
+  </li>
 
-            <!--
-            <li class="dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown" style="float:left">
-                <span>
-                  Competition Info
-                </span><b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="">One</a>
-                </li>
-                <li>
-                  <a href="">Two</a>
-                </li>
-      
-              </ul>
-            </li>
-            -->
+  <!-- Roster and front page menu bits -->
+  <li class="dropdown" ng-show="indexCtrl.inCompetition" ng-class="{menuactive: indexCtrl.activeEntry=='rosterInfo'}">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+      <span>Roster info</span><b class="caret"></b>
+    </a>
+    
+    <ul class="dropdown-menu derbyNavbar"> 
+      <li><a href="" ui-sref="competitions.frontPage">Info summary</a></li>              
+      <li><a href="" ui-sref="competitions.teamList({listId:'allComp'})">All {{indexCtrl.nameToShow.$value}} teams</a></li>
+      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state!='waitingForData'">
+        <a href="" ui-sref="competitions.teamList({listId:tourKey})">{{tourValue.name}} teams</a>
+      </li>
+    </ul>
+  </li>
 
+  <!-- Fantasy league menus -->
+  <li class="dropdown" ng-show="indexCtrl.inCompetition" ng-class="{menuactive: indexCtrl.activeEntry=='fLeague'}">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+      <span>Fantasy Leagues</span><b class="caret"></b>
+    </a>
+    
+    <ul class="dropdown-menu derbyNavbar">
+      <!-- THE LEAGUES WHERE WE ARE COMMISSIONER -->
+      <li ng-repeat="(key,value) in indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asCommissioner">
+        <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:blue">{{value}}</a>
+      </li>
 
-            <li ng-class="{menuactive: indexCtrl.activeEntry=='frontPage'}" ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.frontPage">Competition info</a></li>
-
-            <li class="dropdown derbyNavbar" ng-show="indexCtrl.inCompetition" ng-class="{menuactive: indexCtrl.activeEntry=='fLeague'}">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                <span>Fantasy Leagues</span><b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu derbyNavbar">
-                <!-- THE LEAGUES WHERE WE ARE COMMISSIONER -->
-                <li ng-repeat="(key,value) in indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asCommissioner">
-                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:blue">{{value}}</a>
-                </li>
-
-                <!-- THE LEAGUES WHERE WE ARE MEMBERS -->
-                <li ng-repeat="(key,value) in indexCtrl.leagueMemberships" ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]==true">
-                  <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:green">
-                    {{indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asPlayer[key]}}
-                  </a>
-                </li>
+      <!-- THE LEAGUES WHERE WE ARE MEMBERS -->
+      <li ng-repeat="(key,value) in indexCtrl.leagueMemberships" ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]==true">
+        <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:green">
+          {{indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asPlayer[key]}}
+        </a>
+      </li>
                 
-                <!-- AND THE EXTRA BITS AND PIECES -->
-                <li><a href="" ui-sref="competitions.joinLeague" style="color:red">Join a league</a></li>
-                <li><a href="" ui-sref="competitions.createLeague" style="color:red">Create a league</a></li>
-              </ul>
-            </li>
+      <!-- AND THE EXTRA BITS AND PIECES -->
+      <li><a href="" ui-sref="competitions.joinLeague" style="color:red">Join a league</a></li>
+      <li><a href="" ui-sref="competitions.createLeague" style="color:red">Create a league</a></li>
+    </ul>
+  </li>
 
-            <li ng-class="{menuactive: indexCtrl.activeEntry=='about'}"><a ng-href="#!/about">About FRD</a></li>
+  <!-- Info dropdown -->
+  <li class="dropdown" ng-class="{menuactive: indexCtrl.activeEntry=='info'}">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+      <span>
+        <span class="userOnlineBullet" ng-show="indexCtrl.contactMessagesUnread.$value">
+          &nbsp;&#9679;
+        </span>
+        Info
+      </span> <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="" ui-sref="FAQ">
+          Frequently Asked Questions
+        </a>
+      </li>
+      <li>
+        <a href="" ui-sref="rules">
+          How does it work?
+        </a>
+      </li>
+      <li>
+        <a href="" ui-sref="contact">
+          <span class="userOnlineBullet" ng-show="indexCtrl.contactMessagesUnread.$value">
+            &nbsp;&#9679;
+          </span>
+          Contact site admin
+        </a>
+      </li>
+      <li>
+        <a href="" ui-sref="links">
+          Links
+        </a>
+      </li>
+      <li>
+        <a href="" ui-sref="privacy">
+          Privacy Policy
+        </a>
+      </li>
+    </ul>
+  </li>
 
-            <li class="dropdown derbyNavbar">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                <span>Backend</span><b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu derbyNavbar">
-                <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
-                <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
-                <li><a href="" ui-sref="narwhalParse">Edit Narwhal messages</a></li>
-                <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
-              </ul>
-            </li>
+  <!-- Admin's menu -->
+  <li class="dropdown derbyNavbar" ng-show="indexCtrl.amAdmin()">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+      <span>Backend</span><b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu derbyNavbar">
+      <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
+      <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
+      <li><a href="" ui-sref="narwhalParse">Edit Narwhal messages</a></li>
+      <li><a href="" ui-sref="adminContact">Respond to contact messages</a></li>
+      <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
+    </ul>
+  </li>
 
-          </ul>
+  <!-- Dive in/logout menu -->
+  <li class="dropdown titleNav" style="padding-left:50px">
+    <a href="" ng-hide="indexCtrl.authData" ng-click="indexCtrl.login()">Dive in!</a>
+    <a href="" ng-show="indexCtrl.authData && !indexCtrl.profile" ng-click="indexCtrl.logout()">Logout</a>
+    <a href="" ng-show="indexCtrl.authData && indexCtrl.profile" class="dropdown-toggle" data-toggle="dropdown" style="float:right">
+      <span>
+        {{indexCtrl.profile.displayName}}
+      </span> <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="" ui-sref="profile">
+          Edit profile
+        </a>
+      </li>
+      <li>
+        <a href="" ng-click="indexCtrl.logout()">
+          Logout
+        </a>
+      </li>
+    </ul>
+  </li>
 
-
-          <li style="float:right" class="dropdown derbyNavbar">
-            <a ng-hide="authData" class="navbar-brand" href="" ng-click="indexCtrl.login()">Dive in!</a>
-            <a ng-show="authData && !rtprofile" class="navbar-brand" href="" ng-click="indexCtrl.logout()">Logout</a>
-            <a ng-show="rtprofile" class="navbar-brand" href="" data-toggle="dropdown">{{rtprofile.displayName}} <b class="caret"></b></a>
-            <ul class="dropdown-menu navbar-default">
-              <li><a href="#!/profile">Edit Profile</a></li>
-              <li><a href="" ng-click="indexCtrl.logout()">Logout</a></li>
-            </ul>
-          </li>
-         
-
-
-        </div>
-      </div>
+</ul>

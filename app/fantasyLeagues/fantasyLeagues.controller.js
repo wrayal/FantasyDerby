@@ -64,12 +64,6 @@ angular.module('FantasyDerbyApp')
     })
     fantasyLeagueCtrl.updateLeagueMemberData();
 
-    //Marking the appropriate sub-menu entry active
-  	fantasyLeagueCtrl.activeEntry="home";
-  	$transitions.onSuccess({}, function(trans) {
-
-    });
-
     //MESSAGING STUFF
     var numMessages=100;
     fantasyLeagueCtrl.messages; //Holds a $firebaseArray of all the current messages

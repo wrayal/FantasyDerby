@@ -1,5 +1,5 @@
 angular.module('FantasyDerbyApp')
-  .controller('IndexCtrl', function($scope, $rootScope,$state, $location,Competitions,Auth,Users,$transitions,FantasyLeagues) {
+  .controller('IndexCtrl', function($scope,$state, $location,Competitions,Auth,Users,$transitions,FantasyLeagues,$firebaseObject) {
   	indexCtrl=this;
 
   	//Sets up a name to display in the menu bar
@@ -32,17 +32,33 @@ angular.module('FantasyDerbyApp')
     }
 
     //This makes the user's profile available
+    indexCtrl.authData=null;
     indexCtrl.profile=null;
-    firebase.auth().onAuthStateChanged(function(){
-      Auth.auth.$requireSignIn().then(function(authData){
-        console.log("Sorting shiz",authData)
-        indexCtrl.profile=Users.getProfile(authData.uid);
-        console.log("SETTING THE WATCH")
-        indexCtrl.profile.$watch(function(){console.log("IN THE WATCH!");indexCtrl.updateMemberships()})
-
-        Users.setOnline(authData.uid);
-      }).catch(function(){});
+    indexCtrl.contactMessagesUnread=null;
+    firebase.auth().onAuthStateChanged(function(authData){
+      indexCtrl.authData=authData;
+      if (authData) {
+        Users.getProfile(authData.uid).$loaded().then(function(profileData){
+          indexCtrl.profile=profileData;
+          indexCtrl.profile.$watch(function(){indexCtrl.updateMemberships()})
+          indexCtrl.updateMemberships();
+          Users.setOnline(authData.uid);
+          indexCtrl.contactMessagesUnread=$firebaseObject(
+            firebase.database().ref().child("contactMessages").child(authData.uid).child("unread").child("user")
+          )
+        })
+      } else {
+        indexCtrl.profile=null;
+      }
     })
+
+    indexCtrl.adminList={
+      iWwEokR2zGUOIW4sSEMtjhx6ZEo2: true
+    }
+    indexCtrl.amAdmin=function() {
+      if (indexCtrl.profile && indexCtrl.adminList[indexCtrl.profile.$id]) return true;
+      else return false;
+    }
     
 
     //This provides convenient login/logout functiona access
@@ -58,10 +74,12 @@ angular.module('FantasyDerbyApp')
     indexCtrl.inCompetition=false;
     indexCtrl.competitionId=null;
     indexCtrl.inLeague=false;
+    indexCtrl.tourData=null;
     
 
   	//Set which entry is active in the menu
   	indexCtrl.activeEntry="home";
+    indexCtrl.activeSubentry="";
   	$transitions.onSuccess({}, function(trans) {
 
       //Grab the name passed by the fired event
@@ -71,24 +89,36 @@ angular.module('FantasyDerbyApp')
       //And set indexCtrl.activeEntry to the appropriate value
 		  if (toName=="home") {
 		  	indexCtrl.activeEntry="home";
-		  } else if (toName=="competitions.frontPage") {
-		  	indexCtrl.activeEntry="frontPage";
-		  } else if (toName=="about") {
-		  	indexCtrl.activeEntry="about";
+		  } else if (toName=="competitions.frontPage" || toName=="competitions.teamList") {
+		  	indexCtrl.activeEntry="rosterInfo";
+		  } else if (toName=="FAQ" || toName=="privacy" || toName=="contact" || toName=="rules" || toName=="links") {
+		  	indexCtrl.activeEntry="info";
       } else if (toName.split(".")[1]=="fantasyLeagues" || toName.split(".")[1]=="joinLeague" || toName.split(".")[1]=="createLeague") {
         indexCtrl.activeEntry="fLeague"
       } else {
         indexCtrl.activeEntry="";
       }
 
+      if (toName=="competitions.fantasyLeagues.summary") {
+        indexCtrl.activeSubentry="summary";
+      } else if (toName=="competitions.fantasyLeagues.squads") {
+        indexCtrl.activeSubentry="squads";
+      } else if (toName=="competitions.fantasyLeagues.admin") {
+        indexCtrl.activeSubentry="admin"
+      } else {
+        indexCtrl.activeSubentry="";
+      }
+
       //Some extra info for potential menu bar entries
       indexCtrl.inCompetition=false;
       indexCtrl.inLeague=false;
+      indexCtrl.tourData=null;
 
       if (toName.split(".")[0]=="competitions") {
         indexCtrl.inCompetition=true;
         indexCtrl.competitionId=$state.params.cid;
         indexCtrl.nameToShow=Competitions.menuName($state.params.cid);
+        indexCtrl.tourData=Tournaments.getAllTournaments($state.params.cid);
         indexCtrl.updateMemberships();
         Competitions.updateCSS($state.params.cid);
         //Realistically this is calling it way too often :(

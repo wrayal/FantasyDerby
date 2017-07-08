@@ -35,10 +35,33 @@ angular
         templateUrl: 'home/main.html',
         controller: 'MainCtrl as mainCtrl'
       })
-      .state('about', {
-        url: '/about',
-        templateUrl: 'home/about.html',
-        controller: 'AboutCtrl as about'
+      .state('FAQ', {
+        url: '/info/faq',
+        templateUrl: 'home/info/FAQ.html'
+      })
+      .state('privacy', {
+        url: '/info/privacy',
+        templateUrl: 'home/info/privacy.html'
+      })
+      .state('rules', {
+        url: '/info/rules',
+        templateUrl: 'home/info/rules.html'
+      })
+      .state('links', {
+        url: '/info/links',
+        templateUrl: 'home/info/links.html'
+      })
+      .state('contact', {
+        url: '/info/contact',
+        templateUrl: 'home/info/contact.html',
+        controller: 'ContactCtrl as contactCtrl',
+        resolve: {
+          profile: function(Users,Auth) {
+            return Auth.auth.$requireSignIn().then(function(authData){
+              return Users.getProfile(authData.uid).$loaded()
+            })
+          }
+        }
       })
       .state('competitions', {
         url: '/comp/{cid}',
@@ -121,13 +144,13 @@ angular
         templateUrl: 'Users/profile.html',
         controller: 'ProfileCtrl as profileCtrl',
         resolve: {
-          auth: function($rootScope,$location,Competitions) {
-            return $rootScope.auth.$requireSignIn().catch(function(){
+          auth: function(Auth,$location,Competitions) {
+            return Auth.auth.$requireSignIn().catch(function(){
               $location.path("/") //If we aren't signed in, head home
             })
           },
-          profile: function($rootScope,Users) {
-            return $rootScope.auth.$requireSignIn().then(function(authData){ //If we are indeed signed in, grab the auth data
+          profile: function(Auth,Users) {
+            return Auth.auth.$requireSignIn().then(function(authData){ //If we are indeed signed in, grab the auth data
               return Users.getProfile(authData.uid).$loaded()
             })
           }
@@ -147,6 +170,11 @@ angular
         url: '/narwhalParse',
         templateUrl: 'backend/narwhalParsing/narwhal.html',
         controller: 'NarwhalCtrl as narwhalCtrl'
+      })
+      .state('adminContact', {
+        url: '/adminContact',
+        templateUrl: 'backend/contact/adminContact.html',
+        controller: 'AdminContactCtrl as adminContactCtrl'
       })
       .state('competitions.setCompInfo', {
         url: '/compInfo',
@@ -180,8 +208,8 @@ angular
           leagueData: function(FantasyLeagues,$stateParams) {
             return FantasyLeagues.getLeagueCommonData($stateParams.lid,$stateParams.cid).$loaded();
           },
-          profile: function($rootScope,Users) {
-            return $rootScope.auth.$requireSignIn().then(function(authData){ //If we are indeed signed in, grab the auth data
+          profile: function(Auth,Users) {
+            return Auth.auth.$requireSignIn().then(function(authData){ //If we are indeed signed in, grab the auth data
               return Users.getProfile(authData.uid).$loaded()
             })
           }
@@ -262,8 +290,11 @@ angular
             var list=[];
 
             if ($stateParams.listId=="allComp") {
-              name="All affiliated teams"
+              name=null;
               list=Teams.getAffiliatedTeams($stateParams.cid);
+            } else {
+              name=$stateParams.listId;
+              list=Teams.getTourTeams($stateParams.cid,$stateParams.listId)
             }
 
             var teamDataObj={
@@ -287,24 +318,8 @@ angular
 
       $urlRouterProvider.otherwise('/');
   })
-  .run(function($rootScope,$firebaseAuth,Users){
+  .run(function(){
     
-    $rootScope.auth = $firebaseAuth();
-    $rootScope.authData=null;
 
-    $rootScope.rtprofile=null;
-
-    $rootScope.auth.$onAuthStateChanged(function(authData){
-      console.log("Auth data:",authData)
-      $rootScope.authData=authData;
-      if (authData) {
-        Users.getProfile(authData.uid).$loaded().then(function(profileData){
-          $rootScope.rtprofile=profileData;
-        })
-      } else {
-        $rootScope.rtprofile=null;
-      }
-    })
-    console.log("AUTH:",$rootScope.auth)
 
   });

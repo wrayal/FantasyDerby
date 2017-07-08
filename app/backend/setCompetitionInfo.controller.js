@@ -85,7 +85,6 @@ angular.module('FantasyDerbyApp')
     		name: "New tournament",
     		state: "waitingForData",
     		startDateMilli: "1000",
-    		draftable: false,
     		imgSrc: ""
     	}
     	baseRef.child("tournaments").push(tournamentObj)

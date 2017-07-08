@@ -118,7 +118,7 @@ h1 {
 }
 .leaguePage {
   display: inline-block;
-  width: 66%;
+  width: 74%;
   vertical-align: top;
   height: 100%;
   background: #a29999;
@@ -132,7 +132,7 @@ h1 {
   display: inline-block;
   vertical-align: top;
   height: 100%;
-  width: calc(33% - 0px);
+  width: calc(25% - 0.0px);
   overflow-y: scroll;
   overflow-x: none;
   background-color: none;
@@ -231,7 +231,7 @@ td {
   padding: 2px;
 }
 a {
-  color: #770000;
+  color: #803333;
 }
 a:hover {
   color: #990000;
@@ -300,9 +300,9 @@ span.timestamp {
   overflow-y: hidden;
 }
 .fullSquadPane {
-  height: calc(100% - 10px);
+  height: calc(100% - 5px);
   background-color: #bbbbbb;
-  margin-top: 5px;
+  margin-top: 0px;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -344,11 +344,73 @@ select.dndrop {
   color: black;
 }
 .page-wrapper {
-  max-width: 750px;
+  width: calc(75% - 0px);
   margin-right: auto;
   margin-left: auto;
   padding: 0px;
 }
 .page-wrapper .logo-img {
   margin-top: -10px;
+}
+ul.mainNavbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #aa0000;
+  color: white;
+}
+ul.mainNavar:before,
+ul.flNavbar:after {
+  content: "";
+  display: table;
+}
+ul.mainNavbar:after {
+  clear: both;
+}
+.mainNavbar > li {
+  display: inline;
+  float: left;
+}
+.mainNavbar > li > a {
+  display: block;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.mainNavbar > li > a:hover {
+  background-color: #550000;
+}
+.mainNavbar > a {
+  display: block;
+  padding: 8px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.mainNavbar > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #aaaaaa;
+  color: white;
+}
+.mainNavbar > ul > a {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 14px 16px;
+  background-color: #aaaaaa;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+}
+.mainNavbar > ul > a:hover {
+  background-color: #111;
+}
+li.titleNav > a {
+  font-size: 18px;
+  line-height: 20px;
 }

@@ -1,8 +1,12 @@
-<div class="leagueCommonContent">
-	<h1>{{teamListCtrl.teamName}}</h1>
+<div class="page-wrapper">
+	<div class="page-header">
+		<h1>
+			{{indexCtrl.tourData[teamListCtrl.teamName].name}}
+			<span ng-show="!teamListCtrl.teamName">All {{indexCtrl.nameToShow.$value}} teams</span>
+		</h1>
+	</div>
 
 	<span ng-repeat="(key,team) in teamListCtrl.teamList">
 	<a href="" ui-sref="competitions.teamView({teamId:key})">{{team.leagueName}}<span ng-show="team.teamName!=team.leagueName"> - {{team.teamName}}</span></a><br>
 	</span>
-
 </div>

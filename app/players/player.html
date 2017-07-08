@@ -1,3 +1,31 @@
+
+<div class="page-wrapper">
+
+	<div class="page-header">
+		<h1>{{playerCtrl.playerData.name}}</h1>
+		<h4>
+			<a
+				ui-sref="competitions.teamView({teamId:playerCtrl.playerData.team})"
+				href=""
+			>
+				{{playerCtrl.teamData.leagueName}}<span ng-show="playerCtrl.teamData.leagueName!=playerCtrl.teamData.teamName"> - {{playerCtrl.teamData.teamName}}</span>
+			</a>
+		</h4>
+	</div>
+
+	<h3>Rinxter stats</h3>
+	<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+playerCtrl.playerData.name}}" target="_blank">Show this player's stats on Rinxter</a><p />
+
+	<h3>Tournament data</h3>
+	<span ng-hide="playerCtrl.playerData.tournamentData">Awaiting tournament data.</span>
+
+
+
+</div>
+
+
+
+<!--
 PLAYERS YO<br>
 <img ng-src="{{playerCtrl.headshotURL}}" style="width:100px"></img><br>
 Is this the owner? {{playerCtrl.isOwner}}<br>
@@ -18,3 +46,4 @@ Is this the owner? {{playerCtrl.isOwner}}<br>
       	{{playerCtrl.uploadSuccess}}
       </span>
 </form>
+-->

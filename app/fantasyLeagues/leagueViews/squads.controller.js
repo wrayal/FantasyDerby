@@ -3,6 +3,7 @@ angular.module('FantasyDerbyApp')
     squadCtrl=this;
 
     squadCtrl.tourId=$stateParams.sid;
+    squadCtrl.tourData=competitionCtrl.tournamentData[squadCtrl.tourId];
     squadCtrl.squad=squadData;
     squadCtrl.selection=selectionData;
     squadCtrl.fantasyTeams=fantasyTeams;
@@ -18,6 +19,8 @@ angular.module('FantasyDerbyApp')
     squadCtrl.detailedStatus=function() {
       //Easy case first
       if (fantasyLeagueCtrl.leagueData.uniData.status=='forming') return "forming";
+      //Ok, if drafting is possible, let's check if the tournament has data yet!
+      if (squadCtrl.tourData.state=="waitingForData") return "waitingForData";
       //Now check if we need a spot draft from this user
       //We check everyone in their "selected" list and see if any of them is viable
       if (!draftOrder[0]) {
@@ -44,10 +47,11 @@ angular.module('FantasyDerbyApp')
       return "drafting";
     }
     squadCtrl.layout=function(){
-      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming' || squadCtrl.detailedStatus()=='draftCompleted') return "singlePane";
+      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming' || squadCtrl.detailedStatus()=='draftCompleted' || squadCtrl.detailedStatus()=="waitingForData") return "singlePane";
       else return "twoPanes";
     }
     squadCtrl.upperPaneUrl=function(){
+      if (squadCtrl.detailedStatus()=="waitingForData") return "fantasyLeagues/leagueViews/squadViews/waitingForData.html"
       if  (squadCtrl.detailedStatus()=="spotDraft") return "fantasyLeagues/leagueViews/squadViews/spotDraft.html"
       if  (squadCtrl.detailedStatus()=='draftCompleted') return "fantasyLeagues/leagueViews/squadViews/squadsDrafted.html"
       return "fantasyLeagues/leagueViews/squadViews/selection.html"
@@ -60,9 +64,14 @@ angular.module('FantasyDerbyApp')
     squadCtrl.teams={};
     squadCtrl.extraTeams={};
 
+    //Keeps an up to date list of players that have already been drafted
+    //Prevents double-drafting
     squadCtrl.draftedPlayers={};
     squadCtrl.positions=["jammer","doubleThreat","blocker1","blocker2","blocker3"];
     squadCtrl.updateDraftedPlayers=function(){
+      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming') {
+        squadCtrl.draftedPlayers={}; //This is the only way players can be "undrafted"...
+      }
       if (fantasyLeagueCtrl.leagueData.uniData.status!='forming') {
         angular.forEach(fantasyLeagueCtrl.leagueMembers,function(leagueMember,memberKey){
           //For each user, grab the appropriate squad
@@ -121,7 +130,9 @@ angular.module('FantasyDerbyApp')
       angular.forEach(selectionEntryData,function(dataVal,dataKey){
         if (dataKey.split("")[0]!="$") squadCtrl.currentSelection[squadKey][dataKey]=dataVal;
       })
-      squadCtrl.lastSaved=squadCtrl.currentSelection.slice();
+      squadCtrl.lastSaved=[];
+      angular.copy(squadCtrl.currentSelection,squadCtrl.lastSaved);
+      //squadCtrl.lastSaved=squadCtrl.currentSelection.slice();
     })
     squadCtrl.dropped=function(dragEl,dropEl) {
       var source=angular.element(dragEl).attr('whatSource'); //teamData or selectionData
@@ -135,13 +146,13 @@ angular.module('FantasyDerbyApp')
           id: sourcePlayer.id,
           name: sourcePlayer.name,
           number: sourcePlayer.number,
-          position: "jammer"
+          position: "blocker"
         }
 
         if (targetKey==-1) {
           squadCtrl.currentSelection.push(playerObject)
         } else {
-          squadCtrl.currentSelection.splice(targetKey-0+1,0,playerObject)
+          squadCtrl.currentSelection.splice(targetKey-0,0,playerObject)
         }
       } else {
         //Swapping elements in selection
@@ -149,21 +160,28 @@ angular.module('FantasyDerbyApp')
         squadCtrl.currentSelection[sourceKey]=squadCtrl.currentSelection[targetKey]
         squadCtrl.currentSelection[targetKey]=temp;
       }
+      squadCtrl.saveSelection();
       $scope.$apply();
     }
     //And some helper functions
     squadCtrl.deleteSelectionEntry=function(key) {
+      squadCtrl.pastSelections.push(squadCtrl.currentSelection.slice())
       squadCtrl.currentSelection.splice(key,1)
+      squadCtrl.saveSelection()
     }
     squadCtrl.saveSelection=function() {
-      squadCtrl.lastSaved=squadCtrl.currentSelection.slice();
+      console.log("SAVE CALLED!")
+      squadCtrl.lastSaved=[];
+      angular.copy(squadCtrl.currentSelection,squadCtrl.lastSaved);
       Squads.saveSelection(competitionCtrl.cid,fantasyLeagueCtrl.lid,competitionCtrl.profile.$id,squadCtrl.tourId,squadCtrl.currentSelection)
     }
     squadCtrl.undo=function() {
       squadCtrl.currentSelection=squadCtrl.pastSelections.pop().slice();
+      squadCtrl.saveSelection()
     }
-    squadCtrl.checkSaved=function() {
-      return _.isEqual(squadCtrl.lastSaved,squadCtrl.currentSelection);
+    squadCtrl.updatePosition=function() {
+      squadCtrl.pastSelections.push(squadCtrl.lastSaved);
+      squadCtrl.saveSelection();
     }
 
     //This allows the user to copy their selection order from another league
@@ -177,6 +195,7 @@ angular.module('FantasyDerbyApp')
               if (dataKey.split("")[0]!="$") squadCtrl.currentSelection[squadKey][dataKey]=dataVal;
             })
           })
+          squadCtrl.saveSelection();
         })
       }
     }
@@ -188,14 +207,16 @@ angular.module('FantasyDerbyApp')
     squadCtrl.selectedJammers=0;
     squadCtrl.selectedDTs=0;
     squadCtrl.selectedBlockers=0;
+    squadCtrl.selectedPlayers=0;
     squadCtrl.updateSelNumbers=function(){
       squadCtrl.selectedJammers=0
       squadCtrl.selectedDTs=0
       squadCtrl.selectedBlockers=0
+      squadCtrl.selectedPlayers=0
       angular.forEach(squadCtrl.selection,function(selEntry){
-        if (selEntry.position=="jammer") squadCtrl.selectedJammers++;
-        if (selEntry.position=="doubleThreat") squadCtrl.selectedDTs++;
-        if (selEntry.position=="blocker") squadCtrl.selectedBlockers++;
+        if (selEntry.position=="jammer") {squadCtrl.selectedJammers++;squadCtrl.selectedPlayers++};
+        if (selEntry.position=="doubleThreat") {squadCtrl.selectedDTs++;squadCtrl.selectedPlayers++};
+        if (selEntry.position=="blocker") {squadCtrl.selectedBlockers++;squadCtrl.selectedPlayers++};
       })
     }
     squadCtrl.selection.$watch(function(selData){squadCtrl.updateSelNumbers();})
@@ -266,7 +287,7 @@ angular.module('FantasyDerbyApp')
             fantasySelection=fantasySelectionObj.val(); //Current selection for the player
             console.log("Current selection:",fantasySelection)
             succeeded=false;
-            for (i=0; i<fantasySelection.length && !succeeded; i++) {
+            for (i=0; fantasySelection && i<fantasySelection.length && !succeeded; i++) {
               currentPotentialDraft=fantasySelection[i]; //Next one to check
               if (
                 !squadCtrl.draftedPlayers[currentPotentialDraft.id] && (
@@ -301,9 +322,27 @@ angular.module('FantasyDerbyApp')
       })
     }
 
+    //Useful bits for doing spot-drafting
+    squadCtrl.convObj={
+      jammer: "Jammer",
+      doubleThreat: "Double Threat",
+      blocker: "Blocker"
+    }
     squadCtrl.spotDraftPosition="";
-    squadCtrl.spotDraft=function(pid,playerName) {
+    squadCtrl.spotDraft=function(pid,playerName,playerNumber) {
       squadData.$loaded().then(function(){ //make sure it's up to date....
+
+        //Add it to their selection list in case they want to copy to another league
+        playerObject={
+          id: pid,
+          name: playerName,
+          number: playerNumber,
+          position: squadCtrl.spotDraftPosition
+        }
+        squadCtrl.currentSelection.push(playerObject)
+        squadCtrl.saveSelection();
+
+        //Then do the draft
         if (squadCtrl.spotDraftPosition=="jammer" || squadCtrl.spotDraftPosition=="doubleThreat") {
           squadCtrl.doDraft(pid,squadCtrl.spotDraftPosition,competitionCtrl.uid,false,playerName)
         } else if (squadData.blocker1=="") {
@@ -313,6 +352,7 @@ angular.module('FantasyDerbyApp')
         } else {
           squadCtrl.doDraft(pid,"blocker3",competitionCtrl.uid,false,playerName)
         }
+        squadCtrl.spotDraftPosition="";
       })
     }
   	

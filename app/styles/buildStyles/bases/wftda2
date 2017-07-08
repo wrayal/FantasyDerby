@@ -1,3 +1,4 @@
 @basecolormain:#0000ff;
+@basecolorlink:#0000ff;
 @basecolorsecondary:#000000;
 @basecolortrim:#e5e5e5;

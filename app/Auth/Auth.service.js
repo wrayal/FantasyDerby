@@ -1,10 +1,10 @@
 angular.module('FantasyDerbyApp')
-	.factory('Auth',function(firebase,$location,$rootScope,Users,$location,$firebaseAuth,$state){
+	.factory('Auth',function(firebase,$location,Users,$location,$firebaseAuth,$state){
 
 		var Auth={
 			login: function(){
                 var provider = new firebase.auth.FacebookAuthProvider();
-				$rootScope.auth.$signInWithPopup(provider).then(function(firebaseUser) {
+				$firebaseAuth().$signInWithPopup(provider).then(function(firebaseUser) {
     				//Ok, great, we logged in correctly.
     				//We have another onAuth function (in app.js) to handle generic login stuff
     				//Here we just need to see if they are a completely new user and act appropriately
@@ -24,7 +24,7 @@ angular.module('FantasyDerbyApp')
   				});
 			},
 			logout: function() {
-				$rootScope.auth.$signOut();
+				$firebaseAuth().$signOut();
                 $state.go("home")
 			},
             auth: $firebaseAuth()

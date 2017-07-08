@@ -1,12 +1,18 @@
 angular.module('FantasyDerbyApp')
-  .controller('PlayerCtrl', function(isOwner,playerData,$firebaseObject,$scope) {
+  .controller('PlayerCtrl', function(isOwner,playerData,$firebaseObject,$scope,Teams) {
   	playerCtrl=this;
 
     playerCtrl.isOwner=isOwner;
     playerCtrl.playerData=playerData;
-    storage=firebase.storage();
+
+    playerCtrl.teamData=Teams.getTeamData(playerData.team);
+
     
     console.log("Player data",playerData.$id)
+
+    //All the upload-y stuff I don't care about for the moment:
+    /*
+    storage=firebase.storage();
 
     playerCtrl.headshotRef=storage.ref('playerPictures/'+(playerData.$id)+'.jpg');
 
@@ -57,6 +63,7 @@ angular.module('FantasyDerbyApp')
         playerCtrl.getHeadshot();
       })
     }
+    */
 
 
   });

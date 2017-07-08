@@ -1,6 +1,28 @@
 <div class="leftHalfPane">
-	<b>Preferred draft order selection</b><br>
-	Select a team:<br>
+	<b ng-style="{
+		'background':squadCtrl.currentSelectionPrime?'none':'green',
+		'font-size':squadCtrl.currentSelectionPrime?'normal':'medium'
+		}">
+		Preferred draft order selection
+	</b>
+	<br>
+	<span ng-hide="squadCtrl.currentSelectionPrime">
+		Here you can create a preferred drafting order, from which an auto-draft will be conducted.
+	</span>
+	<!--This is the functionality to allow copying from existing fantasy leagues-->
+	<div ng-show="!squadCtrl.currentSelection.length">
+		Either copy from an existing league:
+		<select ng-model="squadCtrl.sourceLeague">
+			<option ng-repeat="(leagueKey,leagueVal) in competitionCtrl.myLeagues" ng-if="leagueKey!=fantasyLeagueCtrl.lid" value="{{leagueKey}}">
+				{{leagueVal}}
+			</option>
+		</select>
+		<input type="button" value="Copy" ng-click="squadCtrl.copyFromExisting()"><br>
+		Or select a team from which to draft a player:<br>
+	</div>
+	<div ng-show="squadCtrl.currentSelection.length">
+		Select a team:
+	</div>
 
 	<!--Code for selecting a team and linking to Rinxter/FTS-->
 	<select ng-model="squadCtrl.currentSelectionPrime" ng-change="squadCtrl.switchTeamSelect()">
@@ -25,16 +47,24 @@
 	<!--And links for either as appropriate-->
 	<a href="{{'http://flattrackstats.com/search/'+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
 		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		target="_blank"
 	>
 		<img src="images/fts-logo.png" style="height:15px"></img>
 	</a>
 	<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
 		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		target="_blank"
 	>
 		<img src="images/RinxterLett.png" style="height:15px"></img>
-	</a><br>
+	</a>
+	<a href="" 
+		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		ui-sref="competitions.teamView({teamId:squadCtrl.currentSelectionTeam})"
+		target="_blank"
+		style="font-size:x-small;color:white">stats</a>
+	<br>
 	<span ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName">
-		Please click and drag a player to the right:
+		Please click and drag a player to the table to the right:
 	</span><br>
 
 	<!--And the table of players-->
@@ -50,7 +80,16 @@
 			</td>
 			<td
 				ng-hide="squadCtrl.draftedPlayers[player.id]">
-				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+				<a 
+					href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"
+					target="_blank"
+				>
+					<img src="images/RinxterLett.png" style="height:15px"></img>
+				</a>
+			</td>
+			<td
+				ng-hide="squadCtrl.draftedPlayers[player.id]">
+				<a href="" target="_blank" ui-sref="competitions.player({pid:player.id})" style="font-size:x-small">stats</img></a>
 			</td>
 
 			<td x-lvl-draggable="true"
@@ -67,6 +106,12 @@
 				>
 				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
 			</td>
+			<td
+				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy==competitionCtrl.uid"
+				style="background:green;color:white"
+				>
+				<a href="" target="_blank" ui-sref="competitions.player({pid:player.id})" style="font-size:x-small;color:white">stats</img></a>
+			</td>
 
 			<td x-lvl-draggable="true"
 				whatSource="teamData"
@@ -80,7 +125,13 @@
 				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy!=competitionCtrl.uid"
 				style="background:red;color:white"
 				>
-				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+				<a target="_blank" href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+			</td>
+			<td
+				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy!=competitionCtrl.uid"
+				style="background:red;color:white"
+				>
+				<a href="" target="_blank" ui-sref="competitions.player({pid:player.id})" style="font-size:x-small;color:white">stats</img></a>
 			</td>
 
 		</tr>
@@ -88,33 +139,26 @@
 </div>
 
 <div class="rightHalfPane">
-	<b>Current selection</b><br>
-	<!--This is the functionality to allow copying from existing fantasy leagues-->
-	<div ng-show="!squadCtrl.currentSelection.length">
-		Copy from existing league:
-		<select ng-model="squadCtrl.sourceLeague">
-			<option ng-repeat="(leagueKey,leagueVal) in competitionCtrl.myLeagues" ng-if="leagueKey!=fantasyLeagueCtrl.lid" value="{{leagueKey}}">
-				{{leagueVal}}
-			</option>
-		</select>
-		<input type="button" value="copy" ng-click="squadCtrl.copyFromExisting()">
-	</div>
+	<b>Current selection</b> <font style="font-size:x-small;color:grey">all changes autosaved</font><br>
 
 	<!--And this is the dropping interface and its controls:-->
-	<input type="button" value="&#10226;" ng-click="squadCtrl.undo()" ng-disabled="!squadCtrl.pastSelections.length">&nbsp;
-	<input type="button" value="Save selection" ng-click="squadCtrl.saveSelection()">
-	<span ng-hide="squadCtrl.checkSaved()" style="color:red">Selection unsaved</span>
-	<br>
-	<font
-		ng-style="{'color':(squadCtrl.selectedJammers<squadCtrl.maxJammers?'red':'green')}"
-	>Jammers selected: {{squadCtrl.selectedJammers}} of {{squadCtrl.maxJammers}}</font>
-		<font style="font-size:x-small">(recommended)</font><br>
-	<font 
-		ng-style="{'color':(squadCtrl.selectedDTs<squadCtrl.maxDTs?'red':'green')}"
-	>Double threats selected: {{squadCtrl.selectedDTs}} of {{squadCtrl.maxDTs}}</font><br>
-	<font 
-		ng-style="{'color':(squadCtrl.selectedBlockers<squadCtrl.maxBlockers?'red':'green')}"
-	>Blockers selected: {{squadCtrl.selectedBlockers}} of {{squadCtrl.maxBlockers}}</font>
+	<div ng-show="squadCtrl.pastSelections.length">
+		<input type="button" value="Undo" ng-click="squadCtrl.undo()" >&nbsp;
+		<br>
+	</div>
+
+	<div ng-show="squadCtrl.selectedPlayers">
+		<font
+			ng-style="{'color':(squadCtrl.selectedJammers<squadCtrl.maxJammers?'red':'green')}"
+		>Jammers selected: {{squadCtrl.selectedJammers}} of {{squadCtrl.maxJammers}}</font>
+			<font style="font-size:x-small;color:grey">recommended</font><br>
+		<font 
+			ng-style="{'color':(squadCtrl.selectedDTs<squadCtrl.maxDTs?'red':'green')}"
+		>Double threats selected: {{squadCtrl.selectedDTs}} of {{squadCtrl.maxDTs}}</font><br>
+		<font 
+			ng-style="{'color':(squadCtrl.selectedBlockers<squadCtrl.maxBlockers?'red':'green')}"
+		>Blockers selected: {{squadCtrl.selectedBlockers}} of {{squadCtrl.maxBlockers}}</font>
+	</div>
 	<table  class="dndTable">
 		<tr ng-repeat="(key,value) in squadCtrl.currentSelection"
 			x-lvl-draggable='true'
@@ -149,7 +193,7 @@
 			</td>
 
 			<td>
-				<select ng-model="squadCtrl.currentSelection[key].position" class="dndrop">
+				<select ng-model="squadCtrl.currentSelection[key].position" class="dndrop" ng-change="squadCtrl.updatePosition()">
 					<option value="jammer">
 						Jammer
 					</option>
@@ -163,6 +207,24 @@
 			</td>
 			<td>
 				<a href="" ng-click="squadCtrl.deleteSelectionEntry(key)"><img src="images/delete.png" style="width:20px"></img></a>
+			</td>
+		</tr>
+		<tr x-lvl-draggable='true'
+			x-lvl-drop-target="true"
+			x-on-drop="squadCtrl.dropped(dragEl, dropEl)"
+			whatSource="selectionData"
+			whatKey="-1"
+			ng-show="squadCtrl.currentSelection.length"
+		>
+			<td >
+				
+			</td>
+			<td>
+				Drag and drop players here...
+			</td>
+			<td>
+			</td>
+			<td>
 			</td>
 		</tr>
 		<tr x-lvl-draggable='true'
