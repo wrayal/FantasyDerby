@@ -17,10 +17,10 @@ angular.module('FantasyDerbyApp')
     //3) ...or doing your own spot-draft + seeing drafts [two panes]
     //4) Once all drafts are finished we just want to show the drafts [one pane]
     squadCtrl.detailedStatus=function() {
-      //Easy case first
-      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming') return "forming";
       //Ok, if drafting is possible, let's check if the tournament has data yet!
       if (squadCtrl.tourData.state=="waitingForData") return "waitingForData";
+      //Easy case second
+      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming') return "forming";
       //Now check if we need a spot draft from this user
       //We check everyone in their "selected" list and see if any of them is viable
       if (!draftOrder[0]) {

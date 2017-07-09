@@ -2,7 +2,7 @@
 
   <!-- The main masthead -->
   <li class="dropdown titleNav">
-    <a href="" ng-hide="indexCtrl.profile">Fantasy Roller Derby</a>
+    <a ng-hide="indexCtrl.profile">Fantasy Roller Derby</a>
     <a href="" ng-show="indexCtrl.profile" class="dropdown-toggle" data-toggle="dropdown">
       <span ng-show="indexCtrl.nameToShow">
         FRD: {{indexCtrl.nameToShow.$value}}
@@ -116,6 +116,7 @@
     <ul class="dropdown-menu derbyNavbar">
       <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
       <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
+      <li><a href="" ui-sref="blogMessages">Write Blog messages</a></li>
       <li><a href="" ui-sref="narwhalParse">Edit Narwhal messages</a></li>
       <li><a href="" ui-sref="adminContact">Respond to contact messages</a></li>
       <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
@@ -123,8 +124,9 @@
   </li>
 
   <!-- Dive in/logout menu -->
-  <li class="dropdown titleNav" style="padding-left:50px">
-    <a href="" ng-hide="indexCtrl.authData" ng-click="indexCtrl.login()">Dive in!</a>
+  <!--<li class="dropdown titleNav" style="padding-left:50px">-->
+  <li class="dropdown titleNav" style="float:right;margin-right:10px">
+    <a href="" ng-hide="indexCtrl.authData" ng-click="indexCtrl.login()" style="background:#bb0000;color:#ffffff">Dive in!</a>
     <a href="" ng-show="indexCtrl.authData && !indexCtrl.profile" ng-click="indexCtrl.logout()">Logout</a>
     <a href="" ng-show="indexCtrl.authData && indexCtrl.profile" class="dropdown-toggle" data-toggle="dropdown" style="float:right">
       <span>

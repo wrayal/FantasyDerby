@@ -27,6 +27,35 @@ angular.module('FantasyDerbyApp')
       FantasyLeagues.setMembership(key,newState,competitionCtrl.cid,fantasyLeagueCtrl.leagueData.$id)
     }
 
+    //A little function to tell us how many people a user has selected
+    fantasyLeagueCtrl.getSelected=function(memberKey,tournamentKey) {
+      if (
+        fantasyLeagueCtrl.leagueData.fantasySelections &&
+        fantasyLeagueCtrl.leagueData.fantasySelections[memberKey] &&
+        fantasyLeagueCtrl.leagueData.fantasySelections[memberKey][tournamentKey]
+        ) {
+        return fantasyLeagueCtrl.leagueData.fantasySelections[memberKey][tournamentKey].length;
+      } else {
+        return 0
+      }
+    }
+    fantasyLeagueCtrl.getDrafted=function(memberKey,tournamentKey) {
+      if (
+        fantasyLeagueCtrl.leagueData.fantasyTeams &&
+        fantasyLeagueCtrl.leagueData.fantasyTeams[memberKey] &&
+        fantasyLeagueCtrl.leagueData.fantasyTeams[memberKey][tournamentKey]
+        ) {
+        curTeam=fantasyLeagueCtrl.leagueData.fantasyTeams[memberKey][tournamentKey];
+        return (curTeam["blocker1"]==""?0:1)+
+                (curTeam["blocker2"]==""?0:1)+
+                (curTeam["blocker3"]==""?0:1)+
+                (curTeam["jammer"]==""?0:1)+
+                (curTeam["doubleThreat"]==""?0:1)
+      } else {
+        return 0;
+      }
+    }
+
     //This is an ng-show-called function to check if a given user should be allowed to be removed
     fantasyLeagueCtrl.showAllowRemoval=function(userId) {
       if (fantasyLeagueCtrl.leagueData.uniData.status!='forming') return false;

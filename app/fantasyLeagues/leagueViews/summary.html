@@ -28,5 +28,25 @@
 		If you have <b>no remaining</b> eligible draft options, you will be able to select a draft <b>directly</b>.
 
 		Players may <b>no longer</b> be added to the league.
-	</div>
+	</div><p />
+	<center>
+		<table class="standardTable">
+			<tr>
+				<td class="genHeader">Username</td>
+				<td class="genHeader">Team name</td>
+				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry"  class="genHeader">
+					{{competitionCtrl.tournamentData[tourKey].name}}
+				</td>
+			</tr>
+			<tr ng-repeat="(memberKey,memberData) in fantasyLeagueCtrl.leagueMembers">
+				<td>{{memberData.username.$value}}</td>
+				<td>{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberKey].name}}</td>
+				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry">
+					Selected: {{fantasyLeagueCtrl.getSelected(memberKey,tourKey)}}
+					<br>
+					Drafted: {{fantasyLeagueCtrl.getDrafted(memberKey,tourKey)}}/5
+				</td>
+			</tr>
+		</table>
+	</center>
 </div>

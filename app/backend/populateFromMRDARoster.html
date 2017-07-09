@@ -2,7 +2,7 @@
 Input roster data here (from team name down to last skater) then click button below<br>
 <textarea cols="60" rows="10" ng-model="mrdaPopCtrl.rosterData"></textarea><br>
 <input type=button ng-click="mrdaPopCtrl.processCharter()" value="Process Data"><p />
-
+<font style="color:red"><b>{{mrdaPopCtrl.errorMessage}}</b></font><p />
 <div ng-show="mrdaPopCtrl.leagueName">
 	<b>League name:</b> {{mrdaPopCtrl.leagueName}}<br>
 	<b>Team name:</b> {{mrdaPopCtrl.teamName}}<p />

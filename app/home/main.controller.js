@@ -1,8 +1,9 @@
 angular.module('FantasyDerbyApp')
-  .controller('MainCtrl', function ($firebaseArray,$firebaseObject,Auth) {
+  .controller('MainCtrl', function ($firebaseArray,$firebaseObject,Auth,BlogMessages) {
     mainCtrl=this;
 
     mainCtrl.narwhalMessage;
+    mainCtrl.blogMessages=BlogMessages.getBlogData("frontPage")
 
     Auth.auth.$requireSignIn().then(function(){
     	console.log("AM IN")

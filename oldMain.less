@@ -43,8 +43,7 @@ h1 {
   padding-top: 0px; /*Formerly 19px*/
   color: #ffffff; /*Formerly #777*/
   border-top: 0px solid @basecolortrim;
-  background: multiply(#aaaaaa,@basecolormain);
-  font-size: x-small;
+  background: multiply(#aaaaaa,@basecolormain)
 }
 
 .container-narrow > hr {
@@ -128,8 +127,7 @@ h1 {
 }
 
 .fantasyLeagueMain {
-  height: 100%;
-  overflow-y: scroll;
+  height:100%;
   background-color: average(#eee,screen(#eee,@basecolormain));
 }
 
@@ -166,18 +164,9 @@ html, body{
 }
 
 .mainViewContainer {
+  height: ~"calc(100% - 100px)";
   overflow-y:scroll;
   background-color:#fff
-}
-
-#wrapper {
-  display: flex;  /* use the flex model */
-  height: 100%;
-  flex-direction: column;  /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
-}
-
-#body {
-  flex: 1;
 }
 
 .leagueContent {
@@ -213,7 +202,7 @@ ul.flNavbar:after{clear:both;}
   padding: 8px;
   color:white;
   text-align:center;
-  padding: 10px 12px;
+  padding: 14px 16px;
   text-decoration:none;
 }
 .flNavbar > li > a:hover {
@@ -257,7 +246,7 @@ ul.flNavbar:after{clear:both;}
 }
 
 .standardTable > th,td{
-  border: 2px solid average(#ffffff,average(#ffffff,average(#ffffff,multiply(#ffffff,@basecolorlink))));
+  border: 2px solid #999;
   padding:2px;
 }
 
@@ -316,6 +305,7 @@ span.timestamp {
   font-size: x-small;
 }
 
+
 .upperSquadPane {
   height: ~"calc(50% - 5px)";
   background-color:#bbbbbb;
@@ -327,17 +317,6 @@ span.timestamp {
   padding-top:5px;
   padding-bottom:5px;
   overflow-y: scroll;
-  width: 100%;
-}
-
-.paneSplit {
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  overflow-y: scroll;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
 }
 
 .lowerSquadPane {
@@ -361,12 +340,10 @@ span.timestamp {
   margin-right:5px;
   margin-bottom:5px;
   padding:5px;
-  display: flex;
-  flex-direction: row;
 }
 
 .leftHalfPane {
-  /*width: ~"calc(300px - 5px)";*/
+  width: ~"calc(300px - 5px)";
   height: ~"calc(100% - 0px)";
   float:left;
   margin-right:5px;
@@ -375,8 +352,7 @@ span.timestamp {
 }
 
 .rightHalfPane {
-  /*width: ~"calc(100% - 300px - 5px)";*/
-  flex: 1;
+  width: ~"calc(100% - 300px - 5px)";
   height: ~"calc(100% - 0px)";
   float:left;
   margin-right:5px;
@@ -439,7 +415,7 @@ ul.mainNavbar:after{clear:both;}
   padding: 8px;
   color:white;
   text-align:center;
-  padding: 11px 13px;
+  padding: 14px 16px;
   text-decoration:none;
 }
 .mainNavbar > li > a:hover {

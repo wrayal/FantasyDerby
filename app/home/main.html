@@ -16,6 +16,23 @@
 
   FRD is a roller derby incarnation of the classic <a href="https://en.wikipedia.org/wiki/Fantasy_football_(American)">fantasy football game.</a> You can get started immediately by clicking "Dive in!" in the top right - you log in using a Facebook account. Then just have a rummage around. Invite your friends!<p />
 
-  <span ng-show="homeCtrl.updateDetails.timeStamp">Scores last updated: {{homeCtrl.updateDetails.timeStamp | date:'short'}} <span ng-show="homeCtrl.updateDetails.message">({{homeCtrl.updateDetails.message}})</span></span>
+  <h3>Latest Updates</h3>
+  <div ng-repeat="(key,value) in mainCtrl.blogMessages | orderObjectBy:'timestamp':true" 
+    ng-style="{
+      'width':'100%',
+      'background':'#cccccc',
+      'float':'left',
+      'border-radius':'5px',
+      'padding':'10px',
+      'margin-top':'5px',
+      'margin-bottom':'5px'
+    }"
+  >
+    <b>{{value.title}}</b><br>
+      {{value.message}}<br>
+    <font style="font-size:x-small">{{value.timestamp | date:'short'}}</font>
+  </div>
+
+
 
 </div>

@@ -40,6 +40,7 @@ h1 {
   /*Formerly #777*/
   border-top: 0px solid #e5e5e5;
   background: #0000aa;
+  font-size: x-small;
 }
 .container-narrow > hr {
   margin: 0px 0;
@@ -114,6 +115,7 @@ h1 {
 }
 .fantasyLeagueMain {
   height: 100%;
+  overflow-y: scroll;
   background-color: #eeeef7;
 }
 .leaguePage {
@@ -146,13 +148,24 @@ body {
   height: 100%;
 }
 .mainViewContainer {
-  height: calc(100% - 100px);
   overflow-y: scroll;
   background-color: #fff;
+}
+#wrapper {
+  display: flex;
+  /* use the flex model */
+  height: 100%;
+  flex-direction: column;
+  /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
+}
+#body {
+  flex: 1;
 }
 .leagueContent {
   padding-top: 5px;
   height: calc(100% - 48px);
+  /*display: table-row;
+  height:100%;*/
 }
 .leagueCommonContent {
   padding: 10px;
@@ -185,7 +198,7 @@ ul.flNavbar:after {
   padding: 8px;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  padding: 10px 12px;
   text-decoration: none;
 }
 .flNavbar > li > a:hover {
@@ -227,7 +240,7 @@ ul.flNavbar:after {
 }
 .standardTable > th,
 td {
-  border: 2px solid #999;
+  border: 2px solid #dfdfff;
   padding: 2px;
 }
 a {
@@ -286,6 +299,16 @@ span.timestamp {
   padding-top: 5px;
   padding-bottom: 5px;
   overflow-y: scroll;
+  width: 100%;
+}
+.paneSplit {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow-y: scroll;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 .lowerSquadPane {
   height: calc(50% - 5px);
@@ -307,9 +330,11 @@ span.timestamp {
   margin-right: 5px;
   margin-bottom: 5px;
   padding: 5px;
+  display: flex;
+  flex-direction: row;
 }
 .leftHalfPane {
-  width: calc(300px - 5px);
+  /*width: ~"calc(300px - 5px)";*/
   height: calc(100% - 0px);
   float: left;
   margin-right: 5px;
@@ -317,7 +342,8 @@ span.timestamp {
   overflow-y: scroll;
 }
 .rightHalfPane {
-  width: calc(100% - 300px - 5px);
+  /*width: ~"calc(100% - 300px - 5px)";*/
+  flex: 1;
   height: calc(100% - 0px);
   float: left;
   margin-right: 5px;
@@ -360,7 +386,7 @@ ul.mainNavbar {
   color: white;
 }
 ul.mainNavar:before,
-ul.flNavbar:after {
+ul.mainNavbar:after {
   content: "";
   display: table;
 }
@@ -376,7 +402,7 @@ ul.mainNavbar:after {
   padding: 8px;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  padding: 11px 13px;
   text-decoration: none;
 }
 .mainNavbar > li > a:hover {

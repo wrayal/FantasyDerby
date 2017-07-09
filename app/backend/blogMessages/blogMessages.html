@@ -1,0 +1,48 @@
+<div class="page-wrapper">
+	<div class="page-header">
+		<h1>
+			Blog messages
+		</h1>
+	</div>
+
+	<select ng-model="blogMessagesCtrl.whichBlog" ng-change="blogMessagesCtrl.updateBlogData()">
+		<option value="frontPage">
+			Home page
+		</option>
+    	<option ng-repeat="(compKey,compData) in blogMessagesCtrl.comps" value="{{compKey}}">
+        	{{compData.shortName}}
+    	</option>
+    </select><p />
+
+    <div ng-show="blogMessagesCtrl.whichBlog">
+    	<b>Title:</b><br>
+    	<input type="text" ng-model="blogMessagesCtrl.post.title"><p />
+
+    	<b>Message:</b><br>
+    	<textarea rows=6 cols=50 ng-model="blogMessagesCtrl.post.message"></textarea><br>
+    	<input type="button" value="Post blog" ng-click="blogMessagesCtrl.postBlog()">
+    </div>
+
+    <h1 ng-hide="blogMessagesCtrl.whichBlog=='frontPage'">
+    	{{blogMessagesCtrl.comps[blogMessagesCtrl.whichBlog].shortName}}
+    </h1>
+    <h1 ng-show="blogMessagesCtrl.whichBlog=='frontPage'">
+    	Front Page
+    </h1>
+
+     <div ng-repeat="(key,value) in blogMessagesCtrl.messagesData | orderObjectBy:'timestamp':true" 
+        ng-style="{
+          'width':'100%',
+          'background':value.sender!='user'?'#cccccc':'#aaaaee',
+          'float':value.sender!='user'?'right':'left',
+          'border-radius':'5px',
+          'padding':'10px',
+          'margin':'5px'
+          }"
+      >
+      <b>{{value.title}}</b> &nbsp; <a href="" style="font-size:x-small" ng-click="blogMessagesCtrl.deletePost(value.$filtKey)">delete</a>
+      <br>
+      {{value.message}}<br>
+      <font style="font-size:x-small">{{value.timestamp | date:'short'}}</font>
+    </div>
+</div>

@@ -1,22 +1,24 @@
-<div class="leftHalfPane">
-	<div style="background:red;width:100%;padding:2px" ng-show="fantasyLeagueCtrl.amCommissioner &&  squadCtrl.detailedStatus()!='forming'">
-		<b>Admin-only</b><br>
-		<input type="button" ng-click="squadCtrl.autoDraft()" value="Start auto-draft for this league."><br>
-		<font style="color:green" ng-show="squadCtrl.autoDraftStatus"><b>{{squadCtrl.autoDraftStatus}}</b><br></font>
-		<input type="button" value="Skip {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}" ng-click="squadCtrl.skipDraft()">
+<div class="paneSplit">
+	<div class="leftHalfPane">
+		<div style="background:red;width:100%;padding:2px" ng-show="fantasyLeagueCtrl.amCommissioner &&  squadCtrl.detailedStatus()!='forming'">
+			<b>Admin-only</b><br>
+			<input type="button" ng-click="squadCtrl.autoDraft()" value="Start auto-draft for this league."><br>
+			<font style="color:green" ng-show="squadCtrl.autoDraftStatus"><b>{{squadCtrl.autoDraftStatus}}</b><br></font>
+			<input type="button" value="Skip {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}" ng-click="squadCtrl.skipDraft()">
 
+		</div>
+		<b>Draft order</b>
+		<table>
+			<tr ng-repeat="(key,entry) in squadCtrl.draftOrder" ng-style="{'color':(key==0?'green':(key==1?'blue':'black'))}">
+				<td>
+					{{key-0+1}}
+				</td>
+				<td>
+					{{fantasyLeagueCtrl.leagueMembers[entry].username.$value}}
+				</td>
+			</tr>
+		</table>
 	</div>
-	<b>Draft order</b>
-	<table>
-		<tr ng-repeat="(key,entry) in squadCtrl.draftOrder" ng-style="{'color':(key==0?'green':(key==1?'blue':'black'))}">
-			<td>
-				{{key-0+1}}
-			</td>
-			<td>
-				{{fantasyLeagueCtrl.leagueMembers[entry].username.$value}}
-			</td>
-		</tr>
-	</table>
-</div>
-<div class="rightHalfPane" data-ng-include="'fantasyLeagues/leagueViews/squadViews/squadsDrafted.html'">
+	<div class="rightHalfPane" data-ng-include="'fantasyLeagues/leagueViews/squadViews/squadsDrafted.html'">
+	</div>
 </div>

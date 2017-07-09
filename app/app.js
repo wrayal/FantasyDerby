@@ -159,7 +159,12 @@ angular
       .state('mrdaPopulate', {
         url: '/mrdaPopulate',
         templateUrl: 'backend/populateFromMRDARoster.html',
-        controller: 'MRDAPopCtrl as mrdaPopCtrl'
+        controller: 'MRDAPopCtrl as mrdaPopCtrl',
+        resolve: {
+          affiliatedTeams: function(Teams) {
+            return Teams.getAffiliatedTeams("mrda").$loaded();
+          }
+        }
       })
       .state('wftdaPopulate', {
         url: '/wftdaPopulate',
@@ -175,6 +180,11 @@ angular
         url: '/adminContact',
         templateUrl: 'backend/contact/adminContact.html',
         controller: 'AdminContactCtrl as adminContactCtrl'
+      })
+      .state('blogMessages', {
+        url: '/blogMessages',
+        templateUrl: 'backend/blogMessages/blogMessages.html',
+        controller: 'BlogMessagesCtrl as blogMessagesCtrl'
       })
       .state('competitions.setCompInfo', {
         url: '/compInfo',

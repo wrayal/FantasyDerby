@@ -19,23 +19,36 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- HEADER -->
-    <div data-ng-include="'indexMenu.html'" class="header"></div>
-
-
-
-    <!-- MAIN BODY -->
-    <div class="container mainViewContainer">
-      <ui-view></ui-view>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="container">
-        <div style="width:100%;text-align:center">
-          All characters and events depicted on this website - even those based on real people - are entirely fictional. Due to its content it should not be viewed by anyone.
+    <div id="wrapper">
+        <!-- HEADER -->
+        <div 
+            data-ng-include="'indexMenu.html'" 
+            class="header"
+            id="header"
+            >
         </div>
-      </div>
+
+
+
+        <!-- MAIN BODY -->
+        <div 
+            class="container mainViewContainer"
+            id="body"
+            >
+          <ui-view></ui-view>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer"
+            id="footer"
+        >
+          <div class="container">
+            <div style="width:100%;text-align:center">
+              All characters and events depicted on this website - even those based on real people - are entirely fictional. Due to its content it should not be viewed by anyone.
+            </div>
+          </div>
+        </div>
+
     </div>
 
 
@@ -83,6 +96,7 @@
         <script src="dragdrop.directive.js"></script>
         <script src="orderObjectBy.filter.js"></script>
 
+        <script src="blogMessages.service.js"></script>
         <script src="uuid.service.js"></script>
         
         <script src="home/main.controller.js"></script>
@@ -114,6 +128,7 @@
         <script src="backend/narwhalParsing/narwhal.controller.js"></script>
         <script src="backend/contact/adminContact.controller.js"></script>
         <script src="backend/setCompetitionInfo.controller.js"></script>
+        <script src="backend/blogMessages/blogMessages.controller.js"></script>
 
         <script src="fantasyLeagues/fantasyLeagues.service.js"></script>
         <script src="fantasyLeagues/leagueMessages.service.js"></script>
