@@ -73,17 +73,12 @@ angular.module('FantasyDerbyApp')
     //And prevent repeat firebase calls
     fantasyLeagueCtrl.leagueMembers={};
     fantasyLeagueCtrl.acceptedMembers={};
+    fantasyLeagueCtrl.requests=false; //Are there any unanswered membership requests?
     fantasyLeagueCtrl.updateLeagueMemberData=function(){
       fantasyLeagueCtrl.leagueMembers={};
       fantasyLeagueCtrl.acceptedMembers={};
+      fantasyLeagueCtrl.requests=false;
       angular.forEach(fantasyLeagueCtrl.leagueData.members,function(curMember,key,LeagueMessages){
-        /*if (!fantasyLeagueCtrl.leagueMembers[key] || fantasyLeagueCtrl.leagueMembers[key].member!=true) {
-          fantasyLeagueCtrl.leagueMembers[key]={
-            username: Users.getUsername(key),
-            presence: Users.getPresence(key),
-            member: fantasyLeagueCtrl.leagueData.members[key]
-          }
-        }*/
         memberObj={
             username: Users.getUsername(key),
             presence: Users.getPresence(key),
@@ -91,6 +86,7 @@ angular.module('FantasyDerbyApp')
           };
         fantasyLeagueCtrl.leagueMembers[key]=memberObj;
         if (fantasyLeagueCtrl.leagueMembers[key].member==true) fantasyLeagueCtrl.acceptedMembers[key]=memberObj;
+        if (fantasyLeagueCtrl.leagueMembers[key].member==false) fantasyLeagueCtrl.requests=true;
       })
     }
     console.log("MEMBERS",fantasyLeagueCtrl.leagueMembers)
