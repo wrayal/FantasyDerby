@@ -169,6 +169,16 @@ angular
           }
         }
       })
+      .state('viewUsers', {
+        url: '/backend/viewUsers',
+        templateUrl: 'backend/viewUsers/viewUsers.html',
+        controller: 'ViewUsersCtrl as viewUsersCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("mrda populate");
+          }
+        }
+      })
       .state('wftdaPopulate', {
         url: '/wftdaPopulate',
         templateUrl: 'backend/populateFromWFTDARoster.html',

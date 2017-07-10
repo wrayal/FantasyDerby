@@ -1,0 +1,22 @@
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <h1>View Users</h1>
+  </div>
+
+  <div ng-repeat="(userKey,userData) in viewUsersCtrl.users | orderObjectBy:'displayName':false" class="repeatedDivs" >
+    <b>{{userKey+1}}: {{userData.displayName}}</b><br>
+    Name: {{userData.data.name}}<br>
+    <img src="{{userData.data.display}}"></img>
+    <div style="margin-left:10px">
+    <span ng-repeat="(tournamentKey,tournamentMembership) in userData.leagueMembership">
+      <span ng-repeat="entry in tournamentMembership.asCommissioner">
+        <font style="color:red">{{entry}}</font><br>
+      </span>
+      <span ng-repeat="entry in tournamentMembership.asPlayer">
+        <font style="color:green">{{entry}}</font><br>
+      </span>
+    </span>
+    </div>
+  </div>
+</div>

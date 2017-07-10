@@ -29,6 +29,9 @@ angular.module('FantasyDerbyApp')
 			},
 			getPresence: function(uid) {
 				return $firebaseObject(userPresRef.child(uid))
+			},
+			getAllUsers: function() { //To be used sparingly - could be a lot of data!
+				return $firebaseObject(usersRef);;
 			}
 		};
 
