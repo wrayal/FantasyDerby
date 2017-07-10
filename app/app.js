@@ -163,28 +163,51 @@ angular
         resolve: {
           affiliatedTeams: function(Teams) {
             return Teams.getAffiliatedTeams("mrda").$loaded();
+          },
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("mrda populate");
           }
         }
       })
       .state('wftdaPopulate', {
         url: '/wftdaPopulate',
         templateUrl: 'backend/populateFromWFTDARoster.html',
-        controller: 'WFTDAPopCtrl as wftdaPopCtrl'
+        controller: 'WFTDAPopCtrl as wftdaPopCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("wftda populate");
+          }
+        }
       })
       .state('narwhalParse', {
         url: '/narwhalParse',
         templateUrl: 'backend/narwhalParsing/narwhal.html',
-        controller: 'NarwhalCtrl as narwhalCtrl'
+        controller: 'NarwhalCtrl as narwhalCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("Narwhal parse");
+          }
+        }
       })
       .state('adminContact', {
         url: '/adminContact',
         templateUrl: 'backend/contact/adminContact.html',
-        controller: 'AdminContactCtrl as adminContactCtrl'
+        controller: 'AdminContactCtrl as adminContactCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("Admin contact");
+          }
+        }
       })
       .state('blogMessages', {
         url: '/blogMessages',
         templateUrl: 'backend/blogMessages/blogMessages.html',
-        controller: 'BlogMessagesCtrl as blogMessagesCtrl'
+        controller: 'BlogMessagesCtrl as blogMessagesCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("Write blog messages");
+          }
+        }
       })
       .state('competitions.setCompInfo', {
         url: '/compInfo',
@@ -199,6 +222,9 @@ angular
           },
           teamList: function(Teams,$stateParams) {
             return Teams.getAffiliatedTeams($stateParams.cid);
+          },
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("Compo info");
           }
         }
       })

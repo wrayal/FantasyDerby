@@ -131,7 +131,7 @@ angular.module('FantasyDerbyApp')
       //First we check and see if there are any drafts we need to make as a player
       angular.forEach(fantasyLeagueCtrl.leagueData.tournaments,function(tournamentVal,tournamentKey){
         //Make sure this tournament is actually being drafted
-        if (tournamentVal) {
+        if (tournamentVal && competitionCtrl.tournamentData[tournamentKey].state=="readyToSelect") {
           fantasyLeagueCtrl.whichDraftsNeeded[tournamentKey]="";
           console.log("CHECKING FOR",tournamentKey)
           //And make sure that there are draft orders and we are drafting
@@ -160,7 +160,7 @@ angular.module('FantasyDerbyApp')
         //Loop over each tournament we are doing
         angular.forEach(fantasyLeagueCtrl.leagueData.tournaments,function(tournamentVal,tournamentKey){
           //Make sure this tournament is actually being drafted
-          if (tournamentVal) {
+          if (tournamentVal && competitionCtrl.tournamentData[tournamentKey].state=="readyToSelect") {
             if (fantasyLeagueCtrl.leagueData.draftOrders && fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey] && fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey].length) {
               //If they are drafting and we have draft orders etc...
               nextPlayerToDraft=fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey][0];

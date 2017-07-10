@@ -1,5 +1,5 @@
 angular.module('FantasyDerbyApp')
-	.factory('Auth',function(firebase,$location,Users,$location,$firebaseAuth,$state){
+	.factory('Auth',function(firebase,$location,Users,$location,$firebaseAuth,$state,$firebaseObject,$location){
 
 		var Auth={
 			login: function(){
@@ -27,6 +27,22 @@ angular.module('FantasyDerbyApp')
 				$firebaseAuth().$signOut();
                 $state.go("home")
 			},
+            requireAdmin: function(url) {
+                return $firebaseAuth().$requireSignIn().then(function(authData){
+                    return $firebaseObject(firebase.database().ref().child("admin").child("list")).$loaded().then(function(adminData){
+                        if (adminData[authData.uid]) {
+                            return true; //Yep they are an admin
+                        }
+                        else {
+                            firebase.database().ref().child("admin").child("messages").push({
+                                uid: authData.uid,
+                                url: url
+                            }) //Or not! Log this attempt...
+                            $state.go('home')
+                        }
+                    });
+                })
+            },
             auth: $firebaseAuth()
 		}
 
