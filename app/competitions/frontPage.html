@@ -4,6 +4,20 @@
 			{{competitionCtrl.keyData.fullName}}
 		</h1>
 	</div>
+	Welcome to the {{competitionCtrl.keyData.fullName}} front page. This competition consists of the following tournaments:<p />
+	<center>
+	<div ng-repeat="(key,value) in competitionCtrl.tournamentData" class="repeatedDivs" style="width:50%">
+		<b>{{value.name}}</b><br>
+		<font style="font-size:x-small">{{value.startDateMilli | date:'short'}}<br></font>
+		State: 
+		<span ng-show="value.state=='waitingForData'">Waiting for team lists</span>
+		<span ng-show="value.state=='readyToSelect'">Ready to draft</span>
+		<span ng-show="value.state=='started'">Running!</span>
+		<span ng-show="value.state=='completed'">Completed</span><br>
+		<a ng-show="value.state!='waitingForData'" href="" ui-sref="competitions.teamList({listId:key})">View team list</a>
+	</div>
+	</center>
+
 	{{competitionCtrl.keyData.description}}
 
 	<h3>Latest Updates</h3>

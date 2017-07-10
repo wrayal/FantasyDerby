@@ -61,6 +61,12 @@ h1 {
 .marketing p + h4 {
   margin-top: 28px;
 }
+.repeatedDivs {
+  background-color: #ffdddd;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
@@ -374,6 +380,7 @@ select.dndrop {
   margin-right: auto;
   margin-left: auto;
   padding: 0px;
+  margin-bottom: 50px;
 }
 .page-wrapper .logo-img {
   margin-top: -10px;

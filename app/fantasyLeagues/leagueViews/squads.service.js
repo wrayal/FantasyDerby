@@ -41,7 +41,8 @@ angular.module('FantasyDerbyApp')
 						//Loop over each member
 						angular.forEach(memberList,function(value,key){
 							//And if they have been accepted as members...
-							if (value) {
+							console.log("CORRES:",key," -> ",value)
+							if (value==true) {
 								membArr.push(key);
 								//...Let's create a squad for them
 								squadObj={

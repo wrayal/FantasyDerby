@@ -1,10 +1,16 @@
 <div class="paneSplit">
 	<div class="leftHalfPane">
 		<div style="background:red;width:100%;padding:2px" ng-show="fantasyLeagueCtrl.amCommissioner &&  squadCtrl.detailedStatus()!='forming'">
-			<b>Admin-only</b><br>
-			<input type="button" ng-click="squadCtrl.autoDraft()" value="Start auto-draft for this league."><br>
+			<b>Admin controls</b><br>
 			<font style="color:green" ng-show="squadCtrl.autoDraftStatus"><b>{{squadCtrl.autoDraftStatus}}</b><br></font>
-			<input type="button" value="Skip {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}" ng-click="squadCtrl.skipDraft()">
+			<div ng-show="fantasyLeagueCtrl.whichDraftsNeeded[squadCtrl.tourId]=='asAdmin'">
+				<input type="button" ng-click="squadCtrl.autoDraft()" value="Auto-draft for this league."><br>
+				<font style="font-size:x-small">Drafts available for {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}</font>
+			</div>
+			<div ng-show="fantasyLeagueCtrl.whichDraftsNeeded[squadCtrl.tourId]!='asAdmin'">
+				<input type="button" value="Skip {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}" ng-click="squadCtrl.skipDraft()"><br>
+				<font style="font-size:x-small">No selections available for {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}</font>
+			</div>
 
 		</div>
 		<b>Draft order</b>

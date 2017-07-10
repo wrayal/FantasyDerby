@@ -13,8 +13,8 @@
 		</td>
 		<td ng-repeat="entry in squadCtrl.positions">
 			<div ng-show="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">
-				<a href="" ui-sref="competitions.player({pid:entry})">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.name}}</a><br>
-				<a href="" ui-sref="competitions.teamView({teamId:squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].team})" style="font-size:x-small">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.teamName}}</a>
+				<a href="" ui-sref="competitions.player({pid:teams[squadCtrl.tourId][entry]})">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.name}}</a><br>
+				<a href="" ui-sref="competitions.teamView({teamId:squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.team})" style="font-size:x-small">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.teamName}}</a>
 			</div>
 			<span ng-hide="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">TBD</span>
 		</td>

@@ -72,26 +72,119 @@ angular.module('FantasyDerbyApp')
     //Automatically updated as necessary to hold critical info
     //And prevent repeat firebase calls
     fantasyLeagueCtrl.leagueMembers={};
+    fantasyLeagueCtrl.acceptedMembers={};
     fantasyLeagueCtrl.updateLeagueMemberData=function(){
+      fantasyLeagueCtrl.leagueMembers={};
+      fantasyLeagueCtrl.acceptedMembers={};
       angular.forEach(fantasyLeagueCtrl.leagueData.members,function(curMember,key,LeagueMessages){
-        if (!fantasyLeagueCtrl.leagueMembers[key] || fantasyLeagueCtrl.leagueMembers[key].member!=true) {
+        /*if (!fantasyLeagueCtrl.leagueMembers[key] || fantasyLeagueCtrl.leagueMembers[key].member!=true) {
           fantasyLeagueCtrl.leagueMembers[key]={
             username: Users.getUsername(key),
             presence: Users.getPresence(key),
             member: fantasyLeagueCtrl.leagueData.members[key]
           }
-        }
+        }*/
+        memberObj={
+            username: Users.getUsername(key),
+            presence: Users.getPresence(key),
+            member: fantasyLeagueCtrl.leagueData.members[key]
+          };
+        fantasyLeagueCtrl.leagueMembers[key]=memberObj;
+        if (fantasyLeagueCtrl.leagueMembers[key].member==true) fantasyLeagueCtrl.acceptedMembers[key]=memberObj;
       })
     }
     console.log("MEMBERS",fantasyLeagueCtrl.leagueMembers)
+
+    fantasyLeagueCtrl.draftNeeded=false;
+    fantasyLeagueCtrl.whichDraftsNeeded={};
+    fantasyLeagueCtrl.checkEligibleDrafts=function(tournamentKey,userId){
+      //First get a list of all the players that have been drafted by any user
+      allDrafts={};
+      if (fantasyLeagueCtrl.leagueData.fantasyTeams) {
+        angular.forEach(fantasyLeagueCtrl.leagueData.fantasyTeams,function(teamSetDat,teamSetKey) {
+          if (teamSetDat && teamSetDat[tournamentKey]) {
+            curTeam=teamSetDat[tournamentKey];
+            if (curTeam.jammer!="") allDrafts[curTeam.jammer]=true;
+            if (curTeam.doubleThreat!="") allDrafts[curTeam.doubleThreat]=true;
+            if (curTeam.blocker1!="") allDrafts[curTeam.blocker1]=true;
+            if (curTeam.blocker2!="") allDrafts[curTeam.blocker2]=true;
+            if (curTeam.blocker3!="") allDrafts[curTeam.blocker3]=true;
+          }
+        })
+      }
+      //Then check if there is any member in the fantasy selection that isn't matched up already
+      var retVal=false;
+      if (fantasyLeagueCtrl.leagueData.fantasySelections && fantasyLeagueCtrl.leagueData.fantasySelections[userId] && fantasyLeagueCtrl.leagueData.fantasySelections[userId][tournamentKey]) {
+        fantSel=fantasyLeagueCtrl.leagueData.fantasySelections[userId][tournamentKey];
+        angular.forEach(fantSel,function(selData,selKey){
+          playerKey=selData.id;
+          if (!allDrafts[playerKey]) {
+            retVal=true;
+          }
+        })
+      }
+      return retVal;
+    }
+    fantasyLeagueCtrl.updateDraftsNeeded=function(){
+      fantasyLeagueCtrl.draftNeeded="";
+
+      //First we check and see if there are any drafts we need to make as a player
+      angular.forEach(fantasyLeagueCtrl.leagueData.tournaments,function(tournamentVal,tournamentKey){
+        //Make sure this tournament is actually being drafted
+        if (tournamentVal) {
+          fantasyLeagueCtrl.whichDraftsNeeded[tournamentKey]="";
+          console.log("CHECKING FOR",tournamentKey)
+          //And make sure that there are draft orders and we are drafting
+          if (fantasyLeagueCtrl.leagueData.draftOrders && fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey]) {
+            //Next player to draft is...
+            tournamentDraftOrder=fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey];
+            if (tournamentDraftOrder.length) {
+              nextPlayerToDraft=tournamentDraftOrder[0];
+              if (nextPlayerToDraft==competitionCtrl.uid) {
+                //It's us!
+                //Now we need to check if we have eligible drafts that would be satisfied by an auto-draft
+                if (!fantasyLeagueCtrl.checkEligibleDrafts(tournamentKey,competitionCtrl.uid)){
+                  console.log("GOT TRUE!")
+                  fantasyLeagueCtrl.whichDraftsNeeded[tournamentKey]="asPlayer";
+                  fantasyLeagueCtrl.draftNeeded="asPlayer"
+                }
+              }
+            }
+          }
+        }
+      })
+
+      //Then we check to see if we need to hit anything as commissioner
+      if (fantasyLeagueCtrl.leagueData.uniData.Commissioner==competitionCtrl.uid) {
+        //We are the commissioner. So check to see if there are drafts needed
+        //Loop over each tournament we are doing
+        angular.forEach(fantasyLeagueCtrl.leagueData.tournaments,function(tournamentVal,tournamentKey){
+          //Make sure this tournament is actually being drafted
+          if (tournamentVal) {
+            if (fantasyLeagueCtrl.leagueData.draftOrders && fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey] && fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey].length) {
+              //If they are drafting and we have draft orders etc...
+              nextPlayerToDraft=fantasyLeagueCtrl.leagueData.draftOrders[tournamentKey][0];
+              console.log("NEXT PLAYER TO DRAFT:",nextPlayerToDraft)
+              //See if there are eligible drafts. If so, we should be autodrafting!
+              if (fantasyLeagueCtrl.checkEligibleDrafts(tournamentKey,nextPlayerToDraft)) {
+                fantasyLeagueCtrl.whichDraftsNeeded[tournamentKey]="asAdmin";
+                fantasyLeagueCtrl.draftNeeded="asAdmin"
+              }
+            };
+          }
+        })
+      }
+    }
 
     //This updates data as necessary every time the league data changes
     fantasyLeagueCtrl.leagueData.$watch(function(newLeagueData){
       console.log("fantasy league changed!",newLeagueData)
 
+      fantasyLeagueCtrl.updateDraftsNeeded();
       fantasyLeagueCtrl.updateLeagueMemberData();
     })
     fantasyLeagueCtrl.updateLeagueMemberData();
+    fantasyLeagueCtrl.updateDraftsNeeded();
 
     //MESSAGING STUFF
     var numMessages=100;

@@ -24,7 +24,7 @@ angular.module('FantasyDerbyApp')
 				      
 				      console.log("NAMES:",name)
 				      //Leave bootstrap alone!
-				      if (name=="bootstrap.css") {
+				      if (name.slice(0,13)=="bootstrap.css") {
 				        continue //Skip over this one
 				      }
 

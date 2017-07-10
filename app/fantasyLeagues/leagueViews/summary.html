@@ -38,7 +38,7 @@
 					{{competitionCtrl.tournamentData[tourKey].name}}
 				</td>
 			</tr>
-			<tr ng-repeat="(memberKey,memberData) in fantasyLeagueCtrl.leagueMembers">
+			<tr ng-repeat="(memberKey,memberData) in fantasyLeagueCtrl.acceptedMembers">
 				<td>{{memberData.username.$value}}</td>
 				<td>{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberKey].name}}</td>
 				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry">

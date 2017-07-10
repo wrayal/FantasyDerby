@@ -73,11 +73,12 @@ angular.module('FantasyDerbyApp')
         squadCtrl.draftedPlayers={}; //This is the only way players can be "undrafted"...
       }
       if (fantasyLeagueCtrl.leagueData.uniData.status!='forming') {
-        angular.forEach(fantasyLeagueCtrl.leagueMembers,function(leagueMember,memberKey){
+        angular.forEach(fantasyLeagueCtrl.acceptedMembers,function(leagueMember,memberKey){
           //For each user, grab the appropriate squad
+          console.log("TRYING",memberKey,squadCtrl.tourId)
           curSquad=squadCtrl.fantasyTeams[memberKey][squadCtrl.tourId];
           
-          for (i=0; i<squadCtrl.positions.length; i++) {
+          for (i=0; curSquad && i<squadCtrl.positions.length; i++) {
             //and for each player, check if they have info, or otherwise update it
             currentPlayerId=curSquad[squadCtrl.positions[i]];
             if (currentPlayerId!="" && !squadCtrl.draftedPlayers[currentPlayerId]) {
@@ -201,9 +202,9 @@ angular.module('FantasyDerbyApp')
     }
 
     //Convenience numbers to let us know how many people they should draft
-    squadCtrl.maxJammers=Object.keys(fantasyLeagueCtrl.leagueMembers).length;
-    squadCtrl.maxBlockers=3*Object.keys(fantasyLeagueCtrl.leagueMembers).length;
-    squadCtrl.maxDTs=Object.keys(fantasyLeagueCtrl.leagueMembers).length;
+    squadCtrl.maxJammers=Object.keys(fantasyLeagueCtrl.acceptedMembers).length;
+    squadCtrl.maxBlockers=3*Object.keys(fantasyLeagueCtrl.acceptedMembers).length;
+    squadCtrl.maxDTs=Object.keys(fantasyLeagueCtrl.acceptedMembers).length;
     squadCtrl.selectedJammers=0;
     squadCtrl.selectedDTs=0;
     squadCtrl.selectedBlockers=0;
@@ -255,6 +256,8 @@ angular.module('FantasyDerbyApp')
             //Then make sure the fantasy teams and league players are updated
             squadCtrl.fantasyTeams.$loaded().then(function(){
               squadCtrl.updateDraftedPlayers();
+              try{squadCtrl.autoDraftStatus="Done. Onto the next player";}catch(err){} //Being lazy - can technically fail if requisite data not loaded yet
+              console.log(squadCtrl.autoDraftStatus)
               if (shouldAutoDraft) squadCtrl.autoDraft();
             })
           })

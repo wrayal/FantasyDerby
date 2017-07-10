@@ -1,5 +1,5 @@
 angular.module('FantasyDerbyApp')
-  .controller('IndexCtrl', function($scope,$state, $location,Competitions,Auth,Users,$transitions,FantasyLeagues,$firebaseObject) {
+  .controller('IndexCtrl', function($scope,$state, $location,Competitions,Auth,Users,$transitions,FantasyLeagues,$firebaseObject,$stateParams) {
   	indexCtrl=this;
 
   	//Sets up a name to display in the menu bar
@@ -36,6 +36,7 @@ angular.module('FantasyDerbyApp')
     indexCtrl.profile=null;
     indexCtrl.contactMessagesUnread=null;
     firebase.auth().onAuthStateChanged(function(authData){
+      console.log("STATE CHANGED!");
       indexCtrl.authData=authData;
       if (authData) {
         Users.getProfile(authData.uid).$loaded().then(function(profileData){
@@ -48,7 +49,9 @@ angular.module('FantasyDerbyApp')
           )
         })
       } else {
+        console.log("REMOVING");
         indexCtrl.profile=null;
+        $scope.$apply();
       }
     })
 
@@ -80,6 +83,7 @@ angular.module('FantasyDerbyApp')
   	//Set which entry is active in the menu
   	indexCtrl.activeEntry="home";
     indexCtrl.activeSubentry="";
+    indexCtrl.activeSquad="";
   	$transitions.onSuccess({}, function(trans) {
 
       //Grab the name passed by the fired event
@@ -99,10 +103,12 @@ angular.module('FantasyDerbyApp')
         indexCtrl.activeEntry="";
       }
 
+      indexCtrl.activeSquad="";
       if (toName=="competitions.fantasyLeagues.summary") {
         indexCtrl.activeSubentry="summary";
       } else if (toName=="competitions.fantasyLeagues.squads") {
         indexCtrl.activeSubentry="squads";
+        indexCtrl.activeSquad=$stateParams.sid;
       } else if (toName=="competitions.fantasyLeagues.admin") {
         indexCtrl.activeSubentry="admin"
       } else {

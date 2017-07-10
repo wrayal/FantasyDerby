@@ -18,9 +18,12 @@
 			ng-class="{menuactive: indexCtrl.activeSubentry=='squads'}"
 		>
 			<span>
-				<span ng-hide="fantasyLeaguesCtrl.draftNeeded" style="opacity:0">&#9679;</span>
-				<span ng-show="fantasyLeaguesCtrl.draftNeeded" style="color:green;opacity:1">&#9679;</span>
-				{{fantasyLeagueCtrl.leagueData.fantasyTeams[competitionCtrl.profile.$id].name}} squads
+				<span ng-hide="fantasyLeagueCtrl.draftNeeded" style="opacity:0">&#9679;</span>
+				<span ng-show="fantasyLeagueCtrl.draftNeeded=='asPlayer'" style="color:green;opacity:1">&#9679;</span>
+				<span ng-show="fantasyLeagueCtrl.draftNeeded=='asAdmin'" style="color:red;opacity:1">&#9679;</span>
+				<span ng-hide="indexCtrl.activeSquad">{{fantasyLeagueCtrl.leagueData.fantasyTeams[competitionCtrl.profile.$id].name}}</span>
+				<span ng-show="indexCtrl.activeSquad">{{competitionCtrl.tournamentData[indexCtrl.activeSquad].name}}</span>
+				squads
 			</span><b class="caret"></b>
 		</a>
 		<ul class="dropdown-menu">
@@ -29,7 +32,8 @@
 				ui-sref='competitions.fantasyLeagues.squads({sid:key})'
 				>
 					<span ng-hide="fantasyLeagueCtrl.whichDraftsNeeded[key]" style="opacity:0">&#9679;</span>
-					<span ng-show="fantasyLeagueCtrl.whichDraftsNeeded[key]" style="color:green;opacity:1">&#9679;</span>
+					<span ng-show="fantasyLeagueCtrl.whichDraftsNeeded[key]=='asPlayer'" style="color:green;opacity:1">&#9679;</span>
+					<span ng-show="fantasyLeagueCtrl.whichDraftsNeeded[key]=='asAdmin'" style="color:red;opacity:1">&#9679;</span>
 					{{ competitionCtrl.tournamentData[key].name }}
 				</a>
 			</li>

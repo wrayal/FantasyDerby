@@ -89,6 +89,8 @@
 
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script>var iosDragDropShim = { holdToDrag: 300 } //Adds 300ms delay before dragging</script>
+        <script src="ios-drag-drop.js"></script>
         <script src="app.js"></script>
         <script src="file.directive.js"></script>
         <script src="ngReally.directive.js"></script>
