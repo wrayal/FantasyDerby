@@ -4,7 +4,7 @@
 	Here you can join a league.
 
 	<b>Please enter a team name:</b><br>
-	<input type="text" ng-model="joinLeagueCtrl.desiredTeamName"><br>
+	<input type="text" ng-model="joinLeagueCtrl.desiredTeamName" ng-style="{'border':(joinLeagueCtrl.nameError?'2px solid red':'')}"><br>
 	<span ng-show="joinLeagueCtrl.nameError" style="color:red"><b>{{joinLeagueCtrl.nameError}}</b></span><p />
 
 	<div style="width:100%;float:left;margin-bottom:10px;margin-top:20px">

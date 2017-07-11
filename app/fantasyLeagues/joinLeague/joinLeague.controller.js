@@ -32,6 +32,7 @@ angular.module('FantasyDerbyApp')
       console.log("Joining",leagueId,"; open? ",openToJoin)
       joinLeagueCtrl.nameError="";
       if (joinLeagueCtrl.desiredTeamName=="") {
+        alert("Please enter a name for your team!")
         joinLeagueCtrl.nameError="Please enter a team name."
         return;
       }
