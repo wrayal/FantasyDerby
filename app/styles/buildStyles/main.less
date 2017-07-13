@@ -136,13 +136,26 @@ h1 {
 
 .fantasyLeagueMain {
   height: 100%;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
   background-color: average(#eee,screen(#eee,@basecolormain));
 }
 
 .leaguePage {
   display:inline-block;
   width:74%;
+  vertical-align: top;
+  height:100%;
+  background:screen(#999999,multiply(@basecolormain,#171717));
+  position:relative;
+  overflow-y:auto;
+  overflow-x:none;
+  padding-top:0px;
+  padding-bottom:0px;
+}
+
+.leaguePageNoChat {
+  display:inline-block;
+  width:100%;
   vertical-align: top;
   height:100%;
   background:screen(#999999,multiply(@basecolormain,#171717));

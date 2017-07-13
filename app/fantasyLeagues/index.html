@@ -1,13 +1,13 @@
 <div class="fantasyLeagueMain">
 
-	<div class="leaguePage">
+	<div ng-class="windowWidth>500?'leaguePage':'leaguePageNoChat'" window-dependent>
 		<div data-ng-include="'fantasyLeagues/leagueViews/flMenu.html'" class="derbyNavbar"></div>
 		<div class="leagueContent" ui-view>
 		</div>
 	</div>
 
 
-	<div class="leagueChat">
+	<div class="leagueChat" ng-show="windowWidth>500">
 
 		<div class="message-wrap" id="messagePane" scrolly="fantasyLeagueCtrl.checkScroll()">
 			<div ng-repeat="message in fantasyLeagueCtrl.messages">

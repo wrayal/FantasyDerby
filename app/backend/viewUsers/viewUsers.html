@@ -5,7 +5,7 @@
   </div>
 
   <div ng-repeat="(userKey,userData) in viewUsersCtrl.users | orderObjectBy:'displayName':false" class="repeatedDivs" >
-    <b>{{userKey+1}}: {{userData.displayName}}</b><br>
+    <b>{{userKey+1}}: {{userData.displayName}}</b> [ {{userData.$filtKey}} ]<br>
     Name: {{userData.data.name}}<br>
     <img src="{{userData.data.display}}"></img>
     <div style="margin-left:10px">
