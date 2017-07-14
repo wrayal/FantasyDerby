@@ -6,7 +6,7 @@
 }
 body {
   padding: 0;
-  background: #00aa00;
+  background: #a36c84;
 }
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -39,7 +39,7 @@ h1 {
   color: #ffffff;
   /*Formerly #777*/
   border-top: 0px solid #e5e5e5;
-  background: #00aa00;
+  background: #a36c84;
   font-size: x-small;
 }
 .container-narrow > hr {
@@ -62,7 +62,7 @@ h1 {
   margin-top: 28px;
 }
 .repeatedDivs {
-  background-color: #ddffdd;
+  background-color: #fef3f7;
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
@@ -96,7 +96,7 @@ h1 {
 }
 .navbar {
   margin-bottom: 0px;
-  background: #00aa00;
+  background: #a36c84;
   font-color: white;
   border: none;
   border-radius: 0px;
@@ -114,15 +114,15 @@ h1 {
   color: #aaa;
 }
 .menuactive {
-  background-color: #99ff99;
+  background-color: #fbdae8;
 }
 .navbar-default .navbar-nav > .open > a:focus {
-  background-color: #88ff88;
+  background-color: #fad4e4;
 }
 .fantasyLeagueMain {
   flex: 1;
   overflow-y: auto;
-  background-color: #eef7ee;
+  background-color: #f6f3f5;
 }
 .flexParent {
   display: flex;
@@ -141,24 +141,26 @@ h1 {
   /*width:74%;*/
   vertical-align: top;
   /*height:100%;*/
-  background: #99a299;
+  background: #a29fa0;
   position: relative;
   overflow-y: auto;
   overflow-x: none;
   padding-top: 0px;
   padding-bottom: 0px;
+  overflow-x: hidden;
 }
 .leaguePageNoChat {
   display: inline-block;
   /*width:100%;*/
   vertical-align: top;
   /*height:100%;*/
-  background: #99a299;
+  background: #a29fa0;
   position: relative;
   overflow-y: auto;
   overflow-x: none;
   padding-top: 0px;
   padding-bottom: 0px;
+  overflow-x: hidden;
 }
 .leagueChat {
   /*display:inline-block;
@@ -193,6 +195,7 @@ body {
   flex-direction: column;
   /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
   -webkit-flex-direction: column;
+  overflow-x: hidden;
 }
 .leagueContent {
   padding-top: 5px;
@@ -212,7 +215,7 @@ ul.flNavbar {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color: #006600;
+  background-color: #62414f;
   color: white;
   white-space: nowrap;
 }
@@ -281,7 +284,7 @@ a {
   color: #338033;
 }
 a:hover {
-  color: #009900;
+  color: #936177;
 }
 .leagueChat .message-wrap {
   position: relative;
@@ -332,7 +335,9 @@ span.timestamp {
   padding-left: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
-  overflow-y: scroll;
+  overflow-y: none;
+  display: flex;
+  flex-direction: column;
 }
 .upperSquadPane {
   height: calc(50% - 5px);
@@ -348,12 +353,11 @@ span.timestamp {
   width: 100%;
 }
 .paneSplit {
-  height: 100%;
   margin: 0px;
   padding: 0px;
-  overflow-y: scroll;
-  width: 100%;
+  overflow-y: auto;
   display: flex;
+  flex: 1;
   flex-direction: row;
 }
 .lowerSquadPane {
@@ -381,7 +385,7 @@ span.timestamp {
 }
 .leftHalfPane {
   /*width: ~"calc(300px - 5px)";*/
-  height: calc(100% - 0px);
+  /*height: ~"calc(100% - 0px)";*/
   float: left;
   margin-right: 5px;
   padding: 2px;
@@ -390,7 +394,7 @@ span.timestamp {
 .rightHalfPane {
   /*width: ~"calc(100% - 300px - 5px)";*/
   flex: 1;
-  height: calc(100% - 0px);
+  /*height: ~"calc(100% - 0px)";*/
   float: left;
   margin-right: 5px;
   padding: 2px;
@@ -406,8 +410,8 @@ table.dndTable > tbody > tr > td {
   /*border: 2px solid multiply(#600,@basecolormain);
   background: multiply(#900,@basecolormain);
   color: white;*/
-  border: 2px solid #aad5aa;
-  background: #cce6cc;
+  border: 2px solid #d3c5cb;
+  background: #e5dce0;
   color: black;
   padding: 2px;
 }
@@ -429,7 +433,7 @@ ul.mainNavbar {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color: #00aa00;
+  background-color: #a36c84;
   color: white;
   white-space: nowrap;
 }
@@ -461,7 +465,7 @@ li.titleNav > a {
   padding-bottom: 12px;
 }
 .mainNavbar > li > a:hover {
-  background-color: #005500;
+  background-color: #523642;
 }
 .mainNavbar > a {
   display: block;

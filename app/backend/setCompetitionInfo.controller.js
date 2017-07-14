@@ -18,10 +18,13 @@ angular.module('FantasyDerbyApp')
     setCompCtrl.teamList=teamList;
     setCompCtrl.addTeam=function(tournamentKey,teamKey) {
     	console.log("Adding",teamKey,"to",tournamentKey)
+        toSeed=1;
+        if (setCompCtrl.compData.tournaments[tournamentKey].teamList) toSeed=Object.keys(setCompCtrl.compData.tournaments[tournamentKey].teamList).length+1;
     	teamObj= {
     		id: teamKey,
     		teamName: teamList[teamKey].teamName,
-    		leagueName: teamList[teamKey].leagueName
+    		leagueName: teamList[teamKey].leagueName,
+            seed: toSeed
     	}
     	console.log("TEAM OBJ",teamObj,teamKey)
     	baseRef.child("tournaments").child(tournamentKey).child("teamList").child(teamKey).set(teamObj)

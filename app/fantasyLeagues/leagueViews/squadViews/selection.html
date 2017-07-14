@@ -27,7 +27,7 @@
 
 		<!--Code for selecting a team and linking to Rinxter/FTS-->
 		<select ng-model="squadCtrl.currentSelectionPrime" ng-change="squadCtrl.switchTeamSelect()">
-			<option ng-repeat="(key,entry) in competitionCtrl.tournamentData[squadCtrl.tourId].teamList" value="{{key}}">
+			<option ng-repeat="(key,entry) in competitionCtrl.tournamentData[squadCtrl.tourId].teamList | orderObjectBy:'seed'" value="{{entry.$filtKey}}">
 				{{entry.leagueName}}
 			</option>
 			<option value="other">Select other...</option>

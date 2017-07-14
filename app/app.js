@@ -184,6 +184,9 @@ angular
         templateUrl: 'backend/populateFromWFTDARoster.html',
         controller: 'WFTDAPopCtrl as wftdaPopCtrl',
         resolve: {
+          affiliatedTeams: function(Teams) {
+            return Teams.getAffiliatedTeams("wftda").$loaded();
+          },
           isAdmin: function(Auth) {
             Auth.requireAdmin("wftda populate");
           }
@@ -231,7 +234,8 @@ angular
             return Competitions.completeSet
           },
           teamList: function(Teams,$stateParams) {
-            return Teams.getAffiliatedTeams($stateParams.cid);
+            if ($stateParams.cid=="mrda") return Teams.getAffiliatedTeams($stateParams.cid);
+            else return Teams.getAffiliatedTeams("wftda");
           },
           isAdmin: function(Auth) {
             Auth.requireAdmin("Compo info");
@@ -331,13 +335,20 @@ angular
         templateUrl: 'teams/teamList.html',
         controller: 'TeamListCtrl as teamListCtrl',
         resolve: {
+          compName: function($stateParams) {
+            if ($stateParams.listId=="allComp") {
+              if ($stateParams.cid=="mrda") return "MRDA";
+              else return "WFTDA";
+            } else return "";
+          },
           teamData: function($stateParams,Teams) {
             var name="";
             var list=[];
 
             if ($stateParams.listId=="allComp") {
               name=null;
-              list=Teams.getAffiliatedTeams($stateParams.cid);
+              if ($stateParams.cid=="mrda") list=Teams.getAffiliatedTeams($stateParams.cid);
+              else list=Teams.getAffiliatedTeams("wftda");
             } else {
               name=$stateParams.listId;
               list=Teams.getTourTeams($stateParams.cid,$stateParams.listId)

@@ -128,9 +128,9 @@
 		<br>
 		<b>Img src:</b> {{tournament.imgSrc}}<br>
 		<b>Teams:</b><br>
-		<span ng-repeat="(teamkey,team) in tournament.teamList">
-			{{teamkey}} -> {{team.leagueName}}
-			<input type="button" value="Delete team" ng-click="setCompCtrl.deleteTeamFromTournament(key,teamkey)">
+		<span ng-repeat="(teamkey,team) in tournament.teamList | orderObjectBy:'seed'">
+			{{team.seed}} -> {{team.leagueName}}
+			<input type="button" value="Delete team" ng-click="setCompCtrl.deleteTeamFromTournament(key,team.$filtKey)">
 			<br>
 		</span><p />
 		<select ng-model="setCompCtrl.working[key].newTeam">

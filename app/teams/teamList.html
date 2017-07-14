@@ -2,7 +2,10 @@
 	<div class="page-header">
 		<h1>
 			{{indexCtrl.tourData[teamListCtrl.teamName].name}}
-			<span ng-show="!teamListCtrl.teamName">All {{indexCtrl.nameToShow.$value}} teams</span>
+			<span ng-show="!teamListCtrl.teamName">All 
+				<span ng-hide="teamListCtrl.compName">{{indexCtrl.nameToShow.$value}}</span>
+				<span ng-show="teamListCtrl.compName">{{teamListCtrl.compName}}</span>
+			 teams</span>
 		</h1>
 	</div>
 

@@ -1,106 +1,108 @@
-<b>Direct draft</b><br>
-It is your turn to draft, but all players in your pre-selection are either already drafted, or ineligible to fill the remaining positions. Please select a position, team and player:<br>
+<div style="flex:1;overflow-y:scroll">
+	<b>Direct draft</b><br>
+	It is your turn to draft, but all players in your pre-selection are either already drafted, or ineligible to fill the remaining positions. Please select a position, team and player:<br>
 
-<b>Position:</b><br>
-<select ng-model="squadCtrl.spotDraftPosition">
-	<option ng-show="squadCtrl.squad.jammer==''" value="jammer">
-		Jammer
-	</option>
-	<option ng-show="squadCtrl.squad.doubleThreat==''" value="doubleThreat">
-		Double Threat
-	</option>
-	<option ng-show="squadCtrl.squad.blocker3==''" value="blocker">
-		Blocker
-	</option>
-</select><br>
-
-
-<b>Team:</b><br>
-
-	<!--Code for selecting a team and linking to Rinxter/FTS-->
-	<select ng-model="squadCtrl.currentSelectionPrime" ng-change="squadCtrl.switchTeamSelect()">
-		<option ng-repeat="(key,entry) in competitionCtrl.tournamentData[squadCtrl.tourId].teamList" value="{{key}}">
-			{{entry.leagueName}}
+	<b>Position:</b><br>
+	<select ng-model="squadCtrl.spotDraftPosition">
+		<option ng-show="squadCtrl.squad.jammer==''" value="jammer">
+			Jammer
 		</option>
-		<option value="other">Select other...</option>
-	</select>
-
-	<!--Code for teams not listed as being in this tournament by default-->
-	<select ng-model="squadCtrl.currectSelectionExtra" 
-			ng-show="squadCtrl.currentSelectionPrime=='other'" 
-			ng-change="squadCtrl.switchTeamSelect()">
-		<option ng-repeat="(extraKey,extraEntry) in squadCtrl.extraTeams" value="{{extraKey}}">
-			{{extraEntry.leagueName}}
+		<option ng-show="squadCtrl.squad.doubleThreat==''" value="doubleThreat">
+			Double Threat
 		</option>
-	</select>
-	<br ng-show="squadCtrl.currentSelectionPrime=='other'">
+		<option ng-show="squadCtrl.squad.blocker3==''" value="blocker">
+			Blocker
+		</option>
+	</select><br>
 
-	<!--And links for either as appropriate-->
-	<a href="{{'http://flattrackstats.com/search/'+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
-		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
-	>
-		<img src="images/fts-logo.png" style="height:15px"></img>
-	</a>
-	<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
-		ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
-	>
-		<img src="images/RinxterLett.png" style="height:15px"></img>
-	</a><br>
-	<span ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName">
-		<b>Player:</b>
-	</span><br>
 
-	<!--And the table of players-->
-	<table>
-		<tr ng-repeat="(key,player) in squadCtrl.teams[squadCtrl.currentSelectionTeam].teamPlayers">
+	<b>Team:</b><br>
 
-			<td
-				ng-hide="squadCtrl.draftedPlayers[player.id]"
-			>
-				{{player.name}} - #{{player.number}} 
-			</td>
-			<td
-				ng-hide="squadCtrl.draftedPlayers[player.id]">
-				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
-			</td>
+		<!--Code for selecting a team and linking to Rinxter/FTS-->
+		<select ng-model="squadCtrl.currentSelectionPrime" ng-change="squadCtrl.switchTeamSelect()">
+			<option ng-repeat="(key,entry) in competitionCtrl.tournamentData[squadCtrl.tourId].teamList | orderObjectBy:'seed'" value="{{entry.$filtKey}}">
+				{{entry.leagueName}}
+			</option>
+			<option value="other">Select other...</option>
+		</select>
 
-			<td x-lvl-draggable="true"
-				whatSource="teamData"
-				whatKey="{{key}}"
-				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy==competitionCtrl.uid"
-				style="background:green;color:white"
-			>
-				{{player.name}} - #{{player.number}}
-			</td>
-			<td
-				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy==competitionCtrl.uid"
-				style="background:green;color:white"
+		<!--Code for teams not listed as being in this tournament by default-->
+		<select ng-model="squadCtrl.currectSelectionExtra" 
+				ng-show="squadCtrl.currentSelectionPrime=='other'" 
+				ng-change="squadCtrl.switchTeamSelect()">
+			<option ng-repeat="(extraKey,extraEntry) in squadCtrl.extraTeams" value="{{extraKey}}">
+				{{extraEntry.leagueName}}
+			</option>
+		</select>
+		<br ng-show="squadCtrl.currentSelectionPrime=='other'">
+
+		<!--And links for either as appropriate-->
+		<a href="{{'http://flattrackstats.com/search/'+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
+			ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		>
+			<img src="images/fts-logo.png" style="height:15px"></img>
+		</a>
+		<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
+			ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		>
+			<img src="images/RinxterLett.png" style="height:15px"></img>
+		</a><br>
+		<span ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName">
+			<b>Player:</b>
+		</span><br>
+
+		<!--And the table of players-->
+		<table>
+			<tr ng-repeat="(key,player) in squadCtrl.teams[squadCtrl.currentSelectionTeam].teamPlayers">
+
+				<td
+					ng-hide="squadCtrl.draftedPlayers[player.id]"
 				>
-				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
-			</td>
+					{{player.name}} - #{{player.number}} 
+				</td>
+				<td
+					ng-hide="squadCtrl.draftedPlayers[player.id]">
+					<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+				</td>
 
-			<td x-lvl-draggable="true"
-				whatSource="teamData"
-				whatKey="{{key}}"
-				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy!=competitionCtrl.uid"
-				style="background:red;color:white"
-			>
-				{{player.name}} - #{{player.number}}
-			</td>
-			<td
-				ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy!=competitionCtrl.uid"
-				style="background:red;color:white"
+				<td x-lvl-draggable="true"
+					whatSource="teamData"
+					whatKey="{{key}}"
+					ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy==competitionCtrl.uid"
+					style="background:green;color:white"
 				>
-				<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
-			</td>
-			<td ng-show="squadCtrl.spotDraftPosition!=''">
-			<input type="button"
-				ng-show="!squadCtrl.draftedPlayers[player.id]"
-				value="Draft"
-				ng-really-message="Are you sure you want to draft {{player.name}} as a {{squadCtrl.convObj[squadCtrl.spotDraftPosition]}}?"
-				ng-really-click="squadCtrl.spotDraft(player.id,player.name,player.number)"
-			> 
-			</td>
+					{{player.name}} - #{{player.number}}
+				</td>
+				<td
+					ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy==competitionCtrl.uid"
+					style="background:green;color:white"
+					>
+					<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+				</td>
 
-		</tr>
-	</table>
+				<td x-lvl-draggable="true"
+					whatSource="teamData"
+					whatKey="{{key}}"
+					ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy!=competitionCtrl.uid"
+					style="background:red;color:white"
+				>
+					{{player.name}} - #{{player.number}}
+				</td>
+				<td
+					ng-show="squadCtrl.draftedPlayers[player.id] && squadCtrl.draftedPlayers[player.id].draftedBy!=competitionCtrl.uid"
+					style="background:red;color:white"
+					>
+					<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+player.name}}"><img src="images/RinxterLett.png" style="height:15px"></img></a>
+				</td>
+				<td ng-show="squadCtrl.spotDraftPosition!=''">
+				<input type="button"
+					ng-show="!squadCtrl.draftedPlayers[player.id]"
+					value="Draft"
+					ng-really-message="Are you sure you want to draft {{player.name}} as a {{squadCtrl.convObj[squadCtrl.spotDraftPosition]}}?"
+					ng-really-click="squadCtrl.spotDraft(player.id,player.name,player.number)"
+				> 
+				</td>
+
+			</tr>
+		</table>
+</div>

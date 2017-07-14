@@ -3,7 +3,7 @@
 	Input roster data here (from team name down to last skater) then click button below<br>
 	<textarea cols="60" rows="10" ng-model="wftdaPopCtrl.rosterData"></textarea><br>
 	<input type=button ng-click="wftdaPopCtrl.processCharter()" value="Process Data"><p />
-
+	<span style="color:red;font-weight:bold">{{wftdaPopCtrl.errorText}}</span>
 	<div ng-show="wftdaPopCtrl.leagueName">
 		<b>League name:</b> {{wftdaPopCtrl.leagueName}}<br>
 		<b>Team name:</b> {{wftdaPopCtrl.teamName}}<p />

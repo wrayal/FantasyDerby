@@ -170,6 +170,7 @@ h1 {
   overflow-x:none;
   padding-top:0px;
   padding-bottom:0px;
+  overflow-x:hidden;
 }
 
 .leaguePageNoChat {
@@ -183,6 +184,7 @@ h1 {
   overflow-x:none;
   padding-top:0px;
   padding-bottom:0px;
+  overflow-x:hidden;
 }
 
 .leagueChat {
@@ -219,6 +221,7 @@ html, body{
   height: 100%;
   flex-direction: column;  /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
   -webkit-flex-direction: column;
+  overflow-x:hidden;
 }
 
 .leagueContent {
@@ -368,8 +371,9 @@ span.timestamp {
   padding-left:5px;
   padding-top:5px;
   padding-bottom:5px;
-  overflow-y: scroll;
-
+  overflow-y: none;
+  display: flex;
+  flex-direction:column;
 }
 
 .upperSquadPane {
@@ -387,12 +391,11 @@ span.timestamp {
 }
 
 .paneSplit {
-  height: 100%;
   margin: 0px;
   padding: 0px;
-  overflow-y: scroll;
-  width: 100%;
+  overflow-y: auto;
   display: flex;
+  flex: 1;
   flex-direction: row;
 }
 
@@ -423,7 +426,7 @@ span.timestamp {
 
 .leftHalfPane {
   /*width: ~"calc(300px - 5px)";*/
-  height: ~"calc(100% - 0px)";
+  /*height: ~"calc(100% - 0px)";*/
   float:left;
   margin-right:5px;
   padding:2px;
@@ -433,7 +436,7 @@ span.timestamp {
 .rightHalfPane {
   /*width: ~"calc(100% - 300px - 5px)";*/
   flex: 1;
-  height: ~"calc(100% - 0px)";
+  /*height: ~"calc(100% - 0px)";*/
   float:left;
   margin-right:5px;
   padding: 2px;
