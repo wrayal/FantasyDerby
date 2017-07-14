@@ -1,15 +1,13 @@
-<div class="fantasyLeagueMain">
+<div class="fantasyLeagueMain flexChild flexParentRow">
 
-	<div ng-class="windowWidth>500?'leaguePage':'leaguePageNoChat'" window-dependent>
+	<div ng-class="windowWidth>500?'leaguePage':'leaguePageNoChat'" style="flex:4;display:flex;flex-direction:column" window-dependent>
 		<div data-ng-include="'fantasyLeagues/leagueViews/flMenu.html'" class="derbyNavbar"></div>
-		<div class="leagueContent" ui-view>
+		<div class="leagueContent" ui-view style="flex:1;display:flex;flex-direction:column">
 		</div>
 	</div>
 
-
-	<div class="leagueChat" ng-show="windowWidth>500">
-
-		<div class="message-wrap" id="messagePane" scrolly="fantasyLeagueCtrl.checkScroll()">
+	<div class="leagueChat" ng-show="windowWidth>500" style="flex:1;display:flex;flex-direction:column;padding:5px">
+		<div class="message-wrap" id="messagePane" scrolly="fantasyLeagueCtrl.checkScroll()" style="flex:auto">
 			<div ng-repeat="message in fantasyLeagueCtrl.messages">
 				<!--Normal message-->
 				<span ng-show="message.type=='userMessage'">
@@ -28,11 +26,13 @@
 			</div>
 		</div>
 
-		<form class="message-form" ng-submit="fantasyLeagueCtrl.sendMessage()">
-			<input type=text class="form-control" ng-model="fantasyLeagueCtrl.message" placeholder="Type a message and hit enter...">
-		</form>
+		<div>
+			<form class="message-form" ng-submit="fantasyLeagueCtrl.sendMessage()">
+				<input type=text class="form-control" ng-model="fantasyLeagueCtrl.message" placeholder="Type a message and hit enter...">
+			</form>
+		</div>
 
-		<div class="member-presence">
+		<div>
 			<b>Members</b>
 			<div id="div3" style="border:3px solid #aaa;position:relative;width:100%">
 				<span data-ng-repeat="(key,member) in fantasyLeagueCtrl.leagueMembers" ng-if="fantasyLeagueCtrl.leagueMembers[key].member==true" style="color:#999">
@@ -56,6 +56,5 @@
 				</span>
 			</div>
 		</div>
-
 	</div>
 </div>

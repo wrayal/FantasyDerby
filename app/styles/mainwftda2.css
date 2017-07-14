@@ -120,15 +120,27 @@ h1 {
   background-color: #8888ff;
 }
 .fantasyLeagueMain {
-  height: 100%;
-  /*overflow-y: scroll;*/
+  flex: 1;
+  overflow-y: auto;
   background-color: #eeeef7;
+}
+.flexParent {
+  display: flex;
+  flex-direction: column;
+}
+.flexChild {
+  flex: auto;
+}
+.flexParentRow {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
 }
 .leaguePage {
   display: inline-block;
-  width: 74%;
+  /*width:74%;*/
   vertical-align: top;
-  height: 100%;
+  /*height:100%;*/
   background: #9999a2;
   position: relative;
   overflow-y: auto;
@@ -138,9 +150,9 @@ h1 {
 }
 .leaguePageNoChat {
   display: inline-block;
-  width: 100%;
+  /*width:100%;*/
   vertical-align: top;
-  height: 100%;
+  /*height:100%;*/
   background: #9999a2;
   position: relative;
   overflow-y: auto;
@@ -149,46 +161,50 @@ h1 {
   padding-bottom: 0px;
 }
 .leagueChat {
+  /*display:inline-block;
+  vertical-align: top;
+  height:100%;
+  width: ~"calc(25% - 0.0px)";
+  overflow-y:scroll;
+  overflow-x:none;
+  background-color:none;*/
   display: inline-block;
   vertical-align: top;
-  height: 100%;
-  width: calc(25% - 0.0px);
   overflow-y: scroll;
   overflow-x: none;
-  background-color: none;
-}
-.container {
-  padding-right: 0px;
-  padding-left: 0px;
 }
 html,
 body {
   height: 100%;
 }
 .mainViewContainer {
-  overflow-y: scroll;
-  background-color: #fff;
+  overflow-y: auto;
+  background: #fff;
+  flex: 1;
+  flex-direction: column;
+  padding-right: 0px;
+  padding-left: 0px;
+  display: flex;
 }
-#wrapper {
+.wrapper {
   display: flex;
   /* use the flex model */
   height: 100%;
   flex-direction: column;
   /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
-}
-#body {
-  flex: 1;
+  -webkit-flex-direction: column;
 }
 .leagueContent {
   padding-top: 5px;
-  height: calc(100% - 48px);
+  /*height: ~"calc(100% - 40px)";*/
   /*display: table-row;
   height:100%;*/
 }
 .leagueCommonContent {
   padding: 10px;
-  height: 100%;
-  width: 100%;
+  /*height: 100%;
+  width: 100%;*/
+  flex: 1;
   overflow-y: scroll;
   overflow-x: scroll;
 }
@@ -198,6 +214,7 @@ ul.flNavbar {
   padding: 0;
   background-color: #000066;
   color: white;
+  white-space: nowrap;
 }
 ul.flNavar:before,
 ul.flNavbar:after {
@@ -208,8 +225,7 @@ ul.flNavbar:after {
   clear: both;
 }
 .flNavbar > li {
-  display: inline;
-  float: left;
+  display: inline-block;
 }
 .flNavbar > li > a {
   display: block;
@@ -305,6 +321,18 @@ a:hover {
 span.timestamp {
   color: #ccc;
   font-size: x-small;
+}
+.newSquadPane {
+  flex: 1;
+  background-color: #bbbbbb;
+  margin-top: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-y: scroll;
 }
 .upperSquadPane {
   height: calc(50% - 5px);
@@ -403,6 +431,7 @@ ul.mainNavbar {
   padding: 0;
   background-color: #0000aa;
   color: white;
+  white-space: nowrap;
 }
 ul.mainNavar:before,
 ul.mainNavbar:after {
@@ -413,16 +442,23 @@ ul.mainNavbar:after {
   clear: both;
 }
 .mainNavbar > li {
-  display: inline;
-  float: left;
+  display: inline-block;
 }
 .mainNavbar > li > a {
   display: block;
   padding: 8px;
   color: white;
   text-align: center;
-  padding: 11px 13px;
+  padding: 10px 13px;
   text-decoration: none;
+  font-size: 15px;
+  line-height: 22px;
+}
+li.titleNav > a {
+  font-size: 19px;
+  line-height: 22px;
+  padding-top: 8px;
+  padding-bottom: 12px;
 }
 .mainNavbar > li > a:hover {
   background-color: #000055;
@@ -454,8 +490,4 @@ ul.mainNavbar:after {
 }
 .mainNavbar > ul > a:hover {
   background-color: #111;
-}
-li.titleNav > a {
-  font-size: 18px;
-  line-height: 20px;
 }

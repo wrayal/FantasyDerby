@@ -1,19 +1,21 @@
-<h1 style="color:pink">Populating from WFTDA Rosters</h1>
-Input roster data here (from team name down to last skater) then click button below<br>
-<textarea cols="60" rows="10" ng-model="wftdaPopCtrl.rosterData"></textarea><br>
-<input type=button ng-click="wftdaPopCtrl.processCharter()" value="Process Data"><p />
+<div class="leagueCommonContent">
+	<h1 style="color:pink">Populating from WFTDA Rosters</h1>
+	Input roster data here (from team name down to last skater) then click button below<br>
+	<textarea cols="60" rows="10" ng-model="wftdaPopCtrl.rosterData"></textarea><br>
+	<input type=button ng-click="wftdaPopCtrl.processCharter()" value="Process Data"><p />
 
-<div ng-show="wftdaPopCtrl.leagueName">
-	<b>League name:</b> {{wftdaPopCtrl.leagueName}}<br>
-	<b>Team name:</b> {{wftdaPopCtrl.teamName}}<p />
-	<table>
-		<tr>
-			<td><b>Player name</b></td>
-			<td><b>Number</b></td>
-		</tr>
-		<tr ng-repeat="player in wftdaPopCtrl.playerData">
-			<td>{{player.name}}</td><td>#{{player.number}}</td>
-		</tr>
-	</table>
-	<input type=button value="Create database entries based on this data?" ng-click="wftdaPopCtrl.createDBEntries()">
+	<div ng-show="wftdaPopCtrl.leagueName">
+		<b>League name:</b> {{wftdaPopCtrl.leagueName}}<br>
+		<b>Team name:</b> {{wftdaPopCtrl.teamName}}<p />
+		<table>
+			<tr>
+				<td><b>Player name</b></td>
+				<td><b>Number</b></td>
+			</tr>
+			<tr ng-repeat="player in wftdaPopCtrl.playerData">
+				<td>{{player.name}}</td><td>#{{player.number}}</td>
+			</tr>
+		</table>
+		<input type=button value="Create database entries based on this data?" ng-click="wftdaPopCtrl.createDBEntries()">
+	</div>
 </div>

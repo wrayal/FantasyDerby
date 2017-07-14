@@ -14,7 +14,6 @@
 		<a href="" 
 			class="dropdown-toggle" 
 			data-toggle="dropdown" 
-			style="float:left"
 			ng-class="{menuactive: indexCtrl.activeSubentry=='squads'}"
 		>
 			<span>
@@ -41,7 +40,7 @@
 		</ul>
 	</li>
 
-	<li style="float:right" ng-show="competitionCtrl.profile.$id==fantasyLeagueCtrl.leagueData.uniData.Commissioner">
+	<li ng-show="competitionCtrl.profile.$id==fantasyLeagueCtrl.leagueData.uniData.Commissioner">
 		<a href="" 
 			ui-sref='competitions.fantasyLeagues.admin'
 			ng-class="{menuactive: indexCtrl.activeSubentry=='admin'}"

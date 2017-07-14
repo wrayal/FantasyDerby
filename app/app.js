@@ -65,7 +65,7 @@ angular
       })
       .state('competitions', {
         url: '/comp/{cid}',
-        template: '<ui-view/>',
+        templateUrl: 'competitions/competitionTemplate.html',
         controller: 'CompetitionCtrl as competitionCtrl',
         abstract: true,
         resolve: {

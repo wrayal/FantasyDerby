@@ -1,4 +1,20 @@
 <div 
+	class="newSquadPane"
+	data-ng-include="squadCtrl.upperPaneUrl()"
+	>
+
+</div>
+
+<div
+	class="newSquadPane"
+	ng-show="squadCtrl.layout()=='twoPanes'"
+	data-ng-include="squadCtrl.lowerPaneUrl()"
+	>
+
+</div>
+
+<!--
+<div 
 	ng-class="{
 		upperSquadPane: squadCtrl.layout()=='twoPanes',
 		fullSquadPane: squadCtrl.layout()=='singlePane'
@@ -16,3 +32,4 @@
 	>
 
 </div>
+-->

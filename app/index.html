@@ -19,12 +19,11 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div id="wrapper">
+    <div class="wrapper">
         <!-- HEADER -->
         <div 
             data-ng-include="'indexMenu.html'" 
             class="header"
-            id="header"
             >
         </div>
 
@@ -32,10 +31,10 @@
 
         <!-- MAIN BODY -->
         <div 
-            class="container mainViewContainer"
-            id="body"
+            class="mainViewContainer"
+            id="body" ui-view
             >
-          <ui-view></ui-view>
+          
         </div>
 
         <!-- FOOTER -->
