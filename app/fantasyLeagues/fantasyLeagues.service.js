@@ -17,6 +17,12 @@ angular.module('FantasyDerbyApp')
 				return $firebaseObject(shortLeagueDataRef);
 			},
 
+			isDrafting: function(competitionId,leagueId,tournamentId) {
+				var competitionDataRef=firebase.database().ref().child("competitionFull").child(competitionId);
+				var leagueRef=competitionDataRef.child("fantasyLeagues").child(leagueId);
+				return $firebaseObject(leagueRef.child("tournaments").child(tournamentId))
+			},
+
 			getLeagueCommonData: function(leagueId,competitionId) { //Get the key data for a given league - potentially called a lot
 				console.log("BEFORE",$stateParams)
 				var competitionDataRef=firebase.database().ref().child("competitionFull").child(competitionId);

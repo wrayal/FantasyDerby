@@ -1,0 +1,47 @@
+<div class="leagueCommonContent">
+
+	<h1>View all drafts</h1>
+
+	<div ng-repeat="(tournamentKey,tournamentData) in competitionCtrl.tournamentData" class="repeatedDivs">
+		<h3>{{tournamentData.name}}</h3>
+
+		<table>
+			<tr>
+				<td>
+					League name
+				</td>
+				<td>
+					Jammer
+				</td>
+				<td>
+					Double Threat
+				</td>
+				<td>
+					Blocker
+				</td>
+				<td>
+					Blocker
+				</td>
+				<td>
+					Blocker
+				</td>
+			</tr>
+			<tr ng-repeat="(leagueKey,leagueName) in competitionCtrl.myLeagues" ng-if="viewDraftsCtrl.squadData[leagueKey][tournamentKey]">
+				<td>{{leagueName}}</td>
+				<td ng-repeat="position in viewDraftsCtrl.positions">
+					<span ng-show="viewDraftsCtrl.squadData[leagueKey][tournamentKey][position]">
+						<a href="" ui-sref="competitions.player({pid:viewDraftsCtrl.playerData[viewDraftsCtrl.squadData[leagueKey][tournamentKey][position]].$id})">
+							{{viewDraftsCtrl.playerData[viewDraftsCtrl.squadData[leagueKey][tournamentKey][position]].name}}
+						</a><br>
+						<a href="" ui-sref="competitions.teamView({teamId:viewDraftsCtrl.playerData[viewDraftsCtrl.squadData[leagueKey][tournamentKey][position]].team})" style="font-size:x-small">
+							{{viewDraftsCtrl.playerData[viewDraftsCtrl.squadData[leagueKey][tournamentKey][position]].teamName}}
+						</a>
+					</span>
+
+					<span ng-hide="viewDraftsCtrl.squadData[leagueKey][tournamentKey][position]">TBD</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</div>

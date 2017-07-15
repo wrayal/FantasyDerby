@@ -11,7 +11,7 @@ angular.module('FantasyDerbyApp')
     indexCtrl.subdomain=Competitions.subdom;
 
     //Some firebase objects listing members of leagues
-    indexCtrl.leagueMemberships={};
+    indexCtrl.leagueMemberships={}; //This is where we are members as players - NOT as commissioner!!
     indexCtrl.updateMemberships=function() {
       indexCtrl.leagueMemberships={};
       if (indexCtrl.inCompetition && indexCtrl.competitionId && indexCtrl.profile) {

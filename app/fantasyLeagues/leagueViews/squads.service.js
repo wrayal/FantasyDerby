@@ -18,6 +18,12 @@ angular.module('FantasyDerbyApp')
                 var selectionRef=leagueRef.child("fantasySelections").child(uid).child(tid);
                 return $firebaseObject(selectionRef);
 			},
+			getSquad: function(cid,lid,uid,tid) {
+				var competitionRef=firebase.database().ref().child("competitionFull").child(cid);
+				var leagueRef=competitionRef.child("fantasyLeagues").child(lid);
+                var squadRef=leagueRef.child("fantasyTeams").child(uid).child(tid);
+                return $firebaseObject(squadRef);
+			},
 			setLeagueToDrafting: function(uid,cid,lid,tournamentList) {
 				//First we grab the data we need and load it
 				var competitionRef=firebase.database().ref().child("competitionFull").child(cid);

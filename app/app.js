@@ -276,6 +276,11 @@ angular
           }
         }
       })
+      .state('competitions.viewDrafts',{
+        url: '/viewDrafts',
+        templateUrl: 'fantasyLeagues/viewDrafts.html',
+        controller: 'ViewDraftsCtrl as viewDraftsCtrl'
+      })
       .state('competitions.fantasyLeagues',{
         url: '/fantasyLeagues/{lid}',
         abstract: true,
