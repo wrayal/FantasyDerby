@@ -7,7 +7,7 @@
 		<td>Blocker</td>
 		<td>Blocker</td>
 	</tr>
-	<tr ng-repeat="(playerKey,teams) in squadCtrl.fantasyTeams">
+	<tr ng-repeat="(playerKey,teams) in squadCtrl.fantasyTeams" ng-if="fantasyLeagueCtrl.acceptedMembers[playerKey]">
 		<td>
 			{{fantasyLeagueCtrl.leagueMembers[playerKey].username.$value}}
 		</td>
