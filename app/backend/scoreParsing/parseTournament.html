@@ -1,0 +1,185 @@
+<div class="leagueCommonContent">
+	<div class="page-header">
+		<h1>
+			<b>{{parseTournamentCtrl.tournamentData.name}}</b><br> Tournament parsing for {{competitionCtrl.keyData.fullName}}
+		</h1>
+	</div>
+
+	<input type="button" value="COMPUTE COMPLETE TOURNAMENT SCORES" ng-click="parseTournamentCtrl.completeScores()">
+	<span ng-show="parseTournamentCtrl.fullySaved==false">NEEDS FULL SAVING</span>
+	<p/>
+
+	<input type="button" value="Add bout" ng-click="parseTournamentCtrl.addBout()"><p/>
+
+	<div ng-repeat="(boutKey,boutData) in parseTournamentCtrl.tournamentScores.boutData"
+		style="width:100%;background:#bbb;padding:10px;margin-bottom:10px"
+	>
+		<b>{{parseTournamentCtrl.bouts[boutKey].name}}</b> <font style="font-size:x-small" ng-show="parseTournamentCtrl.bouts[boutKey].date">({{parseTournamentCtrl.bouts[boutKey].date}})</font>
+
+		<input type="button" value="Show/hide" ng-click="parseTournamentCtrl.working[boutKey].visible=(parseTournamentCtrl.working[boutKey].visible==1?0:1)">
+
+		<div ng-show="parseTournamentCtrl.working[boutKey].visible">
+
+			<!-- Revert to pre-initialisation state -->
+			<input type="button" ng-show="parseTournamentCtrl.working[boutKey].init" ng-hide="parseTournamentCtrl.bouts[boutKey].team1" value="Revert to init" ng-click="parseTournamentCtrl.working[boutKey].init=null" style="float:right">
+			<!-- Delete bout altogether -->
+			<input type="button" value="Delete bout" style="float:right" ng-click="parseTournamentCtrl.deleteBout(boutKey)"><br>
+
+			<!-- All the data dump material is here: -->
+			<div ng-hide="parseTournamentCtrl.bouts[boutKey].date">
+				<!-- Buttons for showing relevant initialisation routines -->
+				<input type="button" ng-hide="parseTournamentCtrl.working[boutKey].init" value="Init from Excel data" ng-click="parseTournamentCtrl.working[boutKey].init='excel'">
+				<input type="button" ng-hide="parseTournamentCtrl.working[boutKey].init" value="Init from Rinxter data" ng-click="parseTournamentCtrl.working[boutKey].init='rinxter'">
+
+				<div ng-show="parseTournamentCtrl.working[boutKey].init=='excel'">
+					Input excel data:<br>
+					<textarea rows=6 cols=80 ng-model="parseTournamentCtrl.working[boutKey].excelData">
+					</textarea><br>
+					<input type=button ng-click="parseTournamentCtrl.initFromExcel(boutKey,parseTournamentCtrl.working[boutKey].excelData)" value="Init from this data"><br>
+				</div>
+			</div><p />
+
+			<!-- Now showing the table where we can fill in extra data: -->
+			<div ng-show="parseTournamentCtrl.bouts[boutKey].date">
+				{{parseTournamentCtrl.bouts[boutKey].team1.name}}
+				<select ng-model="parseTournamentCtrl.bouts[boutKey].team1.teamId" ng-change="parseTournamentCtrl.matchPlayers(boutKey,'team1',parseTournamentCtrl.bouts[boutKey].team1.teamId);parseTournamentCtrl.working[boutKey].needSave=true">
+					<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.tournamentData.teamList" value="{{teamKey}}">{{teamData.teamName}}</option>
+				</select>
+				<!--<input type="button" value="Save team Id" ng-click="parseTournamentCtrl.saveTeamId(boutKey,'team1',boutData.team1.teamId)">-->
+
+				<table>
+					<tr>
+						<td>Database Name</td>
+						<td>Database Number</td>
+						<td>Player Id</td>
+						<td>DB Name</td>
+						<td>Switch Player</td>
+						<td>Trans-team switch</td>
+						<td>Piv +/-</td>
+						<td>Bl +/-</td>
+						<td>Jmr +/-</td>
+						<td>Penalties</td>
+						<td>Lead</td>
+						<td>#jams</td>
+						<td>FD: Jmr</td>
+						<td>FD: DT</td>
+						<td>FD: Bl</td>
+					</tr>
+					<tr ng-repeat="(curPlayerKey,player) in parseTournamentCtrl.bouts[boutKey].team1.teamList">
+						<td>{{player.name}}</td>
+						<td>{{player.number}}</td>
+						<td>{{player.playerId}}</td>
+						<td>{{parseTournamentCtrl.playerData[player.playerId].name}}</td>
+						<td>
+							<select ng-model="parseTournamentCtrl.bouts[boutKey].team1.teamList[curPlayerKey].playerId" ng-change="parseTournamentCtrl.updatePlayerData();parseTournamentCtrl.working[boutKey].needSave=true">
+								<option ng-repeat="(playerKey,playerData) in parseTournamentCtrl.teamPlayerLists[parseTournamentCtrl.bouts[boutKey].team1.teamId].teamPlayers" value="{{playerData.id}}">{{playerData.name}}</option>
+								<option value="">N/A</option>
+							</select>
+						</td>
+
+						<td>
+							<select ng-model="parseTournamentCtrl.working[boutKey].sourceTeam" ng-change="parseTournamentCtrl.addTeamData(parseTournamentCtrl.working[boutKey].sourceTeam)">
+								<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.affiliatedTeams" 
+										value="{{teamKey}}"
+									>
+									{{teamData.leagueName}}
+								</option>
+								<option value="">N/A</option>
+							</select>
+							<select ng-model="parseTournamentCtrl.bouts[boutKey].team1.teamList[curPlayerKey].playerId" ng-change="parseTournamentCtrl.updatePlayerData();parseTournamentCtrl.working[boutKey].needSave=true">
+								<option ng-repeat="(playerKey,playerData) in parseTournamentCtrl.teamPlayerLists[parseTournamentCtrl.working[boutKey].sourceTeam].teamPlayers" value="{{playerData.id}}">{{playerData.name}}</option>
+								<option value="">N/A</option>
+							</select>
+						</td>
+
+						<td>{{player.pivPm}}</td>
+						<td>{{player.blPm}}</td>
+						<td>{{player.jmrPm}}</td>
+						<td>{{player.pens}}</td>
+						<td>{{player.lead}}</td>
+						<td>{{player.totJams}}</td>
+						<td>{{player.jmrFDScore}}</td>
+						<td>{{player.dtFDScore}}</td>
+						<td>{{player.blFDScore}}</td>
+					</tr>
+				</table><p />
+
+				{{parseTournamentCtrl.bouts[boutKey].team2.name}}
+				<select ng-model="parseTournamentCtrl.bouts[boutKey].team2.teamId" ng-change="parseTournamentCtrl.matchPlayers(boutKey,'team2',parseTournamentCtrl.bouts[boutKey].team2.teamId);parseTournamentCtrl.working[boutKey].needSave=true">
+					<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.tournamentData.teamList" value="{{teamKey}}">{{teamData.teamName}}</option>
+				</select>
+				<!--<input type="button" value="Save team Id" ng-click="parseTournamentCtrl.saveTeamId(boutKey,'team2',boutData.team2.teamId)">-->
+
+				<table>
+					<tr>
+						<td>Db Name</td>
+						<td>Db Number</td>
+						<td>Player Id</td>
+						<td>DB Name</td>
+						<td>Switch Player</td>
+						<td>Trans-team switch</td>
+						<td>Piv +/-</td>
+						<td>Bl +/-</td>
+						<td>Jmr +/-</td>
+						<td>Penalties</td>
+						<td>Lead</td>
+						<td>#jams</td>
+						<td>FD: Jmr</td>
+						<td>FD: DT</td>
+						<td>FD: Bl</td>
+					</tr>
+					<tr ng-repeat="(curPlayerKey,player) in parseTournamentCtrl.bouts[boutKey].team2.teamList">
+						<td>{{player.name}}</td>
+						<td>{{player.number}}</td>
+						<td>{{player.playerId}}</td>
+						<td>{{parseTournamentCtrl.playerData[player.playerId].name}}</td>
+						<td>
+							<select ng-model="parseTournamentCtrl.bouts[boutKey].team2.teamList[curPlayerKey].playerId" ng-change="parseTournamentCtrl.updatePlayerData();parseTournamentCtrl.working[boutKey].needSave=true">
+								<option ng-repeat="(playerKey,playerData) in parseTournamentCtrl.teamPlayerLists[parseTournamentCtrl.bouts[boutKey].team2.teamId].teamPlayers" value="{{playerData.id}}">{{playerData.name}}</option>
+								<option value="">N/A</option>
+							</select>
+						</td>
+
+						<td>
+							<select ng-model="parseTournamentCtrl.working[boutKey].sourceTeam" ng-change="parseTournamentCtrl.addTeamData(parseTournamentCtrl.working[boutKey].sourceTeam)">
+								<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.affiliatedTeams" 
+										value="{{teamKey}}"
+									>
+									{{teamData.leagueName}}
+								</option>
+								<option value="">N/A</option>
+							</select>
+							<select ng-model="parseTournamentCtrl.bouts[boutKey].team1.teamList[curPlayerKey].playerId" ng-change="parseTournamentCtrl.updatePlayerData();parseTournamentCtrl.working[boutKey].needSave=true">
+								<option ng-repeat="(playerKey,playerData) in parseTournamentCtrl.teamPlayerLists[parseTournamentCtrl.working[boutKey].sourceTeam].teamPlayers" value="{{playerData.id}}">{{playerData.name}}</option>
+								<option value="">N/A</option>
+							</select>
+						</td>
+
+						<td>{{player.pivPm}}</td>
+						<td>{{player.blPm}}</td>
+						<td>{{player.jmrPm}}</td>
+						<td>{{player.pens}}</td>
+						<td>{{player.lead}}</td>
+						<td>{{player.totJams}}</td>
+						<td>{{player.jmrFDScore}}</td>
+						<td>{{player.dtFDScore}}</td>
+						<td>{{player.blFDScore}}</td>
+					</tr>
+				</table><p />
+
+				<input type="button" value="Create FD Scores" ng-click="parseTournamentCtrl.parseFDScores(boutKey);parseTournamentCtrl.working[boutKey].needSave=true"><p />
+
+				<input type="button" value="Save bout data" ng-click="parseTournamentCtrl.saveRawData(boutKey)">
+				<span style="color:red" ng-show="parseTournamentCtrl.working[boutKey].needSave==true">IN NEED OF SAVING!</span><p />
+
+				<input type="button" value="Parse into player data" ng-click="parseTournamentCtrl.parseIntoPlayers(boutKey)">
+				<span ng-show="parseTournamentCtrl.parsedPlayers[boutKey]">{{parseTournamentCtrl.parsedPlayers[boutKey]}}/{{parseTournamentCtrl.toParse[boutKey]}}</span>
+				<span ng-show="parseTournamentCtrl.intoPlayedNeeded">NEEDED!</span>
+				
+			</div>
+
+		</div><!--This is the show/hide expand div thing-->
+
+	</div>
+
+ </div>

@@ -10,11 +10,17 @@
     <img src="{{userData.data.display}}"></img>
     <div style="margin-left:10px">
     <span ng-repeat="(tournamentKey,tournamentMembership) in userData.leagueMembership">
-      <span ng-repeat="entry in tournamentMembership.asCommissioner">
-        <font style="color:red">{{entry}}</font><br>
+      <span ng-repeat="(key,entry) in tournamentMembership.asCommissioner">
+        <a href=""
+          ui-sref="competitions.fantasyLeagues.summary({cid:tournamentKey,lid:key})">
+          <font style="color:red">{{entry}}</font>
+        </a><br>
       </span>
-      <span ng-repeat="entry in tournamentMembership.asPlayer">
-        <font style="color:green">{{entry}}</font><br>
+      <span ng-repeat="(key,entry) in tournamentMembership.asPlayer">
+        <a href=""
+          ui-sref="competitions.fantasyLeagues.summary({cid:tournamentKey,lid:key})">
+          <font style="color:green">{{entry}}</font>
+        </a><br>
       </span>
     </span>
     </div>

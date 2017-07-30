@@ -82,8 +82,14 @@ angular.module('FantasyDerbyApp')
         memberObj={
             username: Users.getUsername(key),
             presence: Users.getPresence(key),
+            score: 0,
             member: fantasyLeagueCtrl.leagueData.members[key]
           };
+        if (fantasyLeagueCtrl.leagueData.fantasyTeams && 
+          fantasyLeagueCtrl.leagueData.fantasyTeams[key] && 
+          fantasyLeagueCtrl.leagueData.fantasyTeams[key].score) {
+          memberObj.score=fantasyLeagueCtrl.leagueData.fantasyTeams[key].score
+        }
         fantasyLeagueCtrl.leagueMembers[key]=memberObj;
         if (fantasyLeagueCtrl.leagueMembers[key].member==true) fantasyLeagueCtrl.acceptedMembers[key]=memberObj;
         if (fantasyLeagueCtrl.leagueMembers[key].member==false) fantasyLeagueCtrl.requests=true;
@@ -95,6 +101,7 @@ angular.module('FantasyDerbyApp')
     fantasyLeagueCtrl.whichDraftsNeeded={};
     fantasyLeagueCtrl.checkEligibleDrafts=function(tournamentKey,userId){
       //First get a list of all the players that have been drafted by any user
+      
       allDrafts={};
       if (fantasyLeagueCtrl.leagueData.fantasyTeams) {
         angular.forEach(fantasyLeagueCtrl.leagueData.fantasyTeams,function(teamSetDat,teamSetKey) {
@@ -108,14 +115,24 @@ angular.module('FantasyDerbyApp')
           }
         })
       }
+      
       //Then check if there is any member in the fantasy selection that isn't matched up already
       var retVal=false;
       if (fantasyLeagueCtrl.leagueData.fantasySelections && fantasyLeagueCtrl.leagueData.fantasySelections[userId] && fantasyLeagueCtrl.leagueData.fantasySelections[userId][tournamentKey]) {
         fantSel=fantasyLeagueCtrl.leagueData.fantasySelections[userId][tournamentKey];
         angular.forEach(fantSel,function(selData,selKey){
           playerKey=selData.id;
-          if (!allDrafts[playerKey]) {
-            retVal=true;
+          if (!allDrafts[playerKey] 
+              && fantasyLeagueCtrl.leagueData.fantasyTeams 
+              && fantasyLeagueCtrl.leagueData.fantasyTeams[userId]
+              && fantasyLeagueCtrl.leagueData.fantasyTeams[userId][tournamentKey]
+            ) {
+            //This means this player wasn't selected, but we need to make sure it was in a position they haven't already drafted for
+            curTeam=fantasyLeagueCtrl.leagueData.fantasyTeams[userId][tournamentKey];
+            if (curTeam.blocker3=="" && selData.position=="blocker") retVal=true;
+            if (curTeam.doubleThreat=="" && selData.position=="doubleThreat") retVal=true;
+            if (curTeam.jammer=="" && selData.position=="jammer") retVal=true;
+              
           }
         })
       }

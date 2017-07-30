@@ -62,6 +62,15 @@
        ga('send', 'pageview');
     </script>
 
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.10&appId=1619211258406913";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -132,6 +141,8 @@
         <script src="backend/setCompetitionInfo.controller.js"></script>
         <script src="backend/blogMessages/blogMessages.controller.js"></script>
         <script src="backend/viewUsers/viewUsers.controller.js"></script>
+        <script src="backend/scoreParsing/parseCompetition.controller.js"></script>
+        <script src="backend/scoreParsing/parseTournament.controller.js"></script>
 
         <script src="fantasyLeagues/fantasyLeagues.service.js"></script>
         <script src="fantasyLeagues/leagueMessages.service.js"></script>

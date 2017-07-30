@@ -54,7 +54,9 @@
       </li>
 
       <!-- THE LEAGUES WHERE WE ARE MEMBERS -->
-      <li ng-repeat="(key,value) in indexCtrl.leagueMemberships" ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]==true">
+      <li ng-repeat="(key,value) in indexCtrl.leagueMemberships"
+        ng-if="indexCtrl.leagueMemberships[key][indexCtrl.profile.$id]==true && indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asPlayer[key]"
+        >
         <a href="" ui-sref="competitions.fantasyLeagues.summary({lid:key})" style="color:green">
           {{indexCtrl.profile.leagueMembership[indexCtrl.competitionId].asPlayer[key]}}
         </a>
@@ -122,6 +124,7 @@
       <li><a href="" ui-sref="adminContact">Respond to contact messages</a></li>
       <li><a href="" ui-sref="viewUsers">View users</a></li>
       <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
+      <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.competitionParse.mainView">Parse competition scores</a></li>
     </ul>
   </li>
 

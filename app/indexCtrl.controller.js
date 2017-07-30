@@ -11,7 +11,7 @@ angular.module('FantasyDerbyApp')
     indexCtrl.subdomain=Competitions.subdom;
 
     //Some firebase objects listing members of leagues
-    indexCtrl.leagueMemberships={}; //This is where we are members as players - NOT as commissioner!!
+    indexCtrl.leagueMemberships={}; //This will list ALL the leagues of which we are members if we are in a particular competition
     indexCtrl.updateMemberships=function() {
       indexCtrl.leagueMemberships={};
       if (indexCtrl.inCompetition && indexCtrl.competitionId && indexCtrl.profile) {
@@ -25,7 +25,14 @@ angular.module('FantasyDerbyApp')
                 console.log("Setting ",key,FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key))
                 indexCtrl.leagueMemberships[key]=FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key);
               })
-           }
+            }
+            checkLeagues=competitionListing.asCommissioner
+            if (checkLeagues) {
+              angular.forEach(checkLeagues,function(value,key){
+                console.log("Setting ",key,FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key))
+                indexCtrl.leagueMemberships[key]=FantasyLeagues.getLeagueMembership(indexCtrl.competitionId,key);
+              })
+            }
           }
         }
       }
@@ -127,9 +134,6 @@ angular.module('FantasyDerbyApp')
         indexCtrl.tourData=Tournaments.getAllTournaments($state.params.cid);
         indexCtrl.updateMemberships();
         Competitions.updateCSS($state.params.cid);
-        //Realistically this is calling it way too often :(
-        //we should only be calling on transition between competitions
-        //It's easy to have an "if" statement here but there must be a *correct* way to do it...
       } else {
         Competitions.updateCSS("");
         indexCtrl.nameToShow=null;

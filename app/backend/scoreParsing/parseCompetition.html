@@ -1,0 +1,14 @@
+<div class="leagueCommonContent">
+  <div class="page-header">
+    <h1>
+      <b>{{competitionCtrl.keyData.fullName}}:</b> competition score parsing
+    </h1>
+  </div>
+  Parse scores for a particular tournament:
+
+  <select ng-model="parseCompetitionCtrl.switchTournament">
+    <option ng-repeat="(key,entry) in competitionCtrl.tournamentData" value="{{key}}">{{entry.name}} [{{entry.state}}]</option>
+  </select>
+  <input type="button" value="Switch" ng-click="parseCompetitionCtrl.switch()">
+  <hr>
+</div>

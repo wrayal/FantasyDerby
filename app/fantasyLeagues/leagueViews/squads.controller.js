@@ -19,6 +19,8 @@ angular.module('FantasyDerbyApp')
     squadCtrl.detailedStatus=function() {
       //Ok, if drafting is possible, let's check if the tournament has data yet!
       if (squadCtrl.tourData.state=="waitingForData") return "waitingForData";
+      //Ok, if drafting is possible, let's check if the tournament has data yet!
+      if (squadCtrl.tourData.state=="playing") return "playing";
       //Easy case second
       if (fantasyLeagueCtrl.leagueData.uniData.status=='forming') return "forming";
       //Now check if we need a spot draft from this user
@@ -28,7 +30,9 @@ angular.module('FantasyDerbyApp')
       }
       if (draftOrder[0]==competitionCtrl.uid) { //If it's this user's "turn"...
         viableDraft=false
+        numDrafts=0;
         angular.forEach(squadCtrl.selection,function(value,key){ //Loop over each player
+          numDrafts++;
           if (!squadCtrl.draftedPlayers[value.id]) { //Make sure they haven't been drafted
             if (
               (value.position=="jammer" && squadData.jammer=="") ||
@@ -42,18 +46,19 @@ angular.module('FantasyDerbyApp')
             }
           }
         })
-        if (viableDraft==false) return "spotDraft"
+        if (viableDraft==false && numDrafts>0) return "spotDraft"
       }
       return "drafting";
     }
     squadCtrl.layout=function(){
-      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming' || squadCtrl.detailedStatus()=='draftCompleted' || squadCtrl.detailedStatus()=="waitingForData") return "singlePane";
+      if (fantasyLeagueCtrl.leagueData.uniData.status=='forming' || squadCtrl.detailedStatus()=='playing' || squadCtrl.detailedStatus()=='draftCompleted' || squadCtrl.detailedStatus()=="waitingForData") return "singlePane";
       else return "twoPanes";
     }
     squadCtrl.upperPaneUrl=function(){
       if (squadCtrl.detailedStatus()=="waitingForData") return "fantasyLeagues/leagueViews/squadViews/waitingForData.html"
       if  (squadCtrl.detailedStatus()=="spotDraft") return "fantasyLeagues/leagueViews/squadViews/spotDraft.html"
       if  (squadCtrl.detailedStatus()=='draftCompleted') return "fantasyLeagues/leagueViews/squadViews/squadsDrafted.html"
+      if  (squadCtrl.detailedStatus()=='playing') return "fantasyLeagues/leagueViews/squadViews/squadsDrafted.html"
       return "fantasyLeagues/leagueViews/squadViews/selection.html"
     }
     squadCtrl.lowerPaneUrl=function(){
@@ -75,7 +80,7 @@ angular.module('FantasyDerbyApp')
       if (fantasyLeagueCtrl.leagueData.uniData.status!='forming') {
         angular.forEach(fantasyLeagueCtrl.acceptedMembers,function(leagueMember,memberKey){
           //For each user, grab the appropriate squad
-          console.log("TRYING",memberKey,squadCtrl.tourId)
+          //console.log("TRYING",memberKey,squadCtrl.tourId)
           curSquad=squadCtrl.fantasyTeams[memberKey][squadCtrl.tourId];
           
           for (i=0; curSquad && i<squadCtrl.positions.length; i++) {
@@ -84,6 +89,7 @@ angular.module('FantasyDerbyApp')
             if (currentPlayerId!="" && !squadCtrl.draftedPlayers[currentPlayerId]) {
               squadCtrl.draftedPlayers[currentPlayerId]={
                 data:Players.getPlayerData(currentPlayerId),
+                totalScores:Players.getScores(competitionCtrl.cid,squadCtrl.tourId,currentPlayerId),
                 draftedBy: memberKey
               }
             }

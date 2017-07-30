@@ -156,6 +156,31 @@ angular
           }
         }
       })
+      .state('competitions.competitionParse', {
+        url: '/competitionParse',
+        templateUrl: 'backend/scoreParsing/view.html',
+        abstract: true,
+        controller: 'ParseCompetitionCtrl as parseCompetitionCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireAdmin("scoreParse");
+          }
+        }
+      })
+      .state('competitions.competitionParse.mainView', {
+        url: '/mainView',
+        templateUrl: 'backend/scoreParsing/parseCompetition.html'
+      })
+      .state('competitions.competitionParse.tournamentParse', {
+        url: '/tournament/{tournamentId}',
+        templateUrl: 'backend/scoreParsing/parseTournament.html',
+        controller: 'ParseTournamentCtrl as parseTournamentCtrl',
+        resolve: {
+          tournamentScoreData: function(Tournaments,$stateParams) {
+            return Tournaments.getTournamentScoreData($stateParams.cid,$stateParams.tournamentId)
+          }
+        }
+      })
       .state('mrdaPopulate', {
         url: '/mrdaPopulate',
         templateUrl: 'backend/populateFromMRDARoster.html',

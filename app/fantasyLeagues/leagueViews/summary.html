@@ -37,16 +37,28 @@
 				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry"  class="genHeader">
 					{{competitionCtrl.tournamentData[tourKey].name}}
 				</td>
+				<td ng-show="fantasyLeagueCtrl.leagueData.fantasyTeams[competitionCtrl.uid].score" class="genHeader">
+					Total score
+				</td>
 			</tr>
-			<tr ng-repeat="(memberKey,memberData) in fantasyLeagueCtrl.acceptedMembers">
+			<tr ng-repeat="(memberKey,memberData) in fantasyLeagueCtrl.acceptedMembers | orderObjectBy:'score':true">
 				<td>{{memberData.username.$value}}</td>
-				<td>{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberKey].name}}</td>
+				<td>{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey].name}}</td>
 				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry">
-					Selected: {{fantasyLeagueCtrl.getSelected(memberKey,tourKey)}}
-					<br>
-					Drafted: {{fantasyLeagueCtrl.getDrafted(memberKey,tourKey)}}/5
+					<span ng-show="competitionCtrl.tournamentData[tourKey].state=='playing'">
+						{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey][tourKey].score}}
+					</span>
+					<span ng-hide="competitionCtrl.tournamentData[tourKey].state=='playing'">
+						Selected: {{fantasyLeagueCtrl.getSelected(memberData.$filtKey,tourKey)}}
+						<br>
+						Drafted: {{fantasyLeagueCtrl.getDrafted(memberData.$filtKey,tourKey)}}/5
+					</span>
+				</td>
+				<td ng-show="fantasyLeagueCtrl.leagueData.fantasyTeams[competitionCtrl.uid].score">
+					{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey].score}}
 				</td>
 			</tr>
 		</table>
 	</center>
+
 </div>

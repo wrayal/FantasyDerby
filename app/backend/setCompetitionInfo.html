@@ -108,6 +108,11 @@
 				ng-model="setCompCtrl.working[key].tournamentState" value="readyToSelect">
 			Ready to select
 		</label><br />
+		<label>
+			<input type="radio"
+				ng-model="setCompCtrl.working[key].tournamentState" value="playing">
+			Playing
+		</label><br />
 		<input type="button" value="Save state"
 			ng-disabled="setCompCtrl.working[key].tournamentState==setCompCtrl.compData.tournaments[key].state"
 			ng-click="setCompCtrl.saveTournamentState(key,setCompCtrl.working[key].tournamentState)"

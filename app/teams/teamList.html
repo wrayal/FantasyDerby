@@ -12,4 +12,6 @@
 	<span ng-repeat="(key,team) in teamListCtrl.teamList">
 	<a href="" ui-sref="competitions.teamView({teamId:key})">{{team.leagueName}}<span ng-show="team.teamName!=team.leagueName"> - {{team.teamName}}</span></a><br>
 	</span>
+
+	<img ng-show="teamListCtrl.imgSrc" ng-src="{{teamListCtrl.imgSrc}}" style="width:100%"></img>
 </div>

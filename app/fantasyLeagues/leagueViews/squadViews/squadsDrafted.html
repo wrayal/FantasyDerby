@@ -6,17 +6,48 @@
 		<td>Blocker</td>
 		<td>Blocker</td>
 		<td>Blocker</td>
+		<td  ng-show="squadCtrl.detailedStatus()=='playing'">Squad score</td>
 	</tr>
-	<tr ng-repeat="(playerKey,teams) in squadCtrl.fantasyTeams" ng-if="fantasyLeagueCtrl.acceptedMembers[playerKey]">
+	<!--ng-if="fantasyLeagueCtrl.acceptedMembers[playerKey]"-->
+	<tr ng-repeat="(playerKey,teams) in squadCtrl.fantasyTeams | orderObjectBy:squadCtrl.tourId:true:'score'"
+		ng-if="fantasyLeagueCtrl.acceptedMembers[teams.$filtKey]"
+		>
 		<td>
-			{{fantasyLeagueCtrl.leagueMembers[playerKey].username.$value}}
+			{{fantasyLeagueCtrl.leagueMembers[teams.$filtKey].username.$value}}
 		</td>
 		<td ng-repeat="entry in squadCtrl.positions">
 			<div ng-show="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">
-				<a href="" ui-sref="competitions.player({pid:teams[squadCtrl.tourId][entry]})">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.name}}</a><br>
+				<a href="" ui-sref="competitions.player({pid:teams[squadCtrl.tourId][entry]})">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.name}} #{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.number}}<span ng-show="squadCtrl.detailedStatus()=='playing'">:</span>
+				</a>
+
+				<span ng-show="entry=='jammer' && squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore">
+					{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore}}
+				</span>
+				<span ng-show="entry=='jammer' && !squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore">
+					0
+				</span>
+				<span ng-show="entry=='doubleThreat' && squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore">
+					{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore}}
+				</span>
+				<span ng-show="entry=='doubleThreat' && !squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore">
+					0
+				</span>
+				<span ng-show="(entry=='blocker1' || entry=='blocker2' || entry=='blocker3') && squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore">
+					{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore}}
+				</span>
+				<span ng-show="(entry=='blocker1' || entry=='blocker2' || entry=='blocker3') && !squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore">
+					0
+				</span>
+
+				<br>
 				<a href="" ui-sref="competitions.teamView({teamId:squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.team})" style="font-size:x-small">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.teamName}}</a>
 			</div>
 			<span ng-hide="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">TBD</span>
 		</td>
+		<td ng-show="squadCtrl.detailedStatus()=='playing'">
+			{{squadCtrl.fantasyTeams[teams.$filtKey][squadCtrl.tourId].score}}
+		</td>
 	</tr>
+
+
 </table>

@@ -1,5 +1,5 @@
 angular.module('FantasyDerbyApp')
-  .controller('CompetitionCtrl', function (competitionID,competitionKeyData,profile,tournamentData,FantasyLeagues,Squads) {
+  .controller('CompetitionCtrl', function (competitionID,competitionKeyData,profile,tournamentData,FantasyLeagues,Squads,Competitions) {
     competitionCtrl=this;
 
     competitionCtrl.cid=competitionID;
@@ -34,5 +34,6 @@ angular.module('FantasyDerbyApp')
     	competitionCtrl.updateMyLeagues();
     })
     competitionCtrl.updateMyLeagues();
+
 
   });

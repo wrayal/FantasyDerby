@@ -1,11 +1,16 @@
 angular.module('FantasyDerbyApp')
-  .controller('TeamListCtrl', function (teamData,compName) {
+  .controller('TeamListCtrl', function (teamData,compName,$stateParams) {
     teamListCtrl=this;
 
     teamListCtrl.compName=compName;
     teamListCtrl.teamList=teamData.teamList;
     teamListCtrl.teamName=teamData.teamName;
 
-    console.log("Team list",teamListCtrl.teamList)
+    teamListCtrl.imgSrc="";
+
+    if ($stateParams.listId!="allComp") {
+    	teamListCtrl.imgSrc=competitionCtrl.tournamentData[$stateParams.listId].imgSrc;
+    }
+
 
   });
