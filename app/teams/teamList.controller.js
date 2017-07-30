@@ -5,11 +5,15 @@ angular.module('FantasyDerbyApp')
     teamListCtrl.compName=compName;
     teamListCtrl.teamList=teamData.teamList;
     teamListCtrl.teamName=teamData.teamName;
+    teamListCtrl.tournamentId=$stateParams.listId;
 
     teamListCtrl.imgSrc="";
 
+    teamListCtrl.teamData={};
+
     if ($stateParams.listId!="allComp") {
-    	teamListCtrl.imgSrc=competitionCtrl.tournamentData[$stateParams.listId].imgSrc;
+    	teamListCtrl.imgSrc=competitionCtrl.tournamentData[teamListCtrl.tournamentId].imgSrc;
+        teamListCtrl.boutsData=Tournaments.getCondensedBoutData(competitionCtrl.cid,teamListCtrl.tournamentId)
     }
 
 

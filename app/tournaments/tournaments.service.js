@@ -11,6 +11,11 @@ angular.module('FantasyDerbyApp')
                 var compRef=firebase.database().ref().child("competitionFull").child(competitionId);
                 var tournRef=compRef.child("tournamentScoreData").child(tournamentId)
                 return $firebaseObject(tournRef);
+            },
+            getCondensedBoutData: function(competitionId,tournamentId) {
+                var compRef=firebase.database().ref().child("competitionFull").child(competitionId);
+                var tournRef=compRef.child("tournamentScoreData").child(tournamentId).child("boutDataShort");
+                return $firebaseObject(tournRef);
             }
         }
 

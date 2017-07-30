@@ -198,7 +198,35 @@ angular.module('FantasyDerbyApp')
         parseTournamentCtrl.toParse[boutKey]=0;
         parseTournamentCtrl.parsedPlayers[boutKey]=0;
         teams=["team1","team2"];
+
+        compressedBout={
+            name: "",
+            date: "",
+            team1: {
+                name: "",
+                teamId: "",
+                score: 0,
+                teamList: []
+            },
+            team2: {
+                name: "",
+                teamId: "",
+                score: 0,
+                teamList: []
+            }
+        }
+
         parseTournamentCtrl.bouts[boutKey].$loaded().then(function(boutData){
+
+            compressedBout.name=boutData.name;
+            compressedBout.date=boutData.date;
+            compressedBout.team1.name=boutData.team1.name;
+            compressedBout.team1.score=boutData.team1.score;
+            compressedBout.team1.teamId=boutData.team1.teamId;
+            compressedBout.team2.name=boutData.team2.name;
+            compressedBout.team2.score=boutData.team2.score;
+            compressedBout.team2.teamId=boutData.team2.teamId;
+            
 
             for (i=0; i<teams.length; i++) {
                 whichTeam=teams[i];
@@ -209,6 +237,10 @@ angular.module('FantasyDerbyApp')
                     }
                     curPlayer=teamList[j];
                     
+                    if ((curPlayer.totJams-0)>0) {
+                        compressedBout[whichTeam].teamList.push({name:curPlayer.name,number:curPlayer.number,playerId:curPlayer.playerId})
+                    }
+
                     //Create the minimal data
                     boutObj={
                         blFDScore: curPlayer.blFDScore,
@@ -222,13 +254,14 @@ angular.module('FantasyDerbyApp')
                     if (curPlayer.playerId) {
                         playerDataRef.child(curPlayer.playerId).child(boutKey).set(boutObj,function(){
                             parseTournamentCtrl.parsedPlayers[boutKey]++;
-                            console.log("UGH:",parseTournamentCtrl.parsedPlayers[boutKey])
                             $scope.$apply()
                         })
                     }
 
                 }
             }
+
+            tournScoreRef.child("boutDataShort").child(boutKey).set(compressedBout)
 
         })
     }
@@ -410,6 +443,10 @@ angular.module('FantasyDerbyApp')
     			bout.team2.teamList.push(curPlayerObj)
     		}
     	}
+
+        bout.team1.score=lines[25].split("\t")[7];
+        bout.team2.score=lines[47].split("\t")[7];
+        console.log("BOUT IS",bout)
 
     	return bout;
     }

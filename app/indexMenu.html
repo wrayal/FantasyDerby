@@ -29,15 +29,15 @@
   <!-- Roster and front page menu bits -->
   <li class="dropdown" ng-show="indexCtrl.inCompetition" ng-class="{menuactive: indexCtrl.activeEntry=='rosterInfo'}">
     <a href="" class="dropdown-toggle" data-toggle="dropdown">
-      <span>Roster info</span><b class="caret"></b>
+      <span>Competition info</span> <b class="caret"></b>
     </a>
     
     <ul class="dropdown-menu derbyNavbar"> 
-      <li><a href="" ui-sref="competitions.frontPage">Info summary</a></li>              
-      <li><a href="" ui-sref="competitions.teamList({listId:'allComp'})">All {{indexCtrl.nameToShow.$value}} teams</a></li>
+      <li><a href="" ui-sref="competitions.frontPage">Competition summary</a></li>              
       <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state!='waitingForData'">
-        <a href="" ui-sref="competitions.teamList({listId:tourKey})">{{tourValue.name}} teams</a>
+        <a href="" ui-sref="competitions.teamList({listId:tourKey})">{{tourValue.name}} summary</a>
       </li>
+      <li><a href="" ui-sref="competitions.teamList({listId:'allComp'})">All {{indexCtrl.nameToShow.$value}} teams</a></li>
     </ul>
   </li>
 

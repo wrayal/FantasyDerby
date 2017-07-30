@@ -1,11 +1,22 @@
 angular.module('FantasyDerbyApp')
-  .controller('PlayerCtrl', function(isOwner,playerData,$firebaseObject,$scope,Teams) {
+  .controller('PlayerCtrl', function(isOwner,playerData,$firebaseObject,$scope,Teams,Players,Tournaments) {
   	playerCtrl=this;
 
     playerCtrl.isOwner=isOwner;
     playerCtrl.playerData=playerData;
 
     playerCtrl.teamData=Teams.getTeamData(playerData.team);
+    playerCtrl.shortBoutData={};
+
+    playerCtrl.scoreData={};
+    playerCtrl.playing=false;
+    angular.forEach(competitionCtrl.tournamentData,function(tournamentData,tournamentKey){
+      if (tournamentData.state=="playing") {
+        playerCtrl.playing=true;
+      }
+      playerCtrl.scoreData[tournamentKey]=Players.getFullScores(competitionCtrl.cid,tournamentKey,playerData.$id)
+      playerCtrl.shortBoutData[tournamentKey]=Tournaments.getCondensedBoutData(competitionCtrl.cid,tournamentKey)
+    })
 
     
     console.log("Player data",playerData.$id)

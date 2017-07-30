@@ -17,10 +17,77 @@
 	<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+playerCtrl.playerData.name}}" target="_blank">Show this player's stats on Rinxter</a><p />
 
 	<h3>Tournament data</h3>
-	<span ng-hide="playerCtrl.playerData.tournamentData">Awaiting tournament data.</span>
+	<span ng-hide="playerCtrl.playing">Awaiting tournament data.</span>
 
+	<div ng-repeat="(tournamentKey,scoreData) in playerCtrl.scoreData" class="repeatedDivs" ng-if="scoreData.total">
+		<b>{{competitionCtrl.tournamentData[tournamentKey].name}}</b><br>
+		<table>
+			<tr>
+				<td>Total jammer score:</td><td>{{scoreData.total.jmrFDScore}}</td>
+			</tr>
+			<tr>
+				<td>Total double threat score:</td><td>{{scoreData.total.dtFDScore}}</td>
+			</tr>
+			<tr>
+				<td>Total blocker score:</td><td>{{scoreData.total.blFDScore}}</td>
+			</tr>
+		</table><p />
 
-
+		<table>
+			<tr>
+				<td>
+					<b>Bout</b>
+				</td>
+				<td>
+					<b>Jammer score</b>
+				</td>
+				<td>
+					<b>Double threat score</b>
+				</td>
+				<td>
+					<b>Blocker score</b>
+				</td>
+			</tr>
+			<tr ng-repeat="(boutKey,boutData) in scoreData track by $index" ng-if="boutKey!='total'">
+				<td>
+					{{
+						competitionCtrl.tournamentData[tournamentKey].teamList[
+							playerCtrl.shortBoutData[tournamentKey][boutKey].team1.teamId
+							].leagueName
+					}} vs <br>
+					{{
+						competitionCtrl.tournamentData[tournamentKey].teamList[
+							playerCtrl.shortBoutData[tournamentKey][boutKey].team2.teamId
+							].leagueName
+					}}
+				</td>
+				<td>
+					{{boutData.jmrFDScore}}
+				</td>
+				<td>
+					{{boutData.dtFDScore}}
+				</td>
+				<td>
+					{{boutData.blFDScore}}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b>Total:</b>
+				</td>
+				<td>
+					<b>{{scoreData.total.jmrFDScore}}</b>
+				</td>
+				<td>
+					<b>{{scoreData.total.dtFDScore}}</b>
+				</td>
+				<td>
+					<b>{{scoreData.total.blFDScore}}</b>
+				</td>
+			</tr>
+		</table>
+		
+	</div>
 </div>
 
 
