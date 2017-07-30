@@ -85,6 +85,16 @@ angular
           }
         }
       })
+      .state('competitions.playerLeaderboard', {
+        url: '/playerLeaderboard/{tourId}',
+        templateUrl: 'competitions/playerLeaderboard/playerLeaderboard.html',
+        controller: 'PlayerLeaderboardCtrl as playerLeaderboardCtrl'
+      })
+      .state('competitions.userLeaderboard', {
+        url: '/userLeaderboard/{tourId}',
+        templateUrl: 'competitions/userLeaderboard/userLeaderboard.html',
+        controller: 'UserLeaderboardCtrl as userLeaderboardCtrl'
+      })
       .state('competitions.player',{
         url: '/player/{pid}',
         templateUrl: 'players/player.html',

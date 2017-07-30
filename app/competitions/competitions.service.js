@@ -1,5 +1,5 @@
 angular.module('FantasyDerbyApp')
-	.factory('Competitions',function($location,$firebaseObject,$stateParams,$state){
+	.factory('Competitions',function($location,$firebaseObject,$stateParams,$state,$firebaseArray){
 		//Reference for all short form names
 		var comShortRef=firebase.database().ref().child("competitionShort");
 		var comFullRef=firebase.database().ref().child("competitionFull");
@@ -60,6 +60,12 @@ angular.module('FantasyDerbyApp')
 
                 fullCompData: function(whichCompetition) {
                 	return $firebaseObject(comFullRef.child(whichCompetition))
+                },
+
+                getLeaderboardData: function(cid,criterion,number) {
+                	return $firebaseArray(
+                		comFullRef.child(cid).child("leaderboardData").orderByChild(criterion).limitToLast(number)
+                		);
                 }
             }
 

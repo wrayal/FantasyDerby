@@ -1,0 +1,65 @@
+<div class="page-wrapper">
+	<div class="page-header">
+		<h1>
+			User leaderboard
+		</h1>
+	</div>
+
+	<div ng-show="userLeaderboardCtrl.tourId=='overall'">
+		<!-- OVERALL -->
+	</div>
+
+	<div ng-show="userLeaderboardCtrl.tourId!='overall'">
+		<!-- SPECIFIC -->
+		<table>
+			<tr>
+				<td>Username</td>
+				<td>Team name</td>
+				<td>League name</td>
+				<td>Jammer</td>
+				<td>Double Threat</td>
+				<td>Blocker</td>
+				<td>Blocker</td>
+				<td>Blocker</td>
+				<td>Score</td>
+			</tr>
+			<tr ng-repeat="(index,teamsData) in userLeaderboardCtrl.leadData" ng-if="index<10">
+				<td>{{userLeaderboardCtrl.userData[teamsData.userId].$value}}</td>
+				<td>
+					{{teamsData.name}}
+				</td>
+				<td>
+					{{teamsData.leagueName}}
+				</td>
+				<td ng-repeat="position in userLeaderboardCtrl.positions">
+
+					<a href="" ui-sref="competitions.player({pid:teamsData[userLeaderboardCtrl.tourId][position]})">
+
+						{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.name}} 
+						#{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.number}}: 
+					</a>
+					<span ng-show="position=='jammer'">
+						{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].scores.jmrFDScore | number:1}}
+					</span>
+					<span ng-show="position=='doubleThreat'">
+						{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].scores.dtFDScore | number:1}}
+					</span>
+					<span ng-show="position!='doubleThreat' && position!='jammer'">
+						{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].scores.blFDScore | number:1}}
+					</span>
+					<br>
+					<a href="" 
+						ui-sref="competitions.teamView({teamId:userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.team})"
+						style="font-size:x-small"
+						>
+						{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.teamName}}
+					</a>
+
+
+				</td>
+				<td>{{teamsData[userLeaderboardCtrl.tourId].score | number:1}}</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>

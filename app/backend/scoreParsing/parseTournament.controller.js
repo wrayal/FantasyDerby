@@ -336,6 +336,17 @@ angular.module('FantasyDerbyApp')
                                 })
                                 flRef.child(leagueKey).child("fantasyTeams").child(userId).child("score").set(totalScore)
 
+                                leaderboardObj={};
+                                angular.copy(teamData,leaderboardObj);
+                                leaderboardObj.score=totalScore;
+                                leaderboardObj[parseTournamentCtrl.tournamentId].score=squadScore;
+                                leaderboardObj.userId=userId;
+                                leaderboardObj.leagueName=leagueData.uniData.name;
+                                leaderboardObj.leagueId=leagueKey;
+
+                                console.log("LEADERBOARD OBJECT",leaderboardObj)
+                                compRef.child("leaderboardData").push(leaderboardObj);
+
                             }
                         })
                     }
@@ -344,6 +355,7 @@ angular.module('FantasyDerbyApp')
 
         })
         parseTournamentCtrl.fullySaved=true;
+        console.log("AAAAND...DONE!")
         $scope.$apply();
     }
 

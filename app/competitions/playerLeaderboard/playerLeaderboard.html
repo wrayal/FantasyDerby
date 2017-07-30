@@ -1,0 +1,72 @@
+<div class="page-wrapper">
+	<div class="page-header">
+		<h1>
+			{{playerLeaderboardCtrl.tourData.name}}	Fantasy Points
+		</h1>
+	</div>
+	<table>
+		<tr>
+			<td></td>
+			<td colspan="2" align="center">Jammer FD Points</td>
+			<td colspan="2" align="center">Double threat FD Points</td>
+			<td colspan="2" align="center">Blocker FD Points</td>
+		</tr>
+		<tr ng-repeat="(key,entry) in playerLeaderboardCtrl.jmrData">
+			<td>
+				{{key+1}}
+			</td>
+			<td>
+
+				<a href="" ui-sref="competitions.player({pid:entry.$id})">
+					{{playerLeaderboardCtrl.playerData[entry.$id].name}} #{{playerLeaderboardCtrl.playerData[entry.$id].number}}
+				</a>
+				<br>
+				<a href="" 
+					ui-sref="competitions.teamView({teamId:playerLeaderboardCtrl.playerData[entry.$id].team})"
+					style="font-size:x-small"
+					>
+					{{playerLeaderboardCtrl.playerData[entry.$id].teamName}}
+				</a>
+
+			</td>
+			<td>
+				{{entry.total.jmrFDScore | number:1}}
+			</td>
+			<td>
+				
+				<a href="" ui-sref="competitions.player({pid:playerLeaderboardCtrl.dtData[key].$id})">
+					{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].name}} #{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].number}}
+				</a>
+				<br>
+				<a href="" 
+					ui-sref="competitions.teamView({teamId:playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].team})"
+					style="font-size:x-small"
+					>
+					{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].teamName}}
+				</a>
+
+			</td>
+			<td>
+				{{playerLeaderboardCtrl.dtData[key].total.dtFDScore | number:1}}
+			</td>
+			<td>
+				
+				<a href="" ui-sref="competitions.player({pid:playerLeaderboardCtrl.blData[key].$id})">
+					{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].name}} #{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].number}}
+				</a>
+				<br>
+				<a href="" 
+					ui-sref="competitions.teamView({teamId:playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].team})"
+					style="font-size:x-small"
+					>
+					{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].teamName}}
+				</a>
+
+			</td>
+			<td>
+				{{playerLeaderboardCtrl.blData[key].total.blFDScore | number:1}}
+			</td>
+		</tr>
+	</table>
+	
+</div>

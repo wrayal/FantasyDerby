@@ -41,6 +41,25 @@
     </ul>
   </li>
 
+  <!-- Leaderboard Menus -->
+  <li class="dropdown" ng-show="indexCtrl.inCompetition && indexCtrl.showLeaderboards" ng-class="{menuactive: indexCtrl.activeEntry=='leaderboards'}">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+      <span>Leaderboards</span> <b class="caret"></b>
+    </a>
+    
+    <ul class="dropdown-menu derbyNavbar"> 
+      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state=='playing'">
+        <a href="" ui-sref="competitions.userLeaderboard({tourId:tourKey})"  style="color:blue">{{tourValue.name}} Leaderboard</a>
+      </li>
+      <!--<li>
+        <a href="" ui-sref="competitions.userLeaderboard({tourId:'overall'})"  style="color:blue">Overall Leaderboard</a>
+      </li>-->
+      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state=='playing'">
+        <a href="" ui-sref="competitions.playerLeaderboard({tourId:tourKey})"  style="color:red">{{tourValue.name}} - Players</a>
+      </li>
+    </ul>
+  </li>
+
   <!-- Fantasy league menus -->
   <li class="dropdown" ng-show="indexCtrl.inCompetition" ng-class="{menuactive: indexCtrl.activeEntry=='fLeague'}">
     <a href="" class="dropdown-toggle" data-toggle="dropdown">

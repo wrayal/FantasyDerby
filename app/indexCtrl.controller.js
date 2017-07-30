@@ -86,6 +86,8 @@ angular.module('FantasyDerbyApp')
     indexCtrl.inLeague=false;
     indexCtrl.tourData=null;
     
+    indexCtrl.showLeaderboards=false;
+    
 
   	//Set which entry is active in the menu
   	indexCtrl.activeEntry="home";
@@ -106,6 +108,8 @@ angular.module('FantasyDerbyApp')
 		  	indexCtrl.activeEntry="info";
       } else if (toName.split(".")[1]=="fantasyLeagues" || toName.split(".")[1]=="joinLeague" || toName.split(".")[1]=="createLeague") {
         indexCtrl.activeEntry="fLeague"
+      } else if (toName=="competitions.playerLeaderboard" || toName=="competitions.userLeaderboard") {
+        indexCtrl.activeEntry="leaderboards"
       } else {
         indexCtrl.activeEntry="";
       }
@@ -134,10 +138,18 @@ angular.module('FantasyDerbyApp')
         indexCtrl.tourData=Tournaments.getAllTournaments($state.params.cid);
         indexCtrl.updateMemberships();
         Competitions.updateCSS($state.params.cid);
+
+        indexCtrl.showLeaderboards=false;
+        indexCtrl.tourData.$loaded().then(function(tourData){
+        angular.forEach(tourData,function(curTour){
+            if (curTour.state=="playing") indexCtrl.showLeaderboards=true;
+        })
+        })
+
       } else {
         Competitions.updateCSS("");
         indexCtrl.nameToShow=null;
-        
+        indexCtrl.showLeaderboards=false;
       }
 
     });
