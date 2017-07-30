@@ -59,16 +59,18 @@ angular.module('FantasyDerbyApp')
         parseTournamentCtrl.tournamentScores.$loaded().then(function(){
             angular.forEach(parseTournamentCtrl.tournamentScores.boutData,function(boutData,boutKey){
                 parseTournamentCtrl.bouts[boutKey].$loaded().then(function(){
-                    for (i=0; i<parseTournamentCtrl.bouts[boutKey]["team1"].teamList.length; i++) {
-                        curPlayer=parseTournamentCtrl.bouts[boutKey]["team1"].teamList[i];
-                        if (curPlayer.playerId && !parseTournamentCtrl.playerData[curPlayer.playerId]) {
-                            parseTournamentCtrl.playerData[curPlayer.playerId]=Players.getPlayerData(curPlayer.playerId);
+                    if (parseTournamentCtrl.bouts[boutKey]["team1"]) {
+                        for (i=0; i<parseTournamentCtrl.bouts[boutKey]["team1"].teamList.length; i++) {
+                            curPlayer=parseTournamentCtrl.bouts[boutKey]["team1"].teamList[i];
+                            if (curPlayer.playerId && !parseTournamentCtrl.playerData[curPlayer.playerId]) {
+                                parseTournamentCtrl.playerData[curPlayer.playerId]=Players.getPlayerData(curPlayer.playerId);
+                            }
                         }
-                    }
-                    for (i=0; i<parseTournamentCtrl.bouts[boutKey]["team2"].teamList.length; i++) {
-                        curPlayer=parseTournamentCtrl.bouts[boutKey]["team2"].teamList[i];
-                        if (curPlayer.playerId && !parseTournamentCtrl.playerData[curPlayer.playerId]) {
-                            parseTournamentCtrl.playerData[curPlayer.playerId]=Players.getPlayerData(curPlayer.playerId);
+                        for (i=0; i<parseTournamentCtrl.bouts[boutKey]["team2"].teamList.length; i++) {
+                            curPlayer=parseTournamentCtrl.bouts[boutKey]["team2"].teamList[i];
+                            if (curPlayer.playerId && !parseTournamentCtrl.playerData[curPlayer.playerId]) {
+                                parseTournamentCtrl.playerData[curPlayer.playerId]=Players.getPlayerData(curPlayer.playerId);
+                            }
                         }
                     }
                 })

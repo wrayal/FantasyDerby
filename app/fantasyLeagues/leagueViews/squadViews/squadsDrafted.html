@@ -20,23 +20,14 @@
 				<a href="" ui-sref="competitions.player({pid:teams[squadCtrl.tourId][entry]})">{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.name}} #{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].data.number}}<span ng-show="squadCtrl.detailedStatus()=='playing'">:</span>
 				</a>
 
-				<span ng-show="entry=='jammer' && squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore">
-					{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore}}
+				<span ng-show="entry=='jammer'">
+					{{ (squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore | number:1) || "0"}}
 				</span>
-				<span ng-show="entry=='jammer' && !squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.jmrFDScore">
-					0
+				<span ng-show="entry=='doubleThreat'">
+					{{ (squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore | number:1) || "0"}}
 				</span>
-				<span ng-show="entry=='doubleThreat' && squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore">
-					{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore}}
-				</span>
-				<span ng-show="entry=='doubleThreat' && !squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.dtFDScore">
-					0
-				</span>
-				<span ng-show="(entry=='blocker1' || entry=='blocker2' || entry=='blocker3') && squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore">
-					{{squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore}}
-				</span>
-				<span ng-show="(entry=='blocker1' || entry=='blocker2' || entry=='blocker3') && !squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore">
-					0
+				<span ng-show="(entry=='blocker1' || entry=='blocker2' || entry=='blocker3')">
+					{{ (squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]].totalScores.blFDScore | number:1) || "0"}}
 				</span>
 
 				<br>
@@ -45,7 +36,7 @@
 			<span ng-hide="squadCtrl.draftedPlayers[teams[squadCtrl.tourId][entry]]">TBD</span>
 		</td>
 		<td ng-show="squadCtrl.detailedStatus()=='playing'">
-			{{squadCtrl.fantasyTeams[teams.$filtKey][squadCtrl.tourId].score}}
+			{{squadCtrl.fantasyTeams[teams.$filtKey][squadCtrl.tourId].score | number:1}}
 		</td>
 	</tr>
 

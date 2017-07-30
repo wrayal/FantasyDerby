@@ -46,7 +46,7 @@
 				<td>{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey].name}}</td>
 				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry">
 					<span ng-show="competitionCtrl.tournamentData[tourKey].state=='playing'">
-						{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey][tourKey].score}}
+						{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey][tourKey].score | number:1}}
 					</span>
 					<span ng-hide="competitionCtrl.tournamentData[tourKey].state=='playing'">
 						Selected: {{fantasyLeagueCtrl.getSelected(memberData.$filtKey,tourKey)}}
@@ -55,7 +55,7 @@
 					</span>
 				</td>
 				<td ng-show="fantasyLeagueCtrl.leagueData.fantasyTeams[competitionCtrl.uid].score">
-					{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey].score}}
+					{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey].score | number:1}}
 				</td>
 			</tr>
 		</table>
