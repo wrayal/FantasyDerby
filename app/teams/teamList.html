@@ -10,7 +10,11 @@
 	</div>
 
 	<span ng-repeat="(key,team) in teamListCtrl.teamList">
-	<a href="" ui-sref="competitions.teamView({teamId:key})">{{team.leagueName}}<span ng-show="team.teamName!=team.leagueName"> - {{team.teamName}}</span></a><br>
+		<a href="" ui-sref="competitions.teamView({teamId:key})">{{team.leagueName | capitalise}}<span ng-show="team.teamName!=team.leagueName"> - {{team.teamName | capitalise}}</span></a><br>
+		<div ng-show="teamListCtrl.isAdmin && teamListCtrl.tournamentId=='allComp'">
+			&nbsp;&nbsp;&nbsp;<input type="text" ng-model="teamListCtrl.teamList[key].rinxString"><input type="button" value="Save rinxter string" ng-click="teamListCtrl.saveString(key,'rinxString',teamListCtrl.teamList[key].rinxString)"><br>
+			&nbsp;&nbsp;&nbsp;<input type="text" ng-model="teamListCtrl.teamList[key].ftsString"><input type="button" value="Save FTS string" ng-click="teamListCtrl.saveString(key,'ftsString',teamListCtrl.teamList[key].ftsString)"><br>
+		</div>
 	</span><p />
 
 	<img ng-show="teamListCtrl.imgSrc" ng-src="{{teamListCtrl.imgSrc}}" style="width:100%"></img><p />

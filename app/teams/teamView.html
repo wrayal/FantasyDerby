@@ -5,9 +5,64 @@
 		<h2 ng-show="teamViewCtrl.teamData.teamName!=teamViewCtrl.teamData.leagueName">{{teamViewCtrl.teamData.teamName}}</h2>
 	</div>
 
-	<span ng-repeat="player in teamViewCtrl.teamData.teamPlayers">
+	<!--<span ng-repeat="player in teamViewCtrl.teamData.teamPlayers | orderBy:-player.name">
 		<a href="" ui-sref="competitions.player({pid:player.id})">{{player.name}} #{{player.number}}</a><br>
-	</span>
+	</span>-->
+
+	<table>
+		<tr>
+			<td rowSpan=1 ng-hide="teamViewCtrl.shouldShow">
+				<center>
+					<b>Player name</b><br>
+					<font style="font-size:x-small">(click for details)</font>
+				</center>
+			</td>
+
+			<td rowSpan=2 ng-show="teamViewCtrl.shouldShow">
+				<center>
+					<b>Player name</b><br>
+					<font style="font-size:x-small">(click for details)</font>
+				</center>
+			</td>
+
+			<td colspan="3" ng-show="teamViewCtrl.shouldShow">
+				<b>Overall competition scores</b> <font style="font-size:x-small">(click to sort)</font>
+			</td>
+		</tr>
+		<tr  ng-show="teamViewCtrl.shouldShow">
+			<td class="genHeader">
+				<a href="" ng-click="teamViewCtrl.setSort('jmrFDScore')">
+					Jammer
+				</a>
+			</td>
+			<td class="genHeader">
+				<a href="" ng-click="teamViewCtrl.setSort('dtFDScore')">
+					Double Threat
+				</a>
+			</td>
+			<td class="genHeader">
+				<a href="" ng-click="teamViewCtrl.setSort('blFDScore')">
+					Blocker
+				</a>
+			</td>
+		</tr>
+		<tr ng-repeat="player in teamViewCtrl.teamData.teamPlayers | orderBy:myComparator">
+			<td>
+				<a href="" ui-sref="competitions.player({pid:player.id})">
+					{{player.name}} #{{player.number}}
+				</a>
+			</td>
+			<td ng-show="teamViewCtrl.shouldShow">
+				{{teamViewCtrl.playerScoreData[player.id].jmrFDScore | number:1}}
+			</td>
+			<td ng-show="teamViewCtrl.shouldShow">
+				{{teamViewCtrl.playerScoreData[player.id].dtFDScore | number:1}}
+			</td>
+			<td ng-show="teamViewCtrl.shouldShow">
+				{{teamViewCtrl.playerScoreData[player.id].blFDScore | number:1}}
+			</td>
+		</tr>	
+	</table>
 
 
 </div>

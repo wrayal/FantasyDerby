@@ -21,6 +21,8 @@ angular.module('FantasyDerbyApp')
       if (squadCtrl.tourData.state=="waitingForData") return "waitingForData";
       //Ok, if drafting is possible, let's check if the tournament has data yet!
       if (squadCtrl.tourData.state=="playing") return "playing";
+      //Ok, if drafting is possible, let's check if the tournament has data yet!
+      if (squadCtrl.tourData.state=="complete") return "playing";
       //Easy case second
       if (fantasyLeagueCtrl.leagueData.uniData.status=='forming') return "forming";
       //Now check if we need a spot draft from this user
@@ -89,7 +91,7 @@ angular.module('FantasyDerbyApp')
             if (currentPlayerId!="" && !squadCtrl.draftedPlayers[currentPlayerId]) {
               squadCtrl.draftedPlayers[currentPlayerId]={
                 data:Players.getPlayerData(currentPlayerId),
-                totalScores:Players.getScores(competitionCtrl.cid,squadCtrl.tourId,currentPlayerId),
+                totalScores:Players.getTotalScoresForTournament(competitionCtrl.cid,squadCtrl.tourId,currentPlayerId),
                 draftedBy: memberKey
               }
             }
@@ -163,9 +165,11 @@ angular.module('FantasyDerbyApp')
         }
       } else {
         //Swapping elements in selection
+        /*
         temp=squadCtrl.currentSelection[sourceKey];
         squadCtrl.currentSelection[sourceKey]=squadCtrl.currentSelection[targetKey]
-        squadCtrl.currentSelection[targetKey]=temp;
+        squadCtrl.currentSelection[targetKey]=temp;*/
+        squadCtrl.currentSelection.splice(targetKey, 0, squadCtrl.currentSelection.splice(sourceKey, 1)[0])
       }
       squadCtrl.saveSelection();
       $scope.$apply();
@@ -215,12 +219,16 @@ angular.module('FantasyDerbyApp')
     squadCtrl.selectedDTs=0;
     squadCtrl.selectedBlockers=0;
     squadCtrl.selectedPlayers=0;
+    squadCtrl.selectedPlayerData={};
     squadCtrl.updateSelNumbers=function(){
       squadCtrl.selectedJammers=0
       squadCtrl.selectedDTs=0
       squadCtrl.selectedBlockers=0
       squadCtrl.selectedPlayers=0
-      angular.forEach(squadCtrl.selection,function(selEntry){
+      angular.forEach(squadCtrl.selection,function(selEntry,selKey){
+        if (!squadCtrl.selectedPlayerData[selEntry.id]) {
+          squadCtrl.selectedPlayerData[selEntry.id]=Players.getPlayerData(selEntry.id);
+        }
         if (selEntry.position=="jammer") {squadCtrl.selectedJammers++;squadCtrl.selectedPlayers++};
         if (selEntry.position=="doubleThreat") {squadCtrl.selectedDTs++;squadCtrl.selectedPlayers++};
         if (selEntry.position=="blocker") {squadCtrl.selectedBlockers++;squadCtrl.selectedPlayers++};

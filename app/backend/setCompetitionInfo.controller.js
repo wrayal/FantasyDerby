@@ -106,6 +106,12 @@ angular.module('FantasyDerbyApp')
     	setCompCtrl.working[tournamentKey].tournieName=compData.tournaments[tournamentKey].name;
     }
 
+    //Updating image for the tournament
+    setCompCtrl.saveTournamentImage = function(tournamentKey,imgSrc) {
+        console.log("SAVING TOURNAMENT IMAGE",imgSrc,"FOR",tournamentKey)
+        baseRef.child("tournaments").child(tournamentKey).child("imgSrc").set(imgSrc)
+    }
+
     //Setting the status of a tournament
     setCompCtrl.saveTournamentState = function(tournamentKey,state) {
     	baseRef.child("tournaments").child(tournamentKey).child("state").set(state)

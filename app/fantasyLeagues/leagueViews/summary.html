@@ -45,10 +45,10 @@
 				<td>{{memberData.username.$value}}</td>
 				<td>{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey].name}}</td>
 				<td ng-repeat="(tourKey,tourEntry) in fantasyLeagueCtrl.leagueData.tournaments" ng-if="tourEntry">
-					<span ng-show="competitionCtrl.tournamentData[tourKey].state=='playing'">
+					<span ng-show="competitionCtrl.tournamentData[tourKey].state=='playing' || competitionCtrl.tournamentData[tourKey].state=='complete'">
 						{{fantasyLeagueCtrl.leagueData.fantasyTeams[memberData.$filtKey][tourKey].score | number:1}}
 					</span>
-					<span ng-hide="competitionCtrl.tournamentData[tourKey].state=='playing'">
+					<span ng-hide="competitionCtrl.tournamentData[tourKey].state=='playing' || competitionCtrl.tournamentData[tourKey].state=='complete'">
 						Selected: {{fantasyLeagueCtrl.getSelected(memberData.$filtKey,tourKey)}}
 						<br>
 						Drafted: {{fantasyLeagueCtrl.getDrafted(memberData.$filtKey,tourKey)}}/5

@@ -10,7 +10,11 @@
 		</span>
 		<span ng-show="fantasyLeagueCtrl.leagueData.uniData.status=='drafting'">
 			&nbsp;<font style="color:red">forming</font> -> <font style="color:green"><b>drafting</b></font> -> complete<p />
-			<input type="button" value="Revert to forming phase" ng-click="fantasyLeagueCtrl.draftingToForming()"><br>Revert back to the formation stage. Note that all drafting data will be lost.
+			<input
+				type="button" value="Revert to forming phase"
+				ng-really-message="Note this will delete ALL drafted data from ALL tournaments."
+				ng-really-click="fantasyLeagueCtrl.draftingToForming()"
+			><br>Revert back to the formation stage. Note that <b>ALL</b> drafting data for <b>ALL TOURNAMENTS</b> will be lost.
 		</span>
 		<h4>League invitation</h4>
 		Give the following link to anyone you wish to invite to this league.<br>
@@ -43,6 +47,9 @@
 
 		<h4>League removal</h4>
 		Click this button to entirely remove this league. Note that this is <b>irreversible</b>!<br>
-		<input type=button value="Delete League" ng-click="fantasyLeagueCtrl.removeLeague()">
+		<input type=button value="Delete League"
+			ng-really-message="Are you really sure you want to delete this league? This CANNOT be undone."
+			ng-really-click="fantasyLeagueCtrl.removeLeague()"
+			>
 	</div>
 </div>

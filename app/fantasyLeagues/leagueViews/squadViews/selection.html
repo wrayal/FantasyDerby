@@ -45,14 +45,18 @@
 
 		<!--<b>{{squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}</b>-->
 		<!--And links for either as appropriate-->
-		<a href="{{'http://flattrackstats.com/search/'+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
-			ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		<a href="{{'http://flattrackstats.com/search/'+
+			(squadCtrl.teams[squadCtrl.currentSelectionTeam].ftsString?squadCtrl.teams[squadCtrl.currentSelectionTeam].ftsString:squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName)
+			}}"
+			ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName && squadCtrl.teams[squadCtrl.currentSelectionTeam].ftsString!=0"
 			target="_blank"
 		>
 			<img src="images/fts-logo.png" style="height:15px"></img>
 		</a>
-		<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName}}"
-			ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName"
+		<a href="{{'https://stats-repo.wftda.com/index.jsp?q='+
+			(squadCtrl.teams[squadCtrl.currentSelectionTeam].rinxString?squadCtrl.teams[squadCtrl.currentSelectionTeam].rinxString:squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName)
+			}}"
+			ng-show="squadCtrl.teams[squadCtrl.currentSelectionTeam].leagueName && squadCtrl.teams[squadCtrl.currentSelectionTeam].rinxString!=0"
 			target="_blank"
 		>
 			<img src="images/RinxterLett.png" style="height:15px"></img>
@@ -167,29 +171,35 @@
 				whatSource="selectionData"
 				whatKey="{{key}}"
 			>
+
 				<td ng-hide="squadCtrl.draftedPlayers[value.id]">
 					{{key+1}}
 				</td>
 				<td ng-hide="squadCtrl.draftedPlayers[value.id]">
-					{{value.name}} #{{value.number}}
+					{{value.name}} #{{value.number}} 
+					<font style="font-size:x-small">({{squadCtrl.selectedPlayerData[value.id].teamName}})</font>
 				</td>
 
 				<td ng-show="squadCtrl.draftedPlayers[value.id] && squadCtrl.draftedPlayers[value.id].draftedBy==competitionCtrl.uid"
 					style="background:green;color:white">
 					{{key+1}}
+					<font style="font-size:x-small">({{squadCtrl.selectedPlayerData[value.id].teamName}})</font>
 				</td>
 				<td ng-show="squadCtrl.draftedPlayers[value.id] && squadCtrl.draftedPlayers[value.id].draftedBy==competitionCtrl.uid"
 					style="background:green;color:white">
 					{{value.name}} #{{value.number}}
+					<font style="font-size:x-small">({{squadCtrl.selectedPlayerData[value.id].teamName}})</font>
 				</td>
 
 				<td ng-show="squadCtrl.draftedPlayers[value.id] && squadCtrl.draftedPlayers[value.id].draftedBy!=competitionCtrl.uid"
 					style="background:red;color:white">
 					{{key+1}}
+					<font style="font-size:x-small">({{squadCtrl.selectedPlayerData[value.id].teamName}})</font>
 				</td>
 				<td ng-show="squadCtrl.draftedPlayers[value.id] && squadCtrl.draftedPlayers[value.id].draftedBy!=competitionCtrl.uid"
 					style="background:red;color:white">
 					{{value.name}} #{{value.number}}
+					<font style="font-size:x-small">({{squadCtrl.selectedPlayerData[value.id].teamName}})</font>
 				</td>
 
 				<td>

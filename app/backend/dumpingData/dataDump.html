@@ -1,0 +1,15 @@
+<div class="leagueCommonContent">
+    <div class="page-header">
+    	<h1>
+    		Dumping data for {{dataDumpCtrl.compData.uniData.fullName}}
+    	</h1>
+    </div>
+
+    <div ng-repeat="(tournamentKey,tournamentData) in dataDumpCtrl.compData.tournaments" class="repeatedDivs">
+    	<b>{{tournamentData.name}}</b><p />
+    	<textarea ng-model="dataDumpCtrl.parsedDump[tournamentKey]" style="width:80%;" rows=10>
+
+    	</textarea>
+    </div>
+
+</div>

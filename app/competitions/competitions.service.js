@@ -13,9 +13,24 @@ angular.module('FantasyDerbyApp')
 
                 completeSet:$firebaseObject(comShortRef), //complete set of tournaments in short form
 
+                updateBgImage:function(whatImage) {
+                	if (whatImage=="") {
+                		//document.getElementById("mainWrapper").style.backgroundImage="";
+                		
+                		document.getElementById("mainWrapper").style.backgroundImage='linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)), url("https://fantasyderby.org/images/FRDLogo.png")';
+                	}
+                	else {
+                		$firebaseObject(comFullRef.child(whatImage).child("uniData").child("bgIm")).$loaded().then(function(bgImData){
+                			console.log("bgImData",bgImData.$value)
+                			document.getElementById("mainWrapper").style.backgroundImage='linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)), url('+bgImData.$value+')';
+                		})
+                	}
+                },
+
                 updateCSS: function(whichCompetition) {
                 	//Some unnecessarily convoluted code to make sure we update to the new style sheet
 					//TODO: make sure this is called on page opening, not just on competition transition
+
 					cssLinks=document.getElementsByTagName("link");
 				    for (i=0; i<cssLinks.length; i++) {
 				      //Grab the actual name - the part after the final slash

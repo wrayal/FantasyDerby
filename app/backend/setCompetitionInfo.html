@@ -113,6 +113,11 @@
 				ng-model="setCompCtrl.working[key].tournamentState" value="playing">
 			Playing
 		</label><br />
+		<label>
+			<input type="radio"
+				ng-model="setCompCtrl.working[key].tournamentState" value="complete">
+			Complete
+		</label><br />
 		<input type="button" value="Save state"
 			ng-disabled="setCompCtrl.working[key].tournamentState==setCompCtrl.compData.tournaments[key].state"
 			ng-click="setCompCtrl.saveTournamentState(key,setCompCtrl.working[key].tournamentState)"
@@ -132,6 +137,24 @@
 				<input type="button" value="Set date" ng-click="setCompCtrl.setStartDate(key,setCompCtrl.working[key].newYear,setCompCtrl.working[key].newMonth,setCompCtrl.working[key].newDay)">
 		<br>
 		<b>Img src:</b> {{tournament.imgSrc}}<br>
+			<input type="text"
+				ng-model="setCompCtrl.working[key].imgSrc"
+				ng-init="setCompCtrl.working[key].imgSrc=tournament.imgSrc"
+			>
+			<input type="button" 
+				value="Save tournie image" 
+				ng-click="setCompCtrl.saveTournamentImage(key,setCompCtrl.working[key].imgSrc)"
+				ng-disabled="setCompCtrl.working[key].imgSrc==setCompCtrl.compData.tournaments[key].imgSrc"
+			>
+			<input type="button" 
+				value="Reset tournie image" 
+				ng-click="setCompCtrl.working[key].imgSrc=setCompCtrl.compData.tournaments[key].imgSrc"
+				ng-disabled="setCompCtrl.working[key].imgSrc==setCompCtrl.compData.tournaments[key].imgSrc"
+			>
+		<br>
+
+
+
 		<b>Teams:</b><br>
 		<span ng-repeat="(teamkey,team) in tournament.teamList | orderObjectBy:'seed'">
 			{{team.seed}} -> {{team.leagueName}}

@@ -65,11 +65,26 @@ angular.module('FantasyDerbyApp')
     indexCtrl.adminList={
       iWwEokR2zGUOIW4sSEMtjhx6ZEo2: true
     }
+
+    indexCtrl.adminState=false;
+    Auth.checkAdminOrSubadmin("index").then(function(checkData){
+      console.log("ADMIN?",checkData)
+      indexCtrl.adminState=checkData;
+    })
+
     indexCtrl.amAdmin=function() {
-      if (indexCtrl.profile && indexCtrl.adminList[indexCtrl.profile.$id]) return true;
+      if (indexCtrl.adminState=="admin") return true;
       else return false;
     }
-    
+    indexCtrl.amSubadmin=function() {
+      if (indexCtrl.adminState=="subAdmin") return true;
+      else return false;
+    }
+    indexCtrl.amAdminOrSubadmin=function() {
+      if (indexCtrl.adminState=="admin" || indexCtrl.adminState=="subAdmin") return true;
+      else return false;
+    }
+
 
     //This provides convenient login/logout functiona access
     indexCtrl.login=Auth.login;
@@ -138,16 +153,18 @@ angular.module('FantasyDerbyApp')
         indexCtrl.tourData=Tournaments.getAllTournaments($state.params.cid);
         indexCtrl.updateMemberships();
         Competitions.updateCSS($state.params.cid);
+        Competitions.updateBgImage($state.params.cid);
 
         indexCtrl.showLeaderboards=false;
         indexCtrl.tourData.$loaded().then(function(tourData){
-        angular.forEach(tourData,function(curTour){
-            if (curTour.state=="playing") indexCtrl.showLeaderboards=true;
-        })
+          angular.forEach(tourData,function(curTour){
+              if (curTour.state=="playing") indexCtrl.showLeaderboards=true;
+          })
         })
 
       } else {
         Competitions.updateCSS("");
+        Competitions.updateBgImage("");
         indexCtrl.nameToShow=null;
         indexCtrl.showLeaderboards=false;
       }

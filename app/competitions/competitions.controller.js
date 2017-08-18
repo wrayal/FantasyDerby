@@ -9,6 +9,10 @@ angular.module('FantasyDerbyApp')
     competitionCtrl.tournamentData=tournamentData;
     competitionCtrl.myLeagues={};
 
+    competitionCtrl.numLeagues=function() {
+        return Object.keys(competitionCtrl.myLeagues).length;
+    }
+
     competitionCtrl.updateMyLeagues = function() {
         competitionCtrl.myLeagues={};
     	//We are going to use this to keep a parsed, up to date list of the leagues of which we are a member

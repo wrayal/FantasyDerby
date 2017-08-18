@@ -5,6 +5,14 @@
 		</h1>
 	</div>
 
+	<span ng-show="competitionCtrl.numLeagues()">
+		<span style="background:#bb0000;color:white">Access one of your leagues</span> via the "Fantasy Leagues" dropdown above!
+	</span>
+	<span ng-hide="competitionCtrl.numLeagues()">
+		<span style="background:#bb0000;color:white">Create or join a league</span> via the "Fantasy Leagues" dropdown above!
+	</span>
+	<p />
+
 	Welcome to the {{competitionCtrl.keyData.fullName}} front page. This competition consists of the following tournaments:<p />
 	<center>
 	<div ng-repeat="(key,value) in competitionCtrl.tournamentData" class="repeatedDivs" style="width:50%">
@@ -15,7 +23,7 @@
 		<span ng-show="value.state=='readyToSelect'">Ready to draft</span>
 		<span ng-show="value.state=='playing'">Running!</span>
 		<span ng-show="value.state=='started'">Running!</span>
-		<span ng-show="value.state=='completed'">Completed</span><br>
+		<span ng-show="value.state=='complete'">Completed</span><br>
 		<a ng-show="value.state!='waitingForData'" href="" ui-sref="competitions.teamList({listId:key})">View tournament info</a>
 	</div>
 	</center>
@@ -24,15 +32,7 @@
 
 	<h3>Latest Updates</h3>
 	  <div ng-repeat="(key,value) in frontPageCtrl.blogMessages | orderObjectBy:'timestamp':true" 
-	    ng-style="{
-	      'width':'100%',
-	      'background':'#cccccc',
-	      'float':'left',
-	      'border-radius':'5px',
-	      'padding':'10px',
-	      'margin-top':'5px',
-	      'margin-bottom':'5px'
-	    }"
+	    class="repeatedDivsAlt"
 	  >
     <b>{{value.title}}</b><br>
       {{value.message}}<br>

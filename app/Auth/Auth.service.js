@@ -43,6 +43,50 @@ angular.module('FantasyDerbyApp')
                     });
                 })
             },
+            requireSubAdmin: function(url) {
+                return $firebaseAuth().$requireSignIn().then(function(authData){
+                    return $firebaseObject(firebase.database().ref().child("admin")).$loaded().then(function(adminData){
+                        if (adminData.list[authData.uid] || adminData.subAdmin[authData.uid]) {
+                            return true; //Yep they are an admin
+                        }
+                        else {
+                            firebase.database().ref().child("admin").child("messages").push({
+                                uid: authData.uid,
+                                url: url
+                            }) //Or not! Log this attempt...
+                            $state.go('home')
+                        }
+                    });
+                })
+            },
+            checkAdmin: function() {
+                return $firebaseAuth().$requireSignIn().then(function(authData){
+                    return $firebaseObject(firebase.database().ref().child("admin").child("list")).$loaded().then(function(adminData){
+                        if (adminData[authData.uid]) {
+                            return true; //Yep they are an admin
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                })
+            },
+            checkAdminOrSubadmin: function() {
+                return $firebaseAuth().$requireSignIn().then(function(authData){
+                    return $firebaseObject(firebase.database().ref().child("admin").child("list")).$loaded().then(function(adminData){
+                        if (adminData[authData.uid]) {
+                            return "admin"; //Yep they are an admin
+                        }
+                        else {
+                            return $firebaseObject(firebase.database().ref().child("admin").child("subAdmin")).$loaded().then(function(adminData){
+                                if (adminData[authData.uid]) {
+                                    return "subAdmin"; //Yep they are a subAdmin
+                                }
+                            })
+                        }
+                    });
+                })
+            },
             auth: $firebaseAuth()
 		}
 

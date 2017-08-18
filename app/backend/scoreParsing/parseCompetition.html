@@ -4,11 +4,16 @@
       <b>{{competitionCtrl.keyData.fullName}}:</b> competition score parsing
     </h1>
   </div>
-  Parse scores for a particular tournament:
 
+  Parse scores for a particular tournament:
   <select ng-model="parseCompetitionCtrl.switchTournament">
     <option ng-repeat="(key,entry) in competitionCtrl.tournamentData" value="{{key}}">{{entry.name}} [{{entry.state}}]</option>
   </select>
   <input type="button" value="Switch" ng-click="parseCompetitionCtrl.switch()">
   <hr>
+
+  <input type="button" value="Compute overall COMPETITION scores" ng-click="parseCompetitionCtrl.computeOverallScores()"><br>
+  <span ng-show="parseCompetitionCtrl.state=='working'" style="color:red"><b><i>WORKING</i></b></span>
+  <span ng-show="parseCompetitionCtrl.state=='done'" style="color:green"><b><i>DONE =D</i></b></span>
+
 </div>

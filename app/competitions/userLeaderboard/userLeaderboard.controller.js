@@ -28,7 +28,7 @@ angular.module('FantasyDerbyApp')
                     if (!userLeaderboardCtrl.playerData[curSquad[position]]) {
                         userLeaderboardCtrl.playerData[curSquad[position]]={
                             data:Players.getPlayerData(curSquad[position]),
-                            scores:Players.getTotalScores(competitionCtrl.cid,userLeaderboardCtrl.tourId,curSquad[position])
+                            scores:Players.getTotalScoresForTournament(competitionCtrl.cid,userLeaderboardCtrl.tourId,curSquad[position])
                         }
                     }
                 }

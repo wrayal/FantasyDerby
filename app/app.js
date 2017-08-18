@@ -56,9 +56,12 @@ angular
         templateUrl: 'home/info/contact.html',
         controller: 'ContactCtrl as contactCtrl',
         resolve: {
-          profile: function(Users,Auth) {
+          profile: function(Users,Auth,$state) {
             return Auth.auth.$requireSignIn().then(function(authData){
               return Users.getProfile(authData.uid).$loaded()
+            }).catch(function(e){
+              alert("Please login!")
+              $state.go("home")
             })
           }
         }
@@ -75,9 +78,12 @@ angular
           competitionKeyData: function($stateParams,Competitions) {
             return Competitions.getKeyData($stateParams.cid).$loaded();
           },
-          profile: function(Users,Auth) {
+          profile: function(Users,Auth,$state) {
             return Auth.auth.$requireSignIn().then(function(authData){
               return Users.getProfile(authData.uid).$loaded()
+            }).catch(function(e){
+              alert("Please login!")
+              $state.go("home")
             })
           },
           tournamentData: function(Tournaments,$stateParams) {
@@ -177,6 +183,25 @@ angular
           }
         }
       })
+      .state('competitions.dataDump', {
+        url: '/dataDump',
+        templateUrl: 'backend/dumpingData/dataDump.html',
+        controller: 'DataDumpCtrl as dataDumpCtrl',
+        resolve: {
+          isAdmin: function(Auth) {
+            Auth.requireSubAdmin("Data dump");
+          },
+          compData: function($stateParams,Competitions) {
+            return Competitions.fullCompData($stateParams.cid).$loaded();
+          },
+          playerData: function(Players) {
+            return Players.getAllPlayers().$loaded();
+          },
+          userData: function(Users) {
+            return Users.getAllUsers().$loaded();
+          }
+        }
+      })
       .state('competitions.competitionParse.mainView', {
         url: '/mainView',
         templateUrl: 'backend/scoreParsing/parseCompetition.html'
@@ -269,8 +294,9 @@ angular
             return Competitions.completeSet
           },
           teamList: function(Teams,$stateParams) {
-            if ($stateParams.cid=="mrda") return Teams.getAffiliatedTeams($stateParams.cid);
-            else return Teams.getAffiliatedTeams("wftda");
+            return Teams.getAffiliatedTeams($stateParams.cid);
+            //if ($stateParams.cid=="mrda") return Teams.getAffiliatedTeams($stateParams.cid);
+            //else return Teams.getAffiliatedTeams("wftda");
           },
           isAdmin: function(Auth) {
             Auth.requireAdmin("Compo info");
@@ -387,8 +413,10 @@ angular
 
             if ($stateParams.listId=="allComp") {
               name=null;
-              if ($stateParams.cid=="mrda") list=Teams.getAffiliatedTeams($stateParams.cid);
-              else list=Teams.getAffiliatedTeams("wftda");
+              list=Teams.getAffiliatedTeams($stateParams.cid);
+              console.log("AND GOT LIST",list)
+              //if ($stateParams.cid=="mrda") list=Teams.getAffiliatedTeams($stateParams.cid);
+              //else list=Teams.getAffiliatedTeams("wftda");
             } else {
               name=$stateParams.listId;
               list=Teams.getTourTeams($stateParams.cid,$stateParams.listId)
@@ -399,7 +427,11 @@ angular
               teamList: list
             }
             return teamDataObj;
+          },
+          checkAdmin: function(Auth) {
+            return Auth.checkAdmin();
           }
+
         }
       })
       .state('competitions.teamView',{

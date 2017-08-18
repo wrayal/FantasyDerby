@@ -48,13 +48,13 @@
     </a>
     
     <ul class="dropdown-menu derbyNavbar"> 
-      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state=='playing'">
+      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state=='playing' || tourValue.state=='complete'">
         <a href="" ui-sref="competitions.userLeaderboard({tourId:tourKey})"  style="color:blue">{{tourValue.name}} Leaderboard</a>
       </li>
       <!--<li>
         <a href="" ui-sref="competitions.userLeaderboard({tourId:'overall'})"  style="color:blue">Overall Leaderboard</a>
       </li>-->
-      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state=='playing'">
+      <li ng-repeat="(tourKey,tourValue) in indexCtrl.tourData" ng-if="tourValue.state=='playing' || tourValue.state=='complete'">
         <a href="" ui-sref="competitions.playerLeaderboard({tourId:tourKey})"  style="color:red">{{tourValue.name}} - Players</a>
       </li>
     </ul>
@@ -109,7 +109,7 @@
           How does it work?
         </a>
       </li>
-      <li>
+      <li ng-show="indexCtrl.profile">
         <a href="" ui-sref="contact">
           <span class="userOnlineBullet" ng-show="indexCtrl.contactMessagesUnread.$value">
             &nbsp;&#9679;
@@ -131,19 +131,24 @@
   </li>
 
   <!-- Admin's menu -->
-  <li class="dropdown derbyNavbar" ng-show="indexCtrl.amAdmin()">
+  <li class="dropdown derbyNavbar" ng-show="indexCtrl.amAdminOrSubadmin()">
     <a href="" class="dropdown-toggle" data-toggle="dropdown">
       <span>Backend</span><b class="caret"></b>
     </a>
     <ul class="dropdown-menu derbyNavbar">
-      <li><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
-      <li><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
-      <li><a href="" ui-sref="blogMessages">Write Blog messages</a></li>
-      <li><a href="" ui-sref="narwhalParse">Edit Narwhal messages</a></li>
-      <li><a href="" ui-sref="adminContact">Respond to contact messages</a></li>
-      <li><a href="" ui-sref="viewUsers">View users</a></li>
-      <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
-      <li ng-show="indexCtrl.inCompetition"><a href="" ui-sref="competitions.competitionParse.mainView">Parse competition scores</a></li>
+      <li ng-show="indexCtrl.amAdmin()"><a href="" ui-sref="wftdaPopulate">WFTDA Parser</a></li>        
+      <li ng-show="indexCtrl.amAdmin()"><a href="" ui-sref="mrdaPopulate">MRDA Parser</a></li>
+      <li ng-show="indexCtrl.amAdmin()"><a href="" ui-sref="blogMessages">Write Blog messages</a></li>
+      <li ng-show="indexCtrl.amAdmin()"><a href="" ui-sref="narwhalParse">Edit Narwhal messages</a></li>
+      <li ng-show="indexCtrl.amAdmin()"><a href="" ui-sref="adminContact">Respond to contact messages</a></li>
+      <li ng-show="indexCtrl.amAdmin()"><a href="" ui-sref="viewUsers">View users</a></li>
+      <li ng-show="indexCtrl.inCompetition && indexCtrl.amAdmin()"><a href="" ui-sref="competitions.setCompInfo">Edit competition info</a></li>
+      <li ng-show="indexCtrl.inCompetition && indexCtrl.amAdmin()"><a href="" ui-sref="competitions.competitionParse.mainView">Parse competition scores</a></li>
+      <li ng-show="indexCtrl.amAdminOrSubadmin() && indexCtrl.inCompetition"">
+        <a href="" ui-sref="competitions.dataDump">
+          Dump data for this competition
+        </a>
+      </li>
     </ul>
   </li>
 

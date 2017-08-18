@@ -7,19 +7,20 @@
     <span style="font-size:xx-small;color:#999;float:right">Real. Strong. Athletic. Narwhal.</span>
     &nbsp;
   </div>
-  Please note this is <b><i><font color="#bb0000">just about</i></b></font> mobile friendly.<p />
+  <div ng-hide="indexCtrl.profile">
+    <span style="background:#bb0000;color:white">Get started immediately</span> by clicking <span style="background:#bb0000;color:white">"Dive in!"</span> in the top right and log in using a Facebook account.
+  </div>
+  <div ng-show="indexCtrl.profile">
+    <span style="background:#bb0000;color:white">Access competitions</span> via the "Fantasy Roller Derby" dropdown in the top-left. Invite your friends!<p />
+  </div><p />   
 
-  Get started immediately by clicking <span style="background:#bb0000;color:white">"Dive in!"</span> in the top right and log in using a Facebook account. Then access competitions via the dropdown in the top-left. Invite your friends!<p />
+  Fantasy Roller Derby (FRD) is a Roller Derby-based incarnation of the classic <a href="https://en.wikipedia.org/wiki/Fantasy_football_(American)">fantasy football game.</a> It is just about a beta this time around - please let me know if you have any issues by using "Contact site admin" under the Info menu. Fantasy Derby now has a <a href="https://www.facebook.com/fantasyrollerderby.org/">facebook page here</a> - go follow for regular updates!<p />
 
-  Fantasy Roller Derby (FRD) is a Roller Derby-based incarnation of the classic <a href="https://en.wikipedia.org/wiki/Fantasy_football_(American)">fantasy football game.</a> It is just about a beta this time around - please let me know if you have any issues by using "Contact site admin" under the Info menu.<p />
+  <!--<h4>How-to videos</h4>-->
+  <div style="width:100%;display: flex;flex-direction:row;margin-bottom:20px">
+    <div style="flex:1;padding-right:10px;padding-left:20px">
 
-  Fantasy Derby now has a <a href="https://www.facebook.com/fantasyrollerderby.org/">facebook page here</a> - go follow for regular updates!!<p />
-
-  <h4>How-to videos</h4>
-  <div style="width:100%;display: flex;flex-direction: row">
-    <div style="flex:1;padding:5px">
-
-      <b>How to Sign In and Join a Fantasy Roller Derby League</b><br>
+      <b>Video: How to Sign In and Join a Fantasy Roller Derby League</b><br>
     
       <div 
         class="fb-video" 
@@ -43,9 +44,9 @@
       </div>
 
     </div>
-    <div style="flex:1;padding:5px">
+    <div style="flex:1;padding-left:10px;padding-right:20px">
 
-      <b>How to Draft a Fantasy Roller Derby Squad</b><br>
+      <b>Video: How to Draft a Fantasy Roller Derby Squad</b><br>
 
       <div 
         class="fb-video" 
@@ -70,18 +71,13 @@
 
     </div>
   </div>
+  <p /><p />
+
+  <div class="fb-like" data-href="https://www.facebook.com/fantasyrollerderby.org/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
 
   <h3>Latest Updates</h3>
   <div ng-repeat="(key,value) in mainCtrl.blogMessages | orderObjectBy:'timestamp':true" 
-    ng-style="{
-      'width':'100%',
-      'background':'#cccccc',
-      'float':'left',
-      'border-radius':'5px',
-      'padding':'10px',
-      'margin-top':'5px',
-      'margin-bottom':'5px'
-    }"
+    class="repeatedDivsAlt"
   >
     <b>{{value.title}}</b><br>
       {{value.message}}<br>
