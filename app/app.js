@@ -26,7 +26,8 @@ angular
     'ui.router',
     'ngSanitize',
     'ngTouch',
-    'firebase'
+    'firebase',
+    'ezfb'
   ])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -101,6 +102,11 @@ angular
         templateUrl: 'competitions/userLeaderboard/userLeaderboard.html',
         controller: 'UserLeaderboardCtrl as userLeaderboardCtrl'
       })
+      .state('competitions.overallLeaderboard', {
+        url: '/overallLeaderboard/',
+        templateUrl: 'competitions/userLeaderboard/overallLeaderboard.html',
+        controller: 'OverallLeaderboardCtrl as overallLeaderboardCtrl'
+      })
       .state('competitions.player',{
         url: '/player/{pid}',
         templateUrl: 'players/player.html',
@@ -115,7 +121,7 @@ angular
             })
           },
           playerData: function(Players,$stateParams) {
-            return Players.getPlayerData($stateParams.pid)
+            return Players.getPlayerData($stateParams.pid).$loaded()
           }
         }
       })
@@ -446,6 +452,12 @@ angular
       })
 
       $urlRouterProvider.otherwise('/');
+  })
+  .config(function (ezfbProvider){
+    ezfbProvider.setInitParams({
+      //Ferbz App ID
+      appId: '1619211258406913',
+    }); 
   })
   .run(function(){
     

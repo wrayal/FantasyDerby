@@ -12,6 +12,7 @@ angular.module('FantasyDerbyApp')
     var flRef=compRef.child("fantasyLeagues");
     var tournScoreRef=compRef.child("tournamentScoreData").child(parseTournamentCtrl.tournamentId)
     var boutDataRef=tournScoreRef.child("boutData");
+    var boutDataShortRef=tournScoreRef.child("boutDataShort");
     var playerDataRef=tournScoreRef.child("playerData");
 
     parseTournamentCtrl.teamPlayersByNumber={}; //Here we will hold all team players referenced by team id -> number
@@ -91,6 +92,7 @@ angular.module('FantasyDerbyApp')
     //Delete a given bout
     parseTournamentCtrl.deleteBout=function(boutId) {
     	boutDataRef.child(boutId).remove();
+        boutDataShortRef.child(boutId).remove();
     }
     //Init a bout with the given excel data
     parseTournamentCtrl.initFromExcel=function(boutId,excelData) {
@@ -100,6 +102,16 @@ angular.module('FantasyDerbyApp')
     		parsedBout.name=parsedBout.team1.name+" vs "+parsedBout.team2.name;
     		boutDataRef.child(boutId).set(parsedBout).then(function(){$scope.$apply()})
     	}
+    }
+    //Init a bout with the given Rinxter data
+    parseTournamentCtrl.initFromRinxter=function(boutId,rinxterData) {
+        rinxterObj=eval("(" + rinxterData + ")");
+        parsedBout=parseTournamentCtrl.rinxterParseScores(rinxterObj);
+
+        if (parsedBout) {
+            parsedBout.name=parsedBout.team1.name+" vs "+parsedBout.team2.name;
+            boutDataRef.child(boutId).set(parsedBout).then(function(){$scope.$apply()})
+        }
     }
     //Save player IDs
     parseTournamentCtrl.savedIdData=function(boutKey) {
@@ -124,7 +136,9 @@ angular.module('FantasyDerbyApp')
     		console.log("CUR PLAYER IS",curPlayer)
     		if (parseTournamentCtrl.teamPlayersByNumber[teamId][curPlayer.number]) {
     			curPlayer.playerId=parseTournamentCtrl.teamPlayersByNumber[teamId][curPlayer.number].id
-    		}
+    		} else {
+                curPlayer.playerId=false;
+            }
     	}
         parseTournamentCtrl.updatePlayerData();
     }
@@ -260,7 +274,7 @@ angular.module('FantasyDerbyApp')
 
                 }
             }
-
+            console.log("COMPRESSED BOUT",compressedBout)
             tournScoreRef.child("boutDataShort").child(boutKey).set(compressedBout)
 
         })
@@ -297,6 +311,7 @@ angular.module('FantasyDerbyApp')
 
     parseTournamentCtrl.fullySaved=true;
     parseTournamentCtrl.updateUserScores=function(){
+        compRef.child("leaderboardData").remove().then(function(){
         playerDataRef.once('value').then(function(playersSnapshot) {
             fullPlayerData=playersSnapshot.val();
             
@@ -305,10 +320,15 @@ angular.module('FantasyDerbyApp')
                 angular.forEach(flData,function(leagueData,leagueKey) { //For each league
                     if (leagueData.fantasyTeams) {
                         angular.forEach(leagueData.fantasyTeams,function(teamData,userId){ //For each user's set of teams in that league
+
+                            squadScore=0;
+                            leaderboardObj={};
+                            angular.copy(teamData,leaderboardObj);
+
                             if (teamData[parseTournamentCtrl.tournamentId]) { //If they drafted for this tournament
                                 curTeam=teamData[parseTournamentCtrl.tournamentId];
 
-                                squadScore=0;
+                                
                                 if (fullPlayerData[curTeam.jammer]) {
                                     squadScore+=fullPlayerData[curTeam.jammer].total.jmrFDScore
                                 }
@@ -327,19 +347,20 @@ angular.module('FantasyDerbyApp')
 
                                 flRef.child(leagueKey).child("fantasyTeams").child(userId).child(parseTournamentCtrl.tournamentId).child("score").set(squadScore)
 
+                                leaderboardObj[parseTournamentCtrl.tournamentId].score=squadScore;
+                            }
+
                                 totalScore=0;
                                 totalScore+=squadScore;
                                 angular.forEach(competitionCtrl.tournamentData,function(tourData,tourKey){
-                                    if (tourKey!=parseTournamentCtrl.tournamentId && teamData[tourKey].score) {
+                                    if (tourKey!=parseTournamentCtrl.tournamentId && teamData[tourKey] && teamData[tourKey].score) {
+                                        console.log("GETTING",tourKey,teamData,teamData[tourKey],teamData[tourKey].score)
                                         totalScore+=teamData[tourKey].score
                                     }
                                 })
                                 flRef.child(leagueKey).child("fantasyTeams").child(userId).child("score").set(totalScore)
 
-                                leaderboardObj={};
-                                angular.copy(teamData,leaderboardObj);
                                 leaderboardObj.score=totalScore;
-                                leaderboardObj[parseTournamentCtrl.tournamentId].score=squadScore;
                                 leaderboardObj.userId=userId;
                                 leaderboardObj.leagueName=leagueData.uniData.name;
                                 leaderboardObj.leagueId=leagueKey;
@@ -347,7 +368,7 @@ angular.module('FantasyDerbyApp')
                                 console.log("LEADERBOARD OBJECT",leaderboardObj)
                                 compRef.child("leaderboardData").push(leaderboardObj);
 
-                            }
+                            
                         })
                     }
                 })
@@ -357,6 +378,115 @@ angular.module('FantasyDerbyApp')
         parseTournamentCtrl.fullySaved=true;
         console.log("AAAAND...DONE!")
         $scope.$apply();
+        })
+    }
+
+    parseTournamentCtrl.rinxterParseScores=function(rinxterData) {
+        //The relevant dumping code is:
+        //javascript:var team1Data=null;var team2Data=null;parseData=function(){if (team1Data && team2Data){var compDataObj={date:bout.date};compDataObj[0]={name:bout.team1League,score:bout.team1Score,data:team1Data};compDataObj[1]={name:bout.team2League,score:bout.team2Score,data:team2Data};document.body.innerHTML = "Team data:";var x = document.createElement("TEXTAREA");x.rows=50;x.cols=150;document.body.childNodes[0].parentNode.insertBefore(x, document.body.childNodes[0].nextSibling);x.value=JSON.stringify(compDataObj);}};handleCall("/ds?type=skaterStats&boutId="+bout.id+"&teamId="+bout.team1Id+"&images=1&output=obj",function(data) {team1Data=data;parseData();});handleCall("/ds?type=skaterStats&boutId="+bout.id+"&teamId="+bout.team2Id+"&images=1&output=obj",function(data) {team2Data=data;parseData();})
+
+        console.log("RINX DATA IS",rinxterData)
+
+        team1=rinxterData[0];
+        team2=rinxterData[1];
+        date=rinxterData.date;
+
+        var bout={
+            team1:{
+                name:"",
+                teamId: "",
+                teamList: []
+            },
+            team2:{
+                name:"",
+                teamId: "",
+                teamList: []
+            },
+            date:""
+        };
+
+        bout.date=date;
+        bout.team1.name=team1.name;
+        bout.team2.name=team2.name;
+        bout.team1.score=team1.score;
+        bout.team2.score=team2.score;
+
+        convStrings=[
+                ["","pivPm"],
+                ["blkDiff","blPm"],
+                ["jmrDiff","jmrPm"],
+                ["boxTrips","pens"],
+                ["jmrLead","lead"],
+                ["totalJams","totJams"],
+                ["jmrJams","jmrJams"],
+                ["blkJams","blJams"],
+                ["","pivJams"],
+                ["","name"],
+                ["","number"]
+            ]
+
+        for (i=0; i<team1.data.length; i++) {
+            curPlayer=team1.data[i];
+
+            newPlayerObj={
+            }
+
+            for (j=0; j<convStrings.length; j++) {
+                if (convStrings[j][0]=="") {
+                    newPlayerObj[convStrings[j][1]]=0;
+                } else {
+                    newPlayerObj[convStrings[j][1]]=curPlayer[convStrings[j][0]];      
+                }
+            }
+
+            curName=curPlayer.skater;
+            curNumber=curName.split("(")[1];
+            curNumber=curNumber.split(")")[0]-0;
+            curName=curName.split("(")[0];
+
+            if (isNaN(curNumber)) curNumber=-1; //Happens if there are letters (!!) in the name...
+
+            console.log("CURNAME",curPlayer.skater,curNumber)
+
+            newPlayerObj.name=curName;
+            newPlayerObj.number=curNumber;
+
+            bout.team1.teamList.push(newPlayerObj);
+        }
+
+        for (i=0; i<team2.data.length; i++) {
+            curPlayer=team2.data[i];
+
+            newPlayerObj={
+            }
+
+            for (j=0; j<convStrings.length; j++) {
+                if (convStrings[j][0]=="") {
+                    newPlayerObj[convStrings[j][1]]=0;
+                } else {
+                    newPlayerObj[convStrings[j][1]]=curPlayer[convStrings[j][0]];      
+                }
+            }
+
+            curName=curPlayer.skater;
+            curNumber=curName.split("(")[1];
+            curNumber=curNumber.split(")")[0]-0;
+            curName=curName.split("(")[0];
+
+            if (isNaN(curNumber)) curNumber=-1; //Happens if there are letters (!!) in the name...
+
+            console.log("CURNAME",curPlayer.skater,curNumber)
+
+            newPlayerObj.name=curName;
+            newPlayerObj.number=curNumber;
+            newPlayerObj.playerId="";
+
+            bout.team2.teamList.push(newPlayerObj);
+        }
+
+        console.log("BOUT IS",bout)
+
+        return bout;
     }
 
     parseTournamentCtrl.excelParseScores=function(unparsedData){

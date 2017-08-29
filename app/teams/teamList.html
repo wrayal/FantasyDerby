@@ -22,11 +22,11 @@
 	<div ng-show="teamListCtrl.boutsData">
 		<div ng-repeat="(boutKey,boutData) in teamListCtrl.boutsData track by $index" class="repeatedDivs">
 			<b>Game {{$index+1}}</b><br>
-			{{teamListCtrl.teamList[boutData.team1.teamId].leagueName}}
-			<span ng-show="teamListCtrl.teamList[boutData.team1.teamId].leagueName!=teamListCtrl.teamList[boutData.team1.teamId].teamName"> - {{teamListCtrl.teamList[boutData.team1.teamId].teamName}}</span> <b>{{boutData.team1.score}}</b>
+			{{teamListCtrl.teamList[boutData.team1.teamId].leagueName | capitalise}}
+			<span ng-show="teamListCtrl.teamList[boutData.team1.teamId].leagueName!=teamListCtrl.teamList[boutData.team1.teamId].teamName"> - {{teamListCtrl.teamList[boutData.team1.teamId].teamName | capitalise}}</span> <b>{{boutData.team1.score}}</b>
 			vs <b>{{boutData.team2.score}}</b> 
-			{{teamListCtrl.teamList[boutData.team2.teamId].leagueName}}
-			<span ng-show="teamListCtrl.teamList[boutData.team2.teamId].leagueName!=teamListCtrl.teamList[boutData.team2.teamId].teamName"> - {{teamListCtrl.teamList[boutData.team2.teamId].teamName}}</span>
+			{{teamListCtrl.teamList[boutData.team2.teamId].leagueName | capitalise}}
+			<span ng-show="teamListCtrl.teamList[boutData.team2.teamId].leagueName!=teamListCtrl.teamList[boutData.team2.teamId].teamName"> - {{teamListCtrl.teamList[boutData.team2.teamId].teamName | capitalise}}</span>
 		</div>
 	</div>
 </div>

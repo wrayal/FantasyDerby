@@ -1,7 +1,7 @@
 <div class="page-wrapper">
 	<div class="page-header">
 		<h1>
-			User leaderboard
+			{{userLeaderboardCtrl.tourData.name}} Leaderboard
 		</h1>
 	</div>
 
@@ -11,20 +11,22 @@
 
 	<div ng-show="userLeaderboardCtrl.tourId!='overall'">
 		<!-- SPECIFIC -->
-		<table>
+		<table class="derbyTable">
 			<tr>
-				<td>Username</td>
-				<td>Team name</td>
-				<td>League name</td>
-				<td>Jammer</td>
-				<td>Double Threat</td>
-				<td>Blocker</td>
-				<td>Blocker</td>
-				<td>Blocker</td>
-				<td>Score</td>
+				<td></td>
+				<td class="genHeader">Username</td>
+				<td class="genHeader">Team name</td>
+				<td class="genHeader">League name</td>
+				<td class="genHeader">Jammer</td>
+				<td class="genHeader">Double Threat</td>
+				<td class="genHeader">Blocker</td>
+				<td class="genHeader">Blocker</td>
+				<td class="genHeader">Blocker</td>
+				<td class="genHeader">Score</td>
 			</tr>
 			<tr ng-repeat="(index,teamsData) in userLeaderboardCtrl.leadData" ng-if="index<10">
-				<td>{{userLeaderboardCtrl.userData[teamsData.userId].$value}}</td>
+				<td class="genHeader">{{$index+1}}</td>
+				<td class="genHeader">{{userLeaderboardCtrl.userData[teamsData.userId].$value}}</td>
 				<td>
 					{{teamsData.name}}
 				</td>
@@ -52,12 +54,12 @@
 						ui-sref="competitions.teamView({teamId:userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.team})"
 						style="font-size:x-small"
 						>
-						{{userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.teamName}}
+						{{userLeaderboardCtrl.leagueData[userLeaderboardCtrl.playerData[teamsData[userLeaderboardCtrl.tourId][position]].data.team].$value | capitalise}}
 					</a>
 
 
 				</td>
-				<td>{{teamsData[userLeaderboardCtrl.tourId].score | number:1}}</td>
+				<td class="genHeader">{{teamsData[userLeaderboardCtrl.tourId].score | number:1}}</td>
 			</tr>
 		</table>
 	</div>

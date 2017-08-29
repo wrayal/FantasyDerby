@@ -281,9 +281,11 @@ angular.module('FantasyDerbyApp')
     }
 
     //Do the auto-draft procedure
+    squadCtrl.autoDraftClickable=true;
     squadCtrl.autoDraftStatus="";
     squadCtrl.autoDraft=function() {
       squadCtrl.autoDraftStatus="Drafting";
+      squadCtrl.autoDraftClickable=false;
       console.log(squadCtrl.autoDraftStatus)
       //Ok, here comes the drafting process - get ready to get fiddly!
       //First we grab useful firebase references
@@ -293,6 +295,7 @@ angular.module('FantasyDerbyApp')
       //Now we are going to load the latest iterations of the draft orders to find the next player in line
       leagueRef.child("draftOrders").child(squadCtrl.tourId).once("value",function(draftDataObj){
         draftData=draftDataObj.val();
+        if (!draftData) return; //Drafting is done!!
         nextManToDraft=draftData[0];
         try{squadCtrl.autoDraftStatus="Drafting for "+fantasyLeagueCtrl.leagueMembers[nextManToDraft].username.$value;}catch(err){} //Being lazy - can technically fail if requisite data not loaded yet
         console.log(squadCtrl.autoDraftStatus)
@@ -330,6 +333,7 @@ angular.module('FantasyDerbyApp')
               }
             }
             if (!succeeded) {
+              squadCtrl.autoDraftClickable=true;
               try{squadCtrl.autoDraftStatus="No available draft candidates for "+fantasyLeagueCtrl.leagueMembers[nextManToDraft].username.$value;}
               catch(err){squadCtrl.autoDraftStatus="No available draft candidates."} //Being lazy - can technically fail if requisite data not loaded yet
               console.log(squadCtrl.autoDraftStatus)

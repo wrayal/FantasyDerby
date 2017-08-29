@@ -1,0 +1,38 @@
+<div class="page-wrapper">
+	<div class="page-header">
+		<h1>
+			Overall user leaderboard
+		</h1>
+	</div>
+
+	<div>
+		<!-- SPECIFIC -->
+		<table class="derbyTable">
+			<tr>
+				<td class="genHeader"></td>
+				<td class="genHeader">Username</td>
+				<td class="genHeader">Team name</td>
+				<td class="genHeader">League name</td>
+				<td class="genHeader" ng-repeat="tournament in competitionCtrl.tournamentData" ng-if="tournament.state=='playing' || tournament.state=='complete'">
+					{{tournament.name}}
+				</td>
+				<td class="genHeader">Score</td>
+			</tr>
+			<tr ng-repeat="(index,teamsData) in overallLeaderboardCtrl.leadData" ng-if="index<10">
+				<td class="genHeader" align="center">
+					<img ng-show="$index==0" src="images/medal1.png" style="height:1em"></img>
+					<img ng-show="$index==1" src="images/medal2.png" style="height:1em"></img>
+					<img ng-show="$index==2" src="images/medal3.png" style="height:1em"></img>
+					<span ng-show="$index>2">{{$index+1}}</span>
+				</td>
+				<td class="genHeader">{{overallLeaderboardCtrl.userData[teamsData.userId].$value}}</td>
+				<td>{{teamsData.name}}</td>
+				<td>{{teamsData.leagueName}}</td>
+				<td ng-repeat="(tourKey,tournament) in competitionCtrl.tournamentData" ng-if="tournament.state=='playing' || tournament.state=='complete'">
+					{{teamsData[tourKey].score | number:1}}
+				</td>
+				<td class="genHeader">{{teamsData.score  | number:1}}</td>
+			</tr>
+		</table>
+
+</div>

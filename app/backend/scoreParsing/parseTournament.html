@@ -37,20 +37,27 @@
 					</textarea><br>
 					<input type=button ng-click="parseTournamentCtrl.initFromExcel(boutKey,parseTournamentCtrl.working[boutKey].excelData)" value="Init from this data"><br>
 				</div>
+
+				<div ng-show="parseTournamentCtrl.working[boutKey].init=='rinxter'">
+					Input Rinxter data:<br>
+					<textarea rows=6 cols=80 ng-model="parseTournamentCtrl.working[boutKey].rinxterData">
+					</textarea><br>
+					<input type=button ng-click="parseTournamentCtrl.initFromRinxter(boutKey,parseTournamentCtrl.working[boutKey].rinxterData)" value="Init from this data"><br>
+				</div>
 			</div><p />
 
 			<!-- Now showing the table where we can fill in extra data: -->
 			<div ng-show="parseTournamentCtrl.bouts[boutKey].date">
 				{{parseTournamentCtrl.bouts[boutKey].team1.name}}
 				<select ng-model="parseTournamentCtrl.bouts[boutKey].team1.teamId" ng-change="parseTournamentCtrl.matchPlayers(boutKey,'team1',parseTournamentCtrl.bouts[boutKey].team1.teamId);parseTournamentCtrl.working[boutKey].needSave=true">
-					<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.tournamentData.teamList" value="{{teamKey}}">{{teamData.teamName}}</option>
+					<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.tournamentData.teamList" value="{{teamKey}}">{{teamData.leagueName}}</option>
 				</select>
 				<!--<input type="button" value="Save team Id" ng-click="parseTournamentCtrl.saveTeamId(boutKey,'team1',boutData.team1.teamId)">-->
 
 				<table>
 					<tr>
-						<td>Database Name</td>
-						<td>Database Number</td>
+						<td>Parsed Name</td>
+						<td>Parsed Number</td>
 						<td>Player Id</td>
 						<td>DB Name</td>
 						<td>Switch Player</td>
@@ -106,14 +113,14 @@
 
 				{{parseTournamentCtrl.bouts[boutKey].team2.name}}
 				<select ng-model="parseTournamentCtrl.bouts[boutKey].team2.teamId" ng-change="parseTournamentCtrl.matchPlayers(boutKey,'team2',parseTournamentCtrl.bouts[boutKey].team2.teamId);parseTournamentCtrl.working[boutKey].needSave=true">
-					<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.tournamentData.teamList" value="{{teamKey}}">{{teamData.teamName}}</option>
+					<option ng-repeat="(teamKey,teamData) in parseTournamentCtrl.tournamentData.teamList" value="{{teamKey}}">{{teamData.leagueName}}</option>
 				</select>
 				<!--<input type="button" value="Save team Id" ng-click="parseTournamentCtrl.saveTeamId(boutKey,'team2',boutData.team2.teamId)">-->
 
 				<table>
 					<tr>
-						<td>Db Name</td>
-						<td>Db Number</td>
+						<td>Parsed Name</td>
+						<td>Parsed Number</td>
 						<td>Player Id</td>
 						<td>DB Name</td>
 						<td>Switch Player</td>

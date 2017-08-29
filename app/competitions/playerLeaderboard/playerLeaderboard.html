@@ -4,7 +4,7 @@
 			{{playerLeaderboardCtrl.tourData.name}}	Fantasy Points
 		</h1>
 	</div>
-	<table>
+	<table class="derbyTable">
 		<tr>
 			<td></td>
 			<td colspan="2" align="center">Jammer FD Points</td>
@@ -12,7 +12,7 @@
 			<td colspan="2" align="center">Blocker FD Points</td>
 		</tr>
 		<tr ng-repeat="(key,entry) in playerLeaderboardCtrl.jmrData">
-			<td>
+			<td class="genHeader">
 				{{key+1}}
 			</td>
 			<td>
@@ -25,7 +25,7 @@
 					ui-sref="competitions.teamView({teamId:playerLeaderboardCtrl.playerData[entry.$id].team})"
 					style="font-size:x-small"
 					>
-					{{playerLeaderboardCtrl.playerData[entry.$id].teamName}}
+					{{playerLeaderboardCtrl.leagueData[playerLeaderboardCtrl.playerData[entry.$id].team].$value | capitalise}}
 				</a>
 
 			</td>
@@ -42,7 +42,7 @@
 					ui-sref="competitions.teamView({teamId:playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].team})"
 					style="font-size:x-small"
 					>
-					{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].teamName}}
+					{{playerLeaderboardCtrl.leagueData[playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.dtData[key].$id].team].$value | capitalise}}
 				</a>
 
 			</td>
@@ -59,7 +59,7 @@
 					ui-sref="competitions.teamView({teamId:playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].team})"
 					style="font-size:x-small"
 					>
-					{{playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].teamName}}
+					{{playerLeaderboardCtrl.leagueData[playerLeaderboardCtrl.playerData[playerLeaderboardCtrl.blData[key].$id].team].$value | capitalise}}
 				</a>
 
 			</td>

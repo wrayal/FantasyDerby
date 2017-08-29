@@ -4,7 +4,7 @@
 			<b>Admin controls</b><br>
 			<font style="color:green" ng-show="squadCtrl.autoDraftStatus"><b>{{squadCtrl.autoDraftStatus}}</b><br></font>
 			<div ng-show="fantasyLeagueCtrl.whichDraftsNeeded[squadCtrl.tourId]=='asAdmin'">
-				<input type="button" ng-click="squadCtrl.autoDraft()" value="Auto-draft for this league."><br>
+				<input type="button" ng-click="squadCtrl.autoDraft()" value="Auto-draft for this league." ng-disabled="!squadCtrl.autoDraftClickable"><br>
 				<font style="font-size:x-small">Drafts available for {{fantasyLeagueCtrl.leagueMembers[squadCtrl.draftOrder[0]].username.$value}}</font>
 			</div>
 			<div ng-show="fantasyLeagueCtrl.whichDraftsNeeded[squadCtrl.tourId]!='asAdmin'">

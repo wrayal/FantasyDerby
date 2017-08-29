@@ -1,5 +1,6 @@
 angular.module('FantasyDerbyApp').filter('capitalise', function() {
   return function(input){
+    if (!input) return "";
     if(input.indexOf(' ') !== -1){
       var inputPieces,
           i;

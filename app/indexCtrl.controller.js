@@ -102,6 +102,7 @@ angular.module('FantasyDerbyApp')
     indexCtrl.tourData=null;
     
     indexCtrl.showLeaderboards=false;
+    indexCtrl.numLeaderboards=0;
     
 
   	//Set which entry is active in the menu
@@ -156,9 +157,13 @@ angular.module('FantasyDerbyApp')
         Competitions.updateBgImage($state.params.cid);
 
         indexCtrl.showLeaderboards=false;
+        indexCtrl.numLeaderboards=0;
         indexCtrl.tourData.$loaded().then(function(tourData){
           angular.forEach(tourData,function(curTour){
-              if (curTour.state=="playing") indexCtrl.showLeaderboards=true;
+              if (curTour.state=="playing" || curTour.state=="complete") {
+                indexCtrl.showLeaderboards=true;
+                indexCtrl.numLeaderboards++;
+              }
           })
         })
 

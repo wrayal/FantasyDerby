@@ -8,7 +8,7 @@
 				ui-sref="competitions.teamView({teamId:playerCtrl.playerData.team})"
 				href=""
 			>
-				{{playerCtrl.teamData.leagueName}}<span ng-show="playerCtrl.teamData.leagueName!=playerCtrl.teamData.teamName"> - {{playerCtrl.teamData.teamName}}</span>
+				{{playerCtrl.teamData.leagueName | capitalise}}<span ng-show="playerCtrl.teamData.leagueName!=playerCtrl.teamData.teamName"> - {{playerCtrl.teamData.teamName | capitalise}}</span>
 			</a>
 		</h4>
 	</div>
@@ -20,20 +20,27 @@
 	<span ng-hide="playerCtrl.playing">Awaiting tournament data.</span>
 
 	<div ng-repeat="(tournamentKey,scoreData) in playerCtrl.scoreData" class="repeatedDivs" ng-if="scoreData.total">
-		<b>{{competitionCtrl.tournamentData[tournamentKey].name}}</b><br>
-		<table>
+		<h4><b>{{competitionCtrl.tournamentData[tournamentKey].name}}</b><br></h4>
+		<table class="derbyTable">
 			<tr>
-				<td>Total jammer score:</td><td>{{scoreData.total.jmrFDScore}}</td>
+				<td colspan="2">
+					<b>Total Scores
+				</td>
 			</tr>
 			<tr>
-				<td>Total double threat score:</td><td>{{scoreData.total.dtFDScore}}</td>
+				<td>Total jammer score:</td><td>{{scoreData.total.jmrFDScore | number: 1}}</td>
 			</tr>
 			<tr>
-				<td>Total blocker score:</td><td>{{scoreData.total.blFDScore}}</td>
+				<td>Total double threat score:</td><td>{{scoreData.total.dtFDScore | number: 1}}</td>
+			</tr>
+			<tr>
+				<td>Total blocker score:</td><td>{{scoreData.total.blFDScore | number: 1}}</td>
 			</tr>
 		</table><p />
 
-		<table>
+		<b>Score Breakdown</b><br>
+
+		<table class="derbyTable">
 			<tr>
 				<td>
 					<b>Bout</b>
@@ -62,13 +69,13 @@
 					}}
 				</td>
 				<td>
-					{{boutData.jmrFDScore}}
+					{{boutData.jmrFDScore | number: 1}}
 				</td>
 				<td>
-					{{boutData.dtFDScore}}
+					{{boutData.dtFDScore | number: 1}}
 				</td>
 				<td>
-					{{boutData.blFDScore}}
+					{{boutData.blFDScore | number: 1}}
 				</td>
 			</tr>
 			<tr>
@@ -76,13 +83,13 @@
 					<b>Total:</b>
 				</td>
 				<td>
-					<b>{{scoreData.total.jmrFDScore}}</b>
+					<b>{{scoreData.total.jmrFDScore | number: 1}}</b>
 				</td>
 				<td>
-					<b>{{scoreData.total.dtFDScore}}</b>
+					<b>{{scoreData.total.dtFDScore | number: 1}}</b>
 				</td>
 				<td>
-					<b>{{scoreData.total.blFDScore}}</b>
+					<b>{{scoreData.total.blFDScore | number: 1}}</b>
 				</td>
 			</tr>
 		</table>

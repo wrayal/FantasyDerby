@@ -1,12 +1,14 @@
 angular.module('FantasyDerbyApp')
-  .controller('UserLeaderboardCtrl', function ($stateParams,Players,Competitions,Users) {
+  .controller('UserLeaderboardCtrl', function ($stateParams,Players,Competitions,Users,Teams) {
     userLeaderboardCtrl=this;
 
     userLeaderboardCtrl.tourId="";
     userLeaderboardCtrl.leadData=[];
     userLeaderboardCtrl.userData={};
     userLeaderboardCtrl.playerData={};
+    userLeaderboardCtrl.leagueData={};
     userLeaderboardCtrl.tourId=$stateParams.tourId;
+    userLeaderboardCtrl.tourData=competitionCtrl.tournamentData[userLeaderboardCtrl.tourId]
 
     userLeaderboardCtrl.positions=["jammer","doubleThreat","blocker1","blocker2","blocker3"]
 
@@ -25,11 +27,18 @@ angular.module('FantasyDerbyApp')
                 curSquad=leadData[i][userLeaderboardCtrl.tourId];
                 for (j=0; j<userLeaderboardCtrl.positions.length; j++) {
                     position=userLeaderboardCtrl.positions[j];
-                    if (!userLeaderboardCtrl.playerData[curSquad[position]]) {
+                    if (curSquad[position] && !userLeaderboardCtrl.playerData[curSquad[position]]) {
                         userLeaderboardCtrl.playerData[curSquad[position]]={
                             data:Players.getPlayerData(curSquad[position]),
                             scores:Players.getTotalScoresForTournament(competitionCtrl.cid,userLeaderboardCtrl.tourId,curSquad[position])
                         }
+                        userLeaderboardCtrl.playerData[curSquad[position]].data.$loaded().then(function(thisData){
+                            if (!userLeaderboardCtrl.leagueData[thisData.team]) {
+                                userLeaderboardCtrl.leagueData[thisData.team]=Teams.getLeagueName(thisData.team);
+                                console.log("THIS DATA",userLeaderboardCtrl.leagueData[thisData.team])
+                            }
+                            
+                        })
                     }
                 }
             }

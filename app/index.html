@@ -19,7 +19,8 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="wrapper myBgDiv" style="background-color:white" id="mainWrapper">
+
+    <div class="wrapper myBgDiv" id="mainWrapper">
         <!-- HEADER -->
         <div 
             data-ng-include="'indexMenu.html'" 
@@ -60,14 +61,14 @@
        ga('send', 'pageview');
     </script>
 
-    <div id="fb-root"></div>
+    <!--<div id="fb-root"></div>
     <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.10&appId=1619211258406913";
   fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+}(document, 'script', 'facebook-jssdk'));</script>-->
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -82,6 +83,8 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+
+    <script src="http://pc035860.github.io/angular-easyfb/angular-easyfb.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0/angular-ui-router.js"></script>
 
@@ -117,6 +120,7 @@
         <script src="competitions/frontPage.controller.js"></script>
         <script src="competitions/playerLeaderboard/playerLeaderboard.controller.js"></script>
         <script src="competitions/userLeaderboard/userLeaderboard.controller.js"></script>
+        <script src="competitions/userLeaderboard/overallLeaderboard.controller.js"></script>
         <script src="indexCtrl.controller.js"></script>
 
         <script src="Auth/Auth.service.js"></script>

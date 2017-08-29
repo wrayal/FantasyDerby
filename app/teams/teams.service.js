@@ -18,6 +18,10 @@ angular.module('FantasyDerbyApp')
 				var listRef=firebase.database().ref().child("competitionFull").child(cid).child("tournaments").child(tourId).child("teamList");
 				return $firebaseObject(listRef)
 			},
+			getLeagueName: function(teamId) {
+				var teamRef=firebase.database().ref().child("teams").child(teamId).child("leagueName");
+				return $firebaseObject(teamRef);
+			},
 			getTeamData: function(teamId) {
 				var teamRef=firebase.database().ref().child("teams").child(teamId);
 				return $firebaseObject(teamRef);

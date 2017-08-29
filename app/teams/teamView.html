@@ -1,16 +1,23 @@
 <div class="page-wrapper">
 
 	<div class="page-header">
-		<h1>{{teamViewCtrl.teamData.leagueName}}</h1>
-		<h2 ng-show="teamViewCtrl.teamData.teamName!=teamViewCtrl.teamData.leagueName">{{teamViewCtrl.teamData.teamName}}</h2>
+		<h1>{{teamViewCtrl.teamData.leagueName | capitalise}}</h1>
+		<h2 ng-show="teamViewCtrl.teamData.teamName!=teamViewCtrl.teamData.leagueName">{{teamViewCtrl.teamData.teamName | capitalise}}</h2>
 	</div>
 
 	<!--<span ng-repeat="player in teamViewCtrl.teamData.teamPlayers | orderBy:-player.name">
 		<a href="" ui-sref="competitions.player({pid:player.id})">{{player.name}} #{{player.number}}</a><br>
 	</span>-->
 
-	<table>
+	<table class="derbyTable">
 		<tr>
+		<td rowSpan=2 ng-show="teamViewCtrl.shouldShow">
+				<center>
+					<b>Player name</b><br>
+					<font style="font-size:x-small">(click for details)</font>
+				</center>
+			</td>
+			
 			<td rowSpan=1 ng-hide="teamViewCtrl.shouldShow">
 				<center>
 					<b>Player name</b><br>
@@ -18,12 +25,7 @@
 				</center>
 			</td>
 
-			<td rowSpan=2 ng-show="teamViewCtrl.shouldShow">
-				<center>
-					<b>Player name</b><br>
-					<font style="font-size:x-small">(click for details)</font>
-				</center>
-			</td>
+			
 
 			<td colspan="3" ng-show="teamViewCtrl.shouldShow">
 				<b>Overall competition scores</b> <font style="font-size:x-small">(click to sort)</font>
